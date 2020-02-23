@@ -1,0 +1,15 @@
+rm -rf synthesis
+mkdir synthesis
+mkdir synthesis/mpsoc_mpi
+mkdir synthesis/mpsoc_mpi/source
+mkdir synthesis/mpsoc_mpi/synthesis
+mkdir synthesis/mpsoc_mpi/layout
+
+#cp rtl/verilog/ahb3/mpsoc_mpi_ahb.sv       synthesis/mpsoc_mpi/source
+#cp rtl/verilog/wb/mpsoc_mpi_wb.sv          synthesis/mpsoc_mpi/source
+#cp rtl/verilog/core/mpsoc_mpi.sv           synthesis/mpsoc_mpi/source
+#cp rtl/verilog/core/mpsoc_packet_buffer.sv synthesis/mpsoc_mpi/source
+
+cd synthesis/mpsoc_mpi
+
+qflow -T osu018 synthesize place route mpsoc_mpi_ahb

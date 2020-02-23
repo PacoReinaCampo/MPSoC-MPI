@@ -1,0 +1,11 @@
+# vsim -c -do "run.do" work.mpsoc_dma_testbench 
+# Start time: 17:03:52 on Feb 23,2020
+# Loading sv_std.std
+# Loading work.mpsoc_dma_testbench
+# Loading work.mpsoc_mpi_ahb
+# Loading work.mpsoc_mpi
+# Loading work.mpsoc_packet_buffer
+# Loading work.mpsoc_mpi_wb
+# do run.do
+# End time: 17:03:52 on Feb 23,2020, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
