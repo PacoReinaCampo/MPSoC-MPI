@@ -1,0 +1,4 @@
+rm -rf mpi.vvp
+iverilog -g2012 -o mpi.vvp -c mpi.vtor -s wb_mpi_tb \
+-I rtl/verilog/pkg
+vvp mpi.vvp
