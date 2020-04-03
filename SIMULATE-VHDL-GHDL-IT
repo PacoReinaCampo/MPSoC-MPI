@@ -3,8 +3,8 @@ ghdl -i rtl/vhdl/wb/mpsoc_mpi_wb.vhd
 ghdl -i rtl/vhdl/core/mpsoc_mpi.vhd
 ghdl -i rtl/vhdl/core/mpsoc_packet_buffer.vhd
 
-ghdl -i bench/vhdl/regression/mpsoc_dma_testbench.vhd
+ghdl -i bench/vhdl/regression/mpsoc_mpi_testbench.vhd
 
-ghdl -m mpsoc_dma_testbench
+ghdl -m mpsoc_mpi_testbench
 
-ghdl -r mpsoc_dma_testbench --ieee-asserts=disable-at-0 --disp-tree=inst > mpsoc_dma_testbench.tree
+ghdl -r mpsoc_mpi_testbench --ieee-asserts=disable-at-0 --disp-tree=inst > mpsoc_mpi_testbench.tree

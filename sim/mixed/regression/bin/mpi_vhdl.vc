@@ -10,7 +10,7 @@
 //                                                                            //
 //                                                                            //
 //              MPSoC-RISCV CPU                                               //
-//              Direct Access Memory Interface                                //
+//              Message Passing Interface                                     //
 //              AMBA3 AHB-Lite Bus Interface                                  //
 //              WishBone Bus Interface                                        //
 //                                                                            //
@@ -41,4 +41,7 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-../../../../bench/verilog/regression/mpsoc_dma_testbench.sv
+../../../../rtl/vhdl/ahb3/mpsoc_mpi_ahb.vhd
+../../../../rtl/vhdl/wb/mpsoc_mpi_wb.vhd
+../../../../rtl/vhdl/core/mpsoc_mpi.vhd
+../../../../rtl/vhdl/core/mpsoc_packet_buffer.vhd

@@ -10,7 +10,7 @@
 //                                                                            //
 //                                                                            //
 //              MPSoC-RISCV CPU                                               //
-//              Direct Access Memory Interface                                //
+//              Message Passing Interface TestBench                           //
 //              AMBA3 AHB-Lite Bus Interface                                  //
 //              WishBone Bus Interface                                        //
 //                                                                            //
@@ -41,7 +41,7 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-module mpsoc_dma_testbench;
+module mpsoc_mpi_testbench;
 
   //////////////////////////////////////////////////////////////////
   //

@@ -1,4 +1,4 @@
--- Converted from bench/verilog/regression/mpsoc_dma_testbench.sv
+-- Converted from bench/verilog/regression/mpsoc_mpi_testbench.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -13,7 +13,7 @@
 --                                                                            //
 --                                                                            //
 --              MPSoC-RISCV CPU                                               //
---              Direct Access Memory Interface                                //
+--              Message Passing Interface TestBench                           //
 --              AMBA3 AHB-Lite Bus Interface                                  //
 --              WishBone Bus Interface                                        //
 --                                                                            //
@@ -50,10 +50,10 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-entity mpsoc_dma_testbench is
-end mpsoc_dma_testbench;
+entity mpsoc_mpi_testbench is
+end mpsoc_mpi_testbench;
 
-architecture RTL of mpsoc_dma_testbench is
+architecture RTL of mpsoc_mpi_testbench is
   component mpsoc_mpi_ahb
     generic (
       NoC_DATA_WIDTH : integer := 32;
