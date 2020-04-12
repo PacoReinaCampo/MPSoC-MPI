@@ -10,7 +10,7 @@
 //                                                                            //
 //                                                                            //
 //              MPSoC-RISCV CPU                                               //
-//              Message Passing Interface                                     //
+//              Direct Access Memory Interface                                //
 //              WishBone Bus Interface                                        //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
@@ -40,35 +40,35 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-module mpsoc_mpi_wb #(
-  parameter NoC_DATA_WIDTH = 32,
-  parameter NoC_TYPE_WIDTH = 2,
-  parameter FIFO_DEPTH     = 16,
-  parameter NoC_FLIT_WIDTH = 34,
-  parameter SIZE_WIDTH     = 5
+module mpbuffer_wb #(
+  parameter NOC_FLIT_WIDTH = 32,
+  parameter SIZE           = 16,
+  parameter N              = 1
 )
   (
-    input clk,
-    input rst,
+    input                         clk,
+    input                         rst,
 
-    // NoC interface
-    output [NoC_FLIT_WIDTH-1:0] noc_out_flit,
-    output                      noc_out_valid,
-    input                       noc_out_ready,
+    output [N*NOC_FLIT_WIDTH-1:0] noc_out_flit,
+    output [N               -1:0] noc_out_last,
+    output [N               -1:0] noc_out_valid,
+    input  [N               -1:0] noc_out_ready,
 
-    input  [NoC_FLIT_WIDTH-1:0] noc_in_flit,
-    input                       noc_in_valid,
-    output                      noc_in_ready,
+    input  [N*NOC_FLIT_WIDTH-1:0] noc_in_flit,
+    input  [N               -1:0] noc_in_last,
+    input  [N               -1:0] noc_in_valid,
+    output [N               -1:0] noc_in_ready,
 
-    input  [               5:0] wb_addr_i,
-    input                       wb_we_i,
-    input                       wb_cyc_i,
-    input                       wb_stb_i,
-    input  [NoC_DATA_WIDTH-1:0] wb_dat_i,
-    output [NoC_DATA_WIDTH-1:0] wb_dat_o,
-    output                      wb_ack_o,
+    input  [                31:0] wb_adr_i,
+    input                         wb_we_i,
+    input                         wb_cyc_i,
+    input                         wb_stb_i,
+    input  [                31:0] wb_dat_i,
+    output [                31:0] wb_dat_o,
+    output                        wb_ack_o,
+    output                        wb_err_o,
 
-    output                      irq
+    output                        irq
   );
 
   //////////////////////////////////////////////////////////////////
@@ -77,50 +77,55 @@ module mpsoc_mpi_wb #(
   //
 
   // Bus side (generic)
-  wire [               5:0] bus_addr;
-  wire                      bus_we;
-  wire                      bus_en;
-  wire [NoC_DATA_WIDTH-1:0] bus_data_in;
-  wire [NoC_DATA_WIDTH-1:0] bus_data_out;
-  wire                      bus_ack;
+  wire [31:0]                  bus_addr;
+  wire                         bus_we;
+  wire                         bus_en;
+  wire [31:0]                  bus_data_in;
+  wire [31:0]                  bus_data_out;
+  wire                         bus_ack;
+  wire                         bus_err;
 
   //////////////////////////////////////////////////////////////////
   //
   // Module body
   //
 
-  assign bus_addr    = wb_addr_i;
+  assign bus_addr    = wb_adr_i;
   assign bus_we      = wb_we_i;
   assign bus_en      = wb_cyc_i & wb_stb_i;
   assign bus_data_in = wb_dat_i;
   assign wb_dat_o    = bus_data_out;
   assign wb_ack_o    = bus_ack;
+  assign wb_err_o    = bus_err;
 
-  mpsoc_mpi #(
-    .NoC_DATA_WIDTH ( NoC_DATA_WIDTH ),
-    .NoC_TYPE_WIDTH ( NoC_TYPE_WIDTH ),
-    .FIFO_DEPTH     ( FIFO_DEPTH     )
+  mpbuffer #(
+    .NOC_FLIT_WIDTH (NOC_FLIT_WIDTH),
+    .SIZE           (SIZE),
+    .N              (N)
   )
-  mpi (
-    .clk                     (clk),
-    .rst                     (rst),
+  u_buffer (
+    .clk (clk),
+    .rst (rst),
 
-    // Outputs
-    .noc_out_flit            (noc_out_flit[NoC_FLIT_WIDTH-1:0]),
-    .noc_out_valid           (noc_out_valid),
-    .noc_in_ready            (noc_in_ready),
-    // Inputs
-    .noc_out_ready           (noc_out_ready),
-    .noc_in_flit             (noc_in_flit[NoC_FLIT_WIDTH-1:0]),
-    .noc_in_valid            (noc_in_valid),
+    .noc_out_flit  (noc_out_flit),
+    .noc_out_last  (noc_out_last),
+    .noc_out_valid (noc_out_valid),
+    .noc_out_ready (noc_out_ready),
 
-    .bus_data_out            (bus_data_out[NoC_DATA_WIDTH-1:0]),
-    .bus_ack                 (bus_ack),
-    .irq                     (irq),
+    .noc_in_flit  (noc_in_flit),
+    .noc_in_last  (noc_in_last),
+    .noc_in_valid (noc_in_valid),
+    .noc_in_ready (noc_in_ready),
 
-    .bus_addr                (bus_addr[5:0]),
-    .bus_we                  (bus_we),
-    .bus_en                  (bus_en),
-    .bus_data_in             (bus_data_in[NoC_DATA_WIDTH-1:0])
+    // Bus side (generic)
+    .bus_addr     (bus_addr),
+    .bus_we       (bus_we),
+    .bus_en       (bus_en),
+    .bus_data_in  (bus_data_in),
+    .bus_data_out (bus_data_out),
+    .bus_ack      (bus_ack),
+    .bus_err      (bus_err),
+
+    .irq (irq)
   );
-endmodule // mpsoc_mpi_wb
+endmodule

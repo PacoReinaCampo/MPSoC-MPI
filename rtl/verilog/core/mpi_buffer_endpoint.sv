@@ -10,7 +10,8 @@
 //                                                                            //
 //                                                                            //
 //              MPSoC-RISCV CPU                                               //
-//              Message Passing Interface                                     //
+//              Direct Access Memory Interface                                //
+//              WishBone Bus Interface                                        //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -39,59 +40,86 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-/*
- *
- *                   +-> Input path <- packet buffer <-- Ingress
- *                   |    * raise interrupt (!empty)
- * Bus interface --> +    * read size flits from packet buffer
- *                   |
- *                   +-> Output path -> packet buffer --> Egress
- *                        * set size
- *                        * write flits to packet buffer
- *
- * Ingress <---+----- NoC
- *             |
- *       Handle control message
- *             |
- *  Egress ----+----> NoC
- */
-
-module mpsoc_mpi #(
-  parameter NoC_DATA_WIDTH       = 32,
-  parameter NoC_TYPE_WIDTH       = 2,
-  parameter PACKET_CLASS_CONTROL = 3'b111,
-  parameter FIFO_DEPTH           = 16,
-  parameter NoC_FLIT_WIDTH       = 34,
-  parameter SIZE_WIDTH           = 5
+module mpbuffer_endpoint #(
+  parameter NOC_FLIT_WIDTH = 32,
+  parameter SIZE           = 16
 )
   (
-    input clk,
-    input rst,
+    input                           clk,
+    input                           rst,
 
-    // NoC interface
-    output reg [NoC_FLIT_WIDTH-1:0] noc_out_flit,
+    output reg [NOC_FLIT_WIDTH-1:0] noc_out_flit,
+    output reg                      noc_out_last,
     output reg                      noc_out_valid,
     input                           noc_out_ready,
 
-    input      [NoC_FLIT_WIDTH-1:0] noc_in_flit,
+    input      [NOC_FLIT_WIDTH-1:0] noc_in_flit,
+    input                           noc_in_last,
     input                           noc_in_valid,
     output reg                      noc_in_ready,
 
     // Bus side (generic)
-    input      [               5:0] bus_addr,
+    input      [31:0]               bus_addr,
     input                           bus_we,
     input                           bus_en,
-    input      [NoC_DATA_WIDTH-1:0] bus_data_in,
-    output reg [NoC_DATA_WIDTH-1:0] bus_data_out,
+    input      [31:0]               bus_data_in,
+    output reg [31:0]               bus_data_out,
     output reg                      bus_ack,
+    output reg                      bus_err,
 
     output                          irq
   );
 
+  /*
+   *
+   *                   +-> Input path <- packet buffer <-- Ingress
+   *                   |    * raise interrupt (!empty)
+   * Bus interface --> +    * read size flits from packet buffer
+   *                   |
+   *                   +-> Output path -> packet buffer --> Egress
+   *                        * set size
+   *                        * write flits to packet buffer
+   *
+   * Ingress <---+----- NoC
+   *             |
+   *       Handle control message
+   *             |
+   *  Egress ----+----> NoC
+   */
+
   //////////////////////////////////////////////////////////////////
   //
-  // Variables
+  // Functions
   //
+
+  function automatic integer clog2;
+    input integer value;
+    begin
+      value = value - 1;
+      for (clog2 = 0; value > 0; clog2 = clog2 + 1) begin
+        value = value >> 1;
+      end
+    end
+  endfunction
+
+  function automatic integer clog2_width;
+    input integer value;
+    begin
+      if (value == 1) begin
+        clog2_width = 1;
+      end
+      else begin
+        clog2_width = clog2(value);
+      end
+    end
+  endfunction
+
+  //////////////////////////////////////////////////////////////////
+  //
+  // Constants
+  //
+
+  localparam SIZE_WIDTH = clog2_width(SIZE+1);
 
   // States of output state machine
   localparam OUT_IDLE    = 0;
@@ -100,7 +128,6 @@ module mpsoc_mpi #(
 
   // States of input state machine
   localparam IN_IDLE = 0;
-
   localparam IN_FLIT = 1;
 
   //////////////////////////////////////////////////////////////////
@@ -109,14 +136,15 @@ module mpsoc_mpi #(
   //
 
   // Connect from the outgoing state machine to the packet buffer
-  wire                      out_ready;
+  wire [NOC_FLIT_WIDTH-1:0] out_flit;
+  reg                       out_last;
   reg                       out_valid;
-  wire [NoC_FLIT_WIDTH-1:0] out_flit;
-  reg  [               1:0] out_type;
+  wire                      out_ready;
 
-  reg                       in_ready;
+  wire [NOC_FLIT_WIDTH-1:0] in_flit;
+  wire                      in_last;
   wire                      in_valid;
-  wire [NoC_FLIT_WIDTH-1:0] in_flit;
+  reg                       in_ready;
 
   reg                       enabled;
   reg                       nxt_enabled;
@@ -127,58 +155,34 @@ module mpsoc_mpi #(
   reg        if_fifo_out_en;
   reg        if_fifo_out_ack;
 
-  /*
-    * Simple writes to 0x0
-    *  * Start transfer and set size S
-    *  * For S flits: Write flit
-    */
-
   // State register
-  reg [                1:0] state_out;
-  reg [                1:0] nxt_state_out;
+  reg [1:0]                  state_out;
+  reg [1:0]                  nxt_state_out;
 
-  reg                       state_in;
-  reg                       nxt_state_in;
+  reg                        state_in;
+  reg                        nxt_state_in;
 
   // Size register that is also used to count down the remaining
   // flits to be send out
-  reg [SIZE_WIDTH     -1:0] size_out;
-  reg [SIZE_WIDTH     -1:0] nxt_size_out;
+  reg [SIZE_WIDTH-1:0]       size_out;
+  reg [SIZE_WIDTH-1:0]       nxt_size_out;
 
-  wire [SIZE_WIDTH    -1:0] size_in;
+  wire [SIZE_WIDTH-1:0]      size_in;
 
-  reg  [NoC_FLIT_WIDTH-1:0] ingress_flit;
-  reg                       ingress_valid;
-  wire                      ingress_ready;
+  reg [NOC_FLIT_WIDTH-1:0] ingress_flit;
+  reg                      ingress_last;
+  reg                      ingress_valid;
+  wire                     ingress_ready;
 
-  wire [NoC_FLIT_WIDTH-1:0] egress_flit;
+  wire [NOC_FLIT_WIDTH-1:0] egress_flit;
+  wire                      egress_last;
   wire                      egress_valid;
   reg                       egress_ready;
 
-  reg [NoC_FLIT_WIDTH -1:0] control_flit;
-  reg [NoC_FLIT_WIDTH -1:0] nxt_control_flit;
+  reg [NOC_FLIT_WIDTH-1:0]  control_flit;
+  reg [NOC_FLIT_WIDTH-1:0]  nxt_control_flit;
   reg                       control_pending;
   reg                       nxt_control_pending;
-
-  //////////////////////////////////////////////////////////////////
-  //
-  // Module body
-  //
-
-  assign irq = in_valid;
-
-  // If the output type width is larger than 2 (e.g. multicast support)
-  // the respective bits are set to zero.
-  // Concatenate the type and directly forward the bus input to the
-  // packet buffer
-  generate
-    if (NoC_TYPE_WIDTH>2) begin
-      assign out_flit = { {{NoC_TYPE_WIDTH-2}{1'b0}}, out_type, bus_data_in };
-    end
-    else begin
-      assign out_flit = { out_type, bus_data_in };
-    end
-  endgenerate
 
    /*
     * +------+---+------------------------+
@@ -193,8 +197,18 @@ module mpsoc_mpi #(
     *
     */
 
+  //////////////////////////////////////////////////////////////////
+  //
+  // Module body
+  //
+
+  assign irq = in_valid;
+
+  assign out_flit = bus_data_in;
+
   always @(*) begin
     bus_ack = 0;
+    bus_err = 0;
     bus_data_out = 32'hx;
     nxt_enabled = enabled;
 
@@ -205,8 +219,8 @@ module mpsoc_mpi #(
       if (bus_addr[5:2] == 4'h0) begin
         if (!bus_we) begin
           if_fifo_in_en = 1'b1;
-          bus_ack = if_fifo_in_ack;
-          bus_data_out = if_fifo_in_data;
+          bus_ack       = if_fifo_in_ack;
+          bus_data_out  = if_fifo_in_data;
         end
         else begin
           if_fifo_out_en = 1'b1;
@@ -222,6 +236,9 @@ module mpsoc_mpi #(
           bus_data_out = {30'h0, noc_out_valid, in_valid};
         end
       end
+      else begin
+        bus_err = 1'b1;
+      end
     end
   end
 
@@ -234,27 +251,33 @@ module mpsoc_mpi #(
     end
   end
 
+   /*
+    * Simple writes to 0x0
+    *  * Start transfer and set size S
+    *  * For S flits: Write flit
+    */
+
   // Combinational part of input state machine
   always @(*) begin
-    in_ready = 1'b0;
-    if_fifo_in_ack = 1'b0;
+    in_ready        = 1'b0;
+    if_fifo_in_ack  = 1'b0;
     if_fifo_in_data = 32'hx;
-    nxt_state_in = state_in;
+    nxt_state_in    = state_in;
 
     case(state_in)
       IN_IDLE: begin
         if (if_fifo_in_en) begin
           if (in_valid) begin
-            if_fifo_in_data = size_in;
-            if_fifo_in_ack = 1'b1;
+            if_fifo_in_data = {{32-SIZE_WIDTH{1'b0}},size_in};
+            if_fifo_in_ack  = 1'b1;
             if (size_in!=0) begin
               nxt_state_in = IN_FLIT;
             end
           end
           else begin
             if_fifo_in_data = 0;
-            if_fifo_in_ack = 1'b1;
-            nxt_state_in = IN_IDLE;
+            if_fifo_in_ack  = 1'b1;
+            nxt_state_in    = IN_IDLE;
           end
         end
         else begin
@@ -264,8 +287,8 @@ module mpsoc_mpi #(
       IN_FLIT: begin
         if (if_fifo_in_en) begin
           if_fifo_in_data = in_flit[31:0];
-          in_ready = 1'b1;
-          if_fifo_in_ack = 1'b1;
+          in_ready        = 1'b1;
+          if_fifo_in_ack  = 1'b1;
           if (size_in==1) begin
             nxt_state_in = IN_IDLE;
           end
@@ -276,7 +299,7 @@ module mpsoc_mpi #(
         else begin
           nxt_state_in = IN_FLIT;
         end
-      end // case: IN_FLIT
+      end
       default: begin
         nxt_state_in = IN_IDLE;
       end
@@ -286,10 +309,10 @@ module mpsoc_mpi #(
   // Combinational part of output state machine
   always @(*) begin
     // default values
-    out_valid       = 1'b0;      // no flit
+    out_valid       = 1'b0; // no flit
     nxt_size_out    = size_out;  // keep size
-    if_fifo_out_ack = 1'b0;      // don't acknowledge
-    out_type        = 2'bxx;     // Default is undefined
+    if_fifo_out_ack = 1'b0;   // don't acknowledge
+    out_last        = 1'bx; // Default is undefined
 
     case(state_out)
       OUT_IDLE: begin
@@ -317,13 +340,10 @@ module mpsoc_mpi #(
           // be output
           out_valid = 1'b1;
 
-          // The type is either SINGLE (size==1) or HEADER
           if (size_out==1) begin
-            out_type = 2'b11;
+            out_last = 1'b1;
           end
-          else begin
-            out_type = 2'b01;
-          end
+
           if (out_ready) begin
             // When the output packet buffer is ready this cycle
             // the flit has been stored in the packet buffer
@@ -343,7 +363,7 @@ module mpsoc_mpi #(
               nxt_state_out = OUT_PAYLOAD;
             end
           end
-          else begin // if (out_ready)
+          else begin
             // If the packet buffer is not ready, we simply hold
             // the data and valid and wait another cycle for the
             // packet buffer to become ready
@@ -366,13 +386,10 @@ module mpsoc_mpi #(
           // be output
           out_valid = 1'b1;
 
-          // The type is either LAST (size==1) or PAYLOAD
           if (size_out==1) begin
-            out_type = 2'b10;
+            out_last = 1'b1;
           end
-          else begin
-            out_type = 2'b00;
-          end
+
           if (out_ready) begin
             // When the output packet buffer is ready this cycle
             // the flit has been stored in the packet buffer
@@ -392,7 +409,7 @@ module mpsoc_mpi #(
               nxt_state_out = OUT_PAYLOAD;
             end
           end
-          else begin // if (out_ready)
+          else begin
             // If the packet buffer is not ready, we simply hold
             // the data and valid and wait another cycle for the
             // packet buffer to become ready
@@ -416,115 +433,114 @@ module mpsoc_mpi #(
     if (rst) begin
       state_out <= OUT_IDLE; // Start in idle state
       // size does not require a reset value (not used before set)
-      state_in <= IN_IDLE;
+      state_in  <= IN_IDLE;
     end
     else begin
       // Register combinational values
       state_out <= nxt_state_out;
-      size_out <= nxt_size_out;
-      state_in <= nxt_state_in;
+      size_out  <= nxt_size_out;
+      state_in  <= nxt_state_in;
     end
   end
 
   always @(*) begin
-    noc_in_ready = !control_pending & ingress_ready;
-    ingress_flit = noc_in_flit;
+    noc_in_ready        = !control_pending & ingress_ready;
+    ingress_flit        = noc_in_flit;
     nxt_control_pending = control_pending;
-    nxt_control_flit = control_flit;
+    nxt_control_flit    = control_flit;
 
     // Ingress part
-    if (noc_in_valid & !control_pending) begin
-      if ((noc_in_flit[33:32] == 2'b11) &&
-          (noc_in_flit[26:24] == 3'b111 &&
-           !noc_in_flit[0])) begin
-        nxt_control_pending = 1'b1;
-        nxt_control_flit[33:32] = 2'b11;
-        nxt_control_flit[31:27] = noc_in_flit[23:19];
-        nxt_control_flit[26:24] = 3'b111;
-        nxt_control_flit[23:19] = noc_in_flit[31:27];
-        nxt_control_flit[18:2] = 17'h0;
-        nxt_control_flit[1] = enabled;
-        nxt_control_flit[0] = 1'b1;
-        ingress_valid = 1'b0;
-      end
-      else begin
-        ingress_valid = noc_in_valid;
-      end
-    end
-    else begin
-      ingress_valid = noc_in_valid;
+    ingress_valid = noc_in_valid;
+    ingress_last  = noc_in_last;
+    if ((noc_in_valid & !control_pending) && (noc_in_flit[26:24] == 3'b111) && !noc_in_flit[0]) begin
+      nxt_control_pending     = 1'b1;
+      nxt_control_flit[31:27] = noc_in_flit[23:19];
+      nxt_control_flit[26:24] = 3'b111;
+      nxt_control_flit[23:19] = noc_in_flit[31:27];
+      nxt_control_flit[18:2]  = noc_in_flit[18:2];
+      nxt_control_flit[1]     = enabled;
+      nxt_control_flit[0]     = 1'b1;
+      ingress_valid           = 1'b0;
+      ingress_last            = 1'b1;
     end
 
     // Egress part
-    if (egress_valid & ~egress_flit[33]) begin
-      egress_ready = noc_out_ready;
+    if (egress_valid & !egress_last) begin
+      egress_ready  = noc_out_ready;
       noc_out_valid = egress_valid;
-      noc_out_flit = egress_flit;
+      noc_out_flit  = egress_flit;
+      noc_out_last  = egress_last;
     end
     else if (control_pending) begin
-      egress_ready = 1'b0;
+      egress_ready  = 1'b0;
       noc_out_valid = 1'b1;
-      noc_out_flit = control_flit;
+      noc_out_flit  = control_flit;
+      noc_out_last  = 1'b1;
       if (noc_out_ready) begin
         nxt_control_pending = 1'b0;
       end
     end
     else begin
-      egress_ready = noc_out_ready;
+      egress_ready  = noc_out_ready;
       noc_out_valid = egress_valid;
-      noc_out_flit = egress_flit;
+      noc_out_last  = egress_last;
+      noc_out_flit  = egress_flit;
     end
   end
 
   always @(posedge clk) begin
     if (rst) begin
       control_pending <= 1'b0;
-      control_flit <= 34'hx;
-    end
+      control_flit    <= {NOC_FLIT_WIDTH{1'hx}};
+    end 
     else begin
       control_pending <= nxt_control_pending;
-      control_flit <= nxt_control_flit;
+      control_flit    <= nxt_control_flit;
     end
   end
 
   // The output packet buffer
-  mpsoc_packet_buffer #(
-    .FIFO_DEPTH (FIFO_DEPTH)
+  noc_buffer #(
+    .DEPTH      (SIZE),
+    .FLIT_WIDTH (NOC_FLIT_WIDTH),
+    .FULLPACKET (1)
   )
-  u_packetbuffer_out(
+  u_packetbuffer_out (
     .clk              (clk),
     .rst              (rst),
 
-    // Inputs
-    .in_flit          (out_flit[NoC_FLIT_WIDTH-1:0]),
-    .in_valid         (out_valid),
-    .out_ready        (egress_ready),
-
-    // Outputs
     .in_ready         (out_ready),
-    .out_flit         (egress_flit[NoC_FLIT_WIDTH-1:0]),
+    .in_flit          (out_flit),
+    .in_last          (out_last),
+    .in_valid         (out_valid),
+
+    .packet_size      (),
+
+    .out_flit         (egress_flit),
+    .out_last         (egress_last),
     .out_valid        (egress_valid),
-
-    .out_size         ()
+    .out_ready        (egress_ready)
   );
 
-  mpsoc_packet_buffer #(
-    .FIFO_DEPTH (FIFO_DEPTH)
+  // The input packet buffer
+  noc_buffer #(
+    .DEPTH      (SIZE),
+    .FLIT_WIDTH (NOC_FLIT_WIDTH),
+    .FULLPACKET (1)
   )
-  u_packetbuffer_in (
-    .clk              (clk),
-    .rst              (rst),
+  u_packetbuffer_in(
+    .clk               (clk),
+    .rst               (rst),
 
-    // Inputs
-    .in_flit          (ingress_flit[NoC_FLIT_WIDTH-1:0]),
-    .in_valid         (ingress_valid),
-    .out_ready        (in_ready),
+    .in_ready          (ingress_ready),
+    .in_flit           (ingress_flit),
+    .in_last           (ingress_last),
+    .in_valid          (ingress_valid),
 
-    // Outputs
-    .in_ready         (ingress_ready),
-    .out_flit         (in_flit[NoC_FLIT_WIDTH-1:0]),
-    .out_valid        (in_valid),
-
-    .out_size         (size_in)
+    .packet_size       (size_in),
+    .out_flit          (in_flit),
+    .out_last          (in_last),
+    .out_valid         (in_valid),
+    .out_ready         (in_ready)
   );
-endmodule // mpsoc_mpi
+endmodule
