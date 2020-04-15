@@ -1,0 +1,7 @@
+../../../../../rtl/verilog/ahb3/ahb3/mpi_ahb3.sv
+
+../../../../../rtl/verilog/ahb3/core/mpi_buffer.sv
+../../../../../rtl/verilog/ahb3/core/mpi_buffer_endpoint.sv
+../../../../../rtl/verilog/ahb3/core/noc_buffer.sv
+
+../../../../../bench/verilog/regression/ahb3/mpsoc_mpi_testbench.sv

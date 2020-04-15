@@ -1,0 +1,6 @@
+../../../../../rtl/vhdl/wb/wb/mpsoc_mpi_wb.vhd
+
+../../../../../rtl/vhdl/wb/core/mpsoc_mpi.vhd
+../../../../../rtl/vhdl/wb/core/mpsoc_packet_buffer.vhd
+
+../../../../../bench/vhdl/regression/wb/mpsoc_mpi_testbench.vhd

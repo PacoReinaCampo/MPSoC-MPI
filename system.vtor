@@ -1,6 +1,0 @@
-rtl/verilog/ahb3/mpsoc_mpi_ahb.sv
-rtl/verilog/wb/mpsoc_mpi_wb.sv
-rtl/verilog/core/mpsoc_mpi.sv
-rtl/verilog/core/mpsoc_packet_buffer.sv
-
-bench/verilog/regression/mpsoc_mpi_testbench.sv

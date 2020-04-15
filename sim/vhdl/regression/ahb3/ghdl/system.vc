@@ -1,0 +1,6 @@
+../../../../../rtl/vhdl/ahb3/ahb3/mpsoc_mpi_ahb3.vhd
+
+../../../../../rtl/vhdl/ahb3/core/mpsoc_mpi.vhd
+../../../../../rtl/vhdl/ahb3/core/mpsoc_packet_buffer.vhd
+
+../../../../../bench/vhdl/regression/ahb3/mpsoc_mpi_testbench.vhd
