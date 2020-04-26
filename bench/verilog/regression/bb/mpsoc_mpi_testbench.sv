@@ -10,8 +10,10 @@
 //                                                                            //
 //                                                                            //
 //              MPSoC-RISCV CPU                                               //
-//              Direct Access Memory Interface                                //
-//              Wishbone Bus Interface                                        //
+//              Message Passing Interface TestBench                           //
+//              AMBA3 AHB-Lite Bus Interface                                  //
+//              WishBone Bus Interface                                        //
+//              Blackbone Bus Interface                                       //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -40,92 +42,77 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-module mpi_wb #(
-  parameter NOC_FLIT_WIDTH = 32,
-  parameter SIZE           = 16,
-  parameter N              = 1
-)
-  (
-    input                         clk,
-    input                         rst,
+module mpsoc_mpi_testbench;
 
-    output [N*NOC_FLIT_WIDTH-1:0] noc_out_flit,
-    output [N               -1:0] noc_out_last,
-    output [N               -1:0] noc_out_valid,
-    input  [N               -1:0] noc_out_ready,
-
-    input  [N*NOC_FLIT_WIDTH-1:0] noc_in_flit,
-    input  [N               -1:0] noc_in_last,
-    input  [N               -1:0] noc_in_valid,
-    output [N               -1:0] noc_in_ready,
-
-    input  [                31:0] wb_adr_i,
-    input                         wb_we_i,
-    input                         wb_cyc_i,
-    input                         wb_stb_i,
-    input  [                31:0] wb_dat_i,
-    output [                31:0] wb_dat_o,
-    output                        wb_ack_o,
-    output                        wb_err_o,
-
-    output                        irq
-  );
+  //////////////////////////////////////////////////////////////////
+  //
+  // Constants
+  //
+  parameter NOC_FLIT_WIDTH = 32;
+  parameter SIZE           = 16;
+  parameter N              = 1;
 
   //////////////////////////////////////////////////////////////////
   //
   // Variables
   //
+  logic clk;
+  logic rst;
 
-  // Bus side (generic)
-  wire [31:0]                  bus_addr;
-  wire                         bus_we;
-  wire                         bus_en;
-  wire [31:0]                  bus_data_in;
-  wire [31:0]                  bus_data_out;
-  wire                         bus_ack;
-  wire                         bus_err;
+  // BB
+  logic [N*NOC_FLIT_WIDTH-1:0] bb_noc_out_flit;
+  logic [N               -1:0] bb_noc_out_last;
+  logic [N               -1:0] bb_noc_out_valid;
+  logic [N               -1:0] bb_noc_out_ready;
+
+  logic [N*NOC_FLIT_WIDTH-1:0] bb_noc_in_flit;
+  logic [N               -1:0] bb_noc_in_last;
+  logic [N               -1:0] bb_noc_in_valid;
+  logic [N               -1:0] bb_noc_in_ready;
+
+
+  logic [                31:0] bb_addr_i;
+  logic [                31:0] bb_din_i;
+  logic                        bb_en_i;
+  logic                        bb_we_i;
+
+  logic [                31:0] bb_dout_o;
+
+  logic                        bb_irq;
 
   //////////////////////////////////////////////////////////////////
   //
-  // Module body
+  // Module Body
   //
 
-  assign bus_addr    = wb_adr_i;
-  assign bus_we      = wb_we_i;
-  assign bus_en      = wb_cyc_i & wb_stb_i;
-  assign bus_data_in = wb_dat_i;
-  assign wb_dat_o    = bus_data_out;
-  assign wb_ack_o    = bus_ack;
-  assign wb_err_o    = bus_err;
-
-  mpi_buffer #(
+  //DUT BB
+  mpi_bb #(
     .NOC_FLIT_WIDTH (NOC_FLIT_WIDTH),
     .SIZE           (SIZE),
     .N              (N)
   )
-  u_buffer (
-    .clk (clk),
-    .rst (rst),
+  mpi (
+    .clk ( clk ),
+    .rst ( rst ),
 
-    .noc_out_flit  (noc_out_flit),
-    .noc_out_last  (noc_out_last),
-    .noc_out_valid (noc_out_valid),
-    .noc_out_ready (noc_out_ready),
+    // NoC interface
+    .noc_out_flit  ( bb_noc_out_flit  ),
+    .noc_out_last  ( bb_noc_out_last  ),
+    .noc_out_valid ( bb_noc_out_valid ),
+    .noc_out_ready ( bb_noc_out_ready ),
 
-    .noc_in_flit  (noc_in_flit),
-    .noc_in_last  (noc_in_last),
-    .noc_in_valid (noc_in_valid),
-    .noc_in_ready (noc_in_ready),
+    .noc_in_flit  ( bb_noc_in_flit  ),
+    .noc_in_last  ( bb_noc_in_last  ),
+    .noc_in_valid ( bb_noc_in_valid ),
+    .noc_in_ready ( bb_noc_in_ready ),
 
-    // Bus side (generic)
-    .bus_addr     (bus_addr),
-    .bus_we       (bus_we),
-    .bus_en       (bus_en),
-    .bus_data_in  (bus_data_in),
-    .bus_data_out (bus_data_out),
-    .bus_ack      (bus_ack),
-    .bus_err      (bus_err),
+    .bb_addr_i ( bb_addr_i ),
+    .bb_din_i  ( bb_din_i  ),
+    .bb_en_i   ( bb_en_i   ),
+    .bb_we_i   ( bb_we_i   ),
 
-    .irq (irq)
+    .bb_dout_o ( bb_dout_o ),
+
+    .irq ( bb_irq )
   );
 endmodule

@@ -90,12 +90,12 @@ module mpi_bb #(
   // Module body
   //
 
-  assign bus_addr    = bb_adr_i;
-  assign bus_data_in = bb_dat_i;
+  assign bus_addr    = bb_addr_i;
+  assign bus_data_in = bb_din_i;
   assign bus_en      = bb_en_i;
   assign bus_we      = bb_we_i;
 
-  assign bb_dat_o    = bus_data_out;
+  assign bb_dout_o   = bus_data_out;
 
   assign bb_ack_o    = bus_ack;
   assign bb_err_o    = bus_err;

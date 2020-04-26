@@ -1,0 +1,7 @@
+../../../../../rtl/verilog/bb/bb/mpi_bb.sv
+
+../../../../../rtl/verilog/bb/core/mpi_buffer.sv
+../../../../../rtl/verilog/bb/core/mpi_buffer_endpoint.sv
+../../../../../rtl/verilog/bb/core/noc_buffer.sv
+
+../../../../../bench/verilog/regression/bb/mpsoc_mpi_testbench.sv
