@@ -69,13 +69,19 @@ module mpsoc_mpi_testbench;
   logic [N               -1:0] ahb_noc_in_valid;
   logic [N               -1:0] ahb_noc_in_ready;
 
-  logic [                31:0] HADDR;
-  logic                        HWRITE;
-  logic                        HMASTLOCK;
-  logic                        HSEL;
-  logic [                31:0] HRDATA;
-  logic [                31:0] HWDATA;
-  logic                        HREADY;
+  logic                        ahb3_hsel_i;
+  logic [                31:0] ahb3_haddr_i;
+  logic [                31:0] ahb3_hwdata_i;
+  logic                        ahb3_hwrite_i;
+  logic [                 2:0] ahb3_hsize_i;
+  logic [                 2:0] ahb3_hburst_i;
+  logic [                 3:0] ahb3_hprot_i;
+  logic [                 1:0] ahb3_htrans_i;
+  logic                        ahb3_hmastlock_i;
+
+  logic [                31:0] ahb3_hrdata_o;
+  logic                        ahb3_hready_o;
+  logic                        ahb3_hresp_o;
 
   logic                        ahb3_irq;
 
@@ -105,13 +111,19 @@ module mpsoc_mpi_testbench;
     .noc_in_valid ( ahb_noc_in_valid ),
     .noc_in_ready ( ahb_noc_in_ready ),
 
-    .HADDR     ( HADDR     ),
-    .HWRITE    ( HWRITE    ),
-    .HMASTLOCK ( HMASTLOCK ),
-    .HSEL      ( HSEL      ),
-    .HRDATA    ( HRDATA    ),
-    .HWDATA    ( HWDATA    ),
-    .HREADY    ( HREADY    ),
+    .ahb3_hsel_i      ( ahb3_hsel_i      ),
+    .ahb3_haddr_i     ( ahb3_haddr_i     ),
+    .ahb3_hwdata_i    ( ahb3_hwdata_i    ),
+    .ahb3_hwrite_i    ( ahb3_hwrite_i    ),
+    .ahb3_hsize_i     ( ahb3_hsize_i     ),
+    .ahb3_hburst_i    ( ahb3_hburst_i    ),
+    .ahb3_hprot_i     ( ahb3_hprot_i     ),
+    .ahb3_htrans_i    ( ahb3_htrans_i    ),
+    .ahb3_hmastlock_i ( ahb3_hmastlock_i ),
+
+    .ahb3_hrdata_o ( ahb3_hrdata_o ),
+    .ahb3_hready_o ( ahb3_hready_o ),
+    .ahb3_hresp_o  ( ahb3_hresp_o  ),
 
     .irq ( ahb3_irq )
   );
