@@ -10,10 +10,10 @@
 //                                                                            //
 //                                                                            //
 //              MPSoC-RISCV CPU                                               //
-//              Network on Chip                                               //
+//              Message Passing Interface                                     //
 //              AMBA3 AHB-Lite Bus Interface                                  //
 //              Wishbone Bus Interface                                        //
-//              Blackbone Bus Interface                                        //
+//              Blackbone Bus Interface                                       //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 

@@ -10,7 +10,7 @@
 //                                                                            //
 //                                                                            //
 //              MPSoC-RISCV CPU                                               //
-//              Master Slave Interface                                        //
+//              Bus Functional Model                                          //
 //              Wishbone Bus Interface                                        //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
@@ -40,50 +40,94 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-module vlog_tb_utils;
-  //////////////////////////////////////////////////////////////////
-  //
-  // Constants
-  //
-  parameter MAX_STRING_LEN = 128;
-  localparam CHAR_WIDTH = 8;
+module vlog_tap_generator #(
+  parameter TAPFILE          = "",
+  parameter NUM_TESTS        = 0,
+  parameter MAX_STRING_LEN   = 80,
+  parameter MAX_FILENAME_LEN = 1024
+);
 
   //////////////////////////////////////////////////////////////////
   //
   // Variables
   //
-  reg [63:0] timeout;
-  reg [63:0] heartbeat;
+  integer f; //File handle
+  integer cur_tc = 0; //Current testcase index
+  integer numtests = NUM_TESTS; //Total number of testcases
 
-  reg [MAX_STRING_LEN*CHAR_WIDTH-1:0] testcase;
+  reg [MAX_FILENAME_LEN*8-1:0] tapfile; //TAP file to write
+
+  //////////////////////////////////////////////////////////////////
+  //
+  // Tasks
+  //
+  task set_file;
+    input [MAX_FILENAME_LEN*8-1:0] f;
+    begin
+      if (cur_tc)
+        $display("Error: Can't change file. Already started writing to %0s", tapfile);
+      else
+        tapfile = f;
+    end
+  endtask
+
+  task set_numtests;
+    input integer i;
+    begin
+      if (cur_tc)
+        $display("Error: Can't change number of tests. Already started writing to %0s", tapfile);
+      else
+        numtests = i;
+    end
+  endtask
+
+  task write_tc;
+    input [MAX_STRING_LEN*8-1:0] description;
+
+    input ok_i;
+    begin
+      if (f === 32'dx) begin
+        if(tapfile == 0)
+          $display("No TAP file specified");
+        else if (numtests == 0)
+          $display("Number of tests must be specified");
+        else begin
+          f = $fopen(tapfile,"w");
+          $fwrite(f, "1..%0d\n", numtests);
+        end
+      end
+
+      if (f) begin
+        cur_tc=cur_tc+1;
+
+        if (!ok_i)
+          $fwrite(f, "not ");
+        $fwrite(f, "ok %0d - %0s\n", cur_tc, description);
+      end
+    end
+  endtask
+
+  task ok;
+    input [MAX_STRING_LEN*8-1:0] description;
+    begin
+      write_tc(description, 1);
+    end
+  endtask
+
+  task nok;
+    input [MAX_STRING_LEN*8-1:0] description;
+    begin
+      write_tc(description, 0);
+    end
+  endtask
 
   //////////////////////////////////////////////////////////////////
   //
   // Module Body
   //
-
-  //Force simulation stop after timeout cycles
-  initial
-    if($value$plusargs("timeout=%d", timeout)) begin
-      #timeout $display("Timeout: Forcing end of simulation");
-      $finish;
-    end
-
-  //FIXME: Add more options for VCD logging
-
   initial begin
-    if($test$plusargs("vcd")) begin
-      if($value$plusargs("testcase=%s", testcase))
-        $dumpfile({testcase,".vcd"});
-      else
-        $dumpfile("testlog.vcd");
-      $dumpvars;
-    end
+    //Grab CLI parameters and use parameters for default values
+    if(!$value$plusargs("tapfile=%s", tapfile))
+      tapfile = TAPFILE;
   end
-
-  //Heartbeat timer for simulations
-  initial begin
-    if($value$plusargs("heartbeat=%d", heartbeat))
-      forever #heartbeat $display("Heartbeat : Time=%0t", $time);
-  end
-endmodule // vlog_tb_utils
+endmodule

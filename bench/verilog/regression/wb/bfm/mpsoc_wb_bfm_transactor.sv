@@ -10,7 +10,7 @@
 //                                                                            //
 //                                                                            //
 //              MPSoC-RISCV CPU                                               //
-//              Master Slave Interface                                        //
+//              Bus Functional Model                                          //
 //              Wishbone Bus Interface                                        //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
@@ -40,7 +40,7 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-module mpsoc_msi_wb_bfm_transactor # (
+module mpsoc_wb_bfm_transactor # (
   parameter                AW                    = 32,
   parameter                DW                    = 32,
   parameter                AUTORUN               = 1,
@@ -511,7 +511,7 @@ module mpsoc_msi_wb_bfm_transactor # (
     end
   end
 
-  mpsoc_msi_wb_bfm_master #(
+  mpsoc_wb_bfm_master #(
     .DW (DW),
     .MAX_BURST_LEN           (MAX_BURST_LEN),
     .MAX_WAIT_STATES         (MAX_WAIT_STATES),

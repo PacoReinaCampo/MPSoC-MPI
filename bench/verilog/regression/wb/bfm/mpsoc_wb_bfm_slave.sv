@@ -10,7 +10,7 @@
 //                                                                            //
 //                                                                            //
 //              MPSoC-RISCV CPU                                               //
-//              Master Slave Interface                                        //
+//              Bus Functional Model                                          //
 //              Wishbone Bus Interface                                        //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
@@ -40,7 +40,7 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-module mpsoc_msi_wb_bfm_slave #(
+module mpsoc_wb_bfm_slave #(
   parameter DW = 32,
   parameter AW = 32,
   parameter DEBUG = 0
@@ -67,7 +67,7 @@ module mpsoc_msi_wb_bfm_slave #(
   // Constants
   //
 
-  `include "mpsoc_bfm_wb_pkg.v"
+  `include "mpsoc_bfm_wb_pkg.sv"
 
   localparam TP = 1;
 

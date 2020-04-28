@@ -13,9 +13,8 @@
 --                                                                            //
 --                                                                            //
 --              MPSoC-RISCV CPU                                               //
---              Message Passing Interface TestBench                           //
---              AMBA3 AHB-Lite Bus Interface                                  //
---              WishBone Bus Interface                                        //
+--              Message Passing Interface                                     //
+--              Wishbone Bus Interface                                        //
 --                                                                            //
 --//////////////////////////////////////////////////////////////////////////////
 

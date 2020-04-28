@@ -10,7 +10,7 @@
 //                                                                            //
 //                                                                            //
 //              MPSoC-RISCV CPU                                               //
-//              Master Slave Interface                                        //
+//              Bus Functional Model                                          //
 //              Wishbone Bus Interface                                        //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
@@ -40,7 +40,7 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-module mpsoc_msi_wb_bfm_memory #(
+module mpsoc_wb_bfm_memory #(
   //Wishbone parameters
   parameter DW = 32,
   parameter AW = 32,
@@ -75,7 +75,7 @@ module mpsoc_msi_wb_bfm_memory #(
   // Constants
   //
 
-  `include "mpsoc_bfm_wb_pkg.v"
+  `include "mpsoc_bfm_wb_pkg.sv"
 
   localparam bytes_per_dw = (DW/8);
   localparam mem_words = (MEM_SIZE_BYTES/bytes_per_dw);
@@ -105,7 +105,7 @@ module mpsoc_msi_wb_bfm_memory #(
   //
   // Module Body
   //
-  mpsoc_msi_wb_bfm_slave #(
+  mpsoc_wb_bfm_slave #(
     .AW    (AW),
     .DW    (DW),
     .DEBUG (DEBUG)

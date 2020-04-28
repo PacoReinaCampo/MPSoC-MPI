@@ -10,7 +10,7 @@
 //                                                                            //
 //                                                                            //
 //              MPSoC-RISCV CPU                                               //
-//              Network on Chip                                               //
+//              Message Passing Interface                                     //
 //              AMBA3 AHB-Lite Bus Interface                                  //
 //              Wishbone Bus Interface                                        //
 //              Blackbone Bus Interface                                       //
@@ -92,7 +92,7 @@ module mpi_buffer #(
   //
 
   generate
-    for (n = 0; n <= N; n++) begin
+    for (n = 0; n <= N; n=n+1) begin
       assign bus_sel_mod[n] = (bus_addr[19:13] == n);
     end
   endgenerate
@@ -114,7 +114,7 @@ module mpi_buffer #(
   assign bus_data_mod[0] = N;
 
   generate
-    for (n = 0; n < N; n++) begin
+    for (n = 0; n < N; n=n+1) begin
       mpi_buffer_endpoint #(
        .NOC_FLIT_WIDTH (NOC_FLIT_WIDTH),
        .SIZE           (SIZE)

@@ -10,7 +10,7 @@
 //                                                                            //
 //                                                                            //
 //              MPSoC-RISCV CPU                                               //
-//              Master Slave Interface                                        //
+//              Bus Functional Model                                          //
 //              Wishbone Bus Interface                                        //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
@@ -84,7 +84,7 @@ module wb_bfm_tb;
   always #5 wb_clk <= ~wb_clk;
   initial  #100 wb_rst <= 0;
 
-  mpsoc_msi_wb_bfm_transactor #(
+  mpsoc_wb_bfm_transactor #(
     .MEM_HIGH (32'h00007fff),
     .AUTORUN (0),
     .VERBOSE (0)
@@ -107,7 +107,7 @@ module wb_bfm_tb;
     .done     (done)
   );
 
-  mpsoc_msi_wb_bfm_memory #(
+  mpsoc_wb_bfm_memory #(
     .DEBUG (0)
   )
   wb_mem_model (
