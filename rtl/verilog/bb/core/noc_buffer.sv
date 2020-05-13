@@ -65,7 +65,7 @@ module noc_buffer #(
     output                        out_valid,
     input                         out_ready,
 
-    output     [AW:0]             packet_size
+    output     [AW          :0]   packet_size
   );
 
   //////////////////////////////////////////////////////////////////
@@ -75,7 +75,7 @@ module noc_buffer #(
 
   reg [AW-1:0]   wr_addr;
   reg [AW-1:0]   rd_addr;
-  reg [  AW:0]   rd_count;
+  reg [AW  :0]   rd_count;
   wire           fifo_read;
   wire           fifo_write;
   wire           read_ram;
