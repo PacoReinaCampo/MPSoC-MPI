@@ -8,6 +8,11 @@ rm -rf sim/vhdl/regression/ahb3/msim/transcript
 rm -rf sim/vhdl/regression/bb/msim/transcript
 rm -rf sim/vhdl/regression/wb/msim/transcript
 
+rm -rf sim/verilog/uvm/ahb3/msim/transcript
+rm -rf sim/verilog/uvm/apb4/msim/transcript
+rm -rf sim/verilog/uvm/axi4/msim/transcript
+rm -rf sim/verilog/uvm/wb/msim/transcript
+
 rm -rf sim/mixed/regression/ahb3/msim/work
 rm -rf sim/mixed/regression/bb/msim/work
 rm -rf sim/mixed/regression/wb/msim/work
@@ -17,6 +22,11 @@ rm -rf sim/verilog/regression/wb/msim/work
 rm -rf sim/vhdl/regression/ahb3/msim/work
 rm -rf sim/vhdl/regression/bb/msim/work
 rm -rf sim/vhdl/regression/wb/msim/work
+
+rm -rf sim/verilog/uvm/ahb3/msim/work
+rm -rf sim/verilog/uvm/apb4/msim/work
+rm -rf sim/verilog/uvm/axi4/msim/work
+rm -rf sim/verilog/uvm/wb/msim/work
 
 rm -rf sim/verilog/regression/ahb3/iverilog/system.vvp
 rm -rf sim/verilog/regression/bb/iverilog/system.vvp
