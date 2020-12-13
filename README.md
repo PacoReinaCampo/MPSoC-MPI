@@ -321,6 +321,42 @@ A Message Passing Interface (MPI) uses an object model to distinguish the genera
 
 #### 2.1.1.1. Organization
 
+#### 2.1.1.2. Pipeline
+
+### 2.1.2. Interface
+
+#### 2.1.2.1. Constants
+
+#### 2.1.2.2. Signals
+
+### 2.1.3. Registers
+
+### 2.1.4. Interruptions
+
+## 2.2. Message Passing Interface for a System on Chip
+
+### 2.2.1. Functionality
+
+#### 2.2.1.1. Organization
+
+#### 2.2.1.2. Pipeline
+
+### 2.2.2. Interface
+
+#### 2.2.2.1. Constants
+
+#### 2.2.2.2. Signals
+
+### 2.2.3. Registers
+
+### 2.2.4. Interruptions
+
+## 2.3. Message Passing Interface for a Multi-Processor System on Chip
+
+### 2.3.1. Functionality
+
+#### 2.3.1.1. Organization
+
 | Core                       | Module description                           |
 | -------------------------- | -------------------------------------------- |
 | `mpi_ahb3`                 | Message Passing Interface for AMBA3 AHB-Lite |
@@ -342,37 +378,13 @@ A Message Passing Interface (MPI) uses an object model to distinguish the genera
 | `.....mpi_buffer_endpoint` | MPI Buffer Endpoint                     |
 | `.......noc_buffer`        | Network on Chip Buffer                  |
 
-#### 2.1.1.2. Parameters
-
-### 2.1.2. Interface
-
-### 2.1.3. Registers
-
-### 2.1.4. Interruptions
-
-## 2.2. Message Passing Interface for a System on Chip
-
-### 2.2.1. Functionality
-
-#### 2.2.1.1. Organization
-
-#### 2.2.1.2. Parameters
-
-### 2.2.2. Interface
-
-### 2.2.3. Registers
-
-### 2.2.4. Interruptions
-
-## 2.3. Message Passing Interface for a Multi-Processor System on Chip
-
-### 2.3.1. Functionality
-
-#### 2.3.1.1. Organization
-
-#### 2.3.1.2. Parameters
+#### 2.3.1.2. Pipeline
 
 ### 2.3.2. Interface
+
+#### 2.3.2.1. Constants
+
+#### 2.3.2.2. Signals
 
 ### 2.3.3. Registers
 
