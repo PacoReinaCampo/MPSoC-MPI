@@ -319,9 +319,9 @@ A Message Passing Interface (MPI) uses an object model to distinguish the genera
 
 ### 2.1.1. Functionality
 
-#### 2.1.1.1. Organization
+#### 2.1.1.1. Structure
 
-#### 2.1.1.2. Pipeline
+#### 2.1.1.2. Behavior
 
 ### 2.1.2. Interface
 
@@ -337,9 +337,9 @@ A Message Passing Interface (MPI) uses an object model to distinguish the genera
 
 ### 2.2.1. Functionality
 
-#### 2.2.1.1. Organization
+#### 2.2.1.1. Structure
 
-#### 2.2.1.2. Pipeline
+#### 2.2.1.2. Behavior
 
 ### 2.2.2. Interface
 
@@ -355,7 +355,7 @@ A Message Passing Interface (MPI) uses an object model to distinguish the genera
 
 ### 2.3.1. Functionality
 
-#### 2.3.1.1. Organization
+#### 2.3.1.1. Structure
 
 | Core                       | Module description                           |
 | -------------------------- | -------------------------------------------- |
@@ -378,7 +378,7 @@ A Message Passing Interface (MPI) uses an object model to distinguish the genera
 | `.....mpi_buffer_endpoint` | MPI Buffer Endpoint                     |
 | `.......noc_buffer`        | Network on Chip Buffer                  |
 
-#### 2.3.1.2. Pipeline
+#### 2.3.1.2. Behavior
 
 ### 2.3.2. Interface
 
