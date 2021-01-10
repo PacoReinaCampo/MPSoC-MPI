@@ -135,7 +135,6 @@ architecture RTL of mpsoc_packet_buffer is
   signal in_is_last   : std_logic;
   signal valid_flits  : std_logic_vector(FIFO_DEPTH-1 downto 0);
 
-  signal i     : std_logic_vector(SIZE_WIDTH-1 downto 0);
   signal s     : std_logic_vector(SIZE_WIDTH-1 downto 0);
   signal found : std_logic;
 
