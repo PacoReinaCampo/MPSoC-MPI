@@ -6,3 +6,6 @@ build:
 
 simulate:
 	vsim -c -do run.do work.wb_mpi_tb
+
+clean:
+	rm -rf work transcript
