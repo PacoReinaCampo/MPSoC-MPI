@@ -4,6 +4,6 @@
 ../../../../../../rtl/verilog/wb/core/mpi_buffer_endpoint.sv
 ../../../../../../rtl/verilog/wb/core/noc_buffer.sv
 
-../../../../../../bench/verilog/tests/core/wb/mpsoc_mpi_testbench.sv
+../../../../../../bench/verilog/tests/core/wb/main/mpsoc_mpi_testbench.sv
 
 
