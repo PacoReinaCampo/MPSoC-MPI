@@ -1,0 +1,12 @@
+../../../../../../bench/verilog/tests/core/wb/bfm/mpsoc_wb_bfm_master.sv
+../../../../../../bench/verilog/tests/core/wb/bfm/mpsoc_wb_bfm_memory.sv
+../../../../../../bench/verilog/tests/core/wb/bfm/mpsoc_wb_bfm_slave.sv
+../../../../../../bench/verilog/tests/core/wb/bfm/mpsoc_wb_bfm_transactor.sv
+../../../../../../bench/verilog/tests/core/wb/vlog_tap_generator.sv
+../../../../../../bench/verilog/tests/core/wb/vlog_tb_utils.sv
+../../../../../../bench/verilog/tests/core/wb/wb_mpi_tb.sv
+
+../../../../../../rtl/verilog/wb/core/mpi_buffer.sv
+../../../../../../rtl/verilog/wb/core/mpi_buffer_endpoint.sv
+../../../../../../rtl/verilog/wb/core/noc_buffer.sv
+../../../../../../rtl/verilog/wb/wb/mpi_wb.sv
