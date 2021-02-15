@@ -1,7 +1,7 @@
 @echo off
 call ../../../../../../settings64_vivado.bat
 
-xvlog -i ../../../../../../rtl/verilog/wb/pkg -prj system.prj
+xvlog -i ../../../../../../uvm/src -prj system.prj
 xelab test
 xsim -R test
 pause

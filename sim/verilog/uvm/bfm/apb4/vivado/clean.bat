@@ -1,2 +1,2 @@
-del *.jou *.log *.pb wb_bfm.tap
+del *.jou *.log *.pb
 rmdir /s /q xsim.dir .Xil

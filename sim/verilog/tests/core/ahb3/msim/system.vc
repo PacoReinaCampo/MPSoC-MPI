@@ -1,3 +1,5 @@
++incdir+../../../../../rtl/verilog/wb/pkg
+
 ../../../../../../rtl/verilog/ahb3/ahb3/mpi_ahb3.sv
 
 ../../../../../../rtl/verilog/ahb3/core/mpi_buffer.sv
