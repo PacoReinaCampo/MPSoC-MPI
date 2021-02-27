@@ -41,7 +41,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-module mpi_wb #(
+module peripheral_mpi_wb #(
   parameter NOC_FLIT_WIDTH = 32,
   parameter SIZE           = 16,
   parameter N              = 1
@@ -99,12 +99,12 @@ module mpi_wb #(
   assign wb_ack_o    = bus_ack;
   assign wb_err_o    = bus_err;
 
-  mpi_buffer #(
+  peripheral_mpi_buffer #(
     .NOC_FLIT_WIDTH (NOC_FLIT_WIDTH),
     .SIZE           (SIZE),
     .N              (N)
   )
-  u_buffer (
+  mpi_buffer (
     .clk (clk),
     .rst (rst),
 

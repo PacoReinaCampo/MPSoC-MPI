@@ -1,4 +1,4 @@
--- Converted from mpsoc_packet_buffer.sv
+-- Converted from peripheral_packet_buffer.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -47,7 +47,9 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity mpsoc_packet_buffer is
+use work.vhdl_pkg.all;
+
+entity peripheral_packet_buffer is
   generic (
     DATA_WIDTH : integer   := 32;
     FIFO_DEPTH : integer   := 16;
@@ -73,35 +75,9 @@ entity mpsoc_packet_buffer is
 
     out_size : out std_logic_vector(SIZE_WIDTH-1 downto 0)
   );
-end mpsoc_packet_buffer;
+end peripheral_packet_buffer;
 
-architecture RTL of mpsoc_packet_buffer is
-  --////////////////////////////////////////////////////////////////
-  --
-  -- Functions
-  --
-  function reduce_or (
-    reduce_or_in : std_logic_vector
-  ) return std_logic is
-    variable reduce_or_out : std_logic := '0';
-  begin
-    for i in reduce_or_in'range loop
-      reduce_or_out := reduce_or_out or reduce_or_in(i);
-    end loop;
-    return reduce_or_out;
-  end reduce_or;
-
-  function to_stdlogic (
-    input : boolean
-    ) return std_logic is
-  begin
-    if input then
-      return('1');
-    else
-      return('0');
-    end if;
-  end function to_stdlogic;
-
+architecture RTL of peripheral_packet_buffer is
   --////////////////////////////////////////////////////////////////
   --
   -- Constants
@@ -112,17 +88,11 @@ architecture RTL of mpsoc_packet_buffer is
 
   --////////////////////////////////////////////////////////////////
   --
-  -- Constants
-  --
-  type M_FIFO_DEPTH1_FLIT_WIDTH is array (FIFO_DEPTH downto 0) of std_logic_vector(FLIT_WIDTH-1 downto 0);
-
-  --////////////////////////////////////////////////////////////////
-  --
   -- Variables
   --
 
   -- Signals for fifo
-  signal fifo_data      : M_FIFO_DEPTH1_FLIT_WIDTH;  --actual fifo
+  signal fifo_data      : std_logic_matrix(FIFO_DEPTH downto 0)(FLIT_WIDTH-1 downto 0);  --actual fifo
   signal fifo_write_ptr : std_logic_vector(FIFO_DEPTH downto 0);
 
   signal last_flits : std_logic_vector(FIFO_DEPTH downto 0);

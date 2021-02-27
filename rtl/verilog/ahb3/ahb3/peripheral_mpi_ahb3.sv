@@ -41,7 +41,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-module mpi_ahb3 #(
+module peripheral_mpi_ahb3 #(
   parameter PLEN = 32,
   parameter XLEN = 32,
 
@@ -106,12 +106,12 @@ module mpi_ahb3 #(
   assign ahb3_hrdata_o = bus_data_out;
   assign ahb3_hready_o = bus_ack;
 
-  mpi_buffer #(
+  peripheral_mpi_buffer #(
     .NOC_FLIT_WIDTH (NOC_FLIT_WIDTH),
     .SIZE           (SIZE),
     .N              (N)
   )
-  u_buffer (
+  mpi_buffer (
     .clk           (clk),
     .rst           (rst),
 

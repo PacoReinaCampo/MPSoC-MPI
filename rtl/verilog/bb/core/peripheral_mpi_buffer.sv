@@ -43,7 +43,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-module mpi_buffer #(
+module peripheral_mpi_buffer #(
   parameter NOC_FLIT_WIDTH = 32,
   parameter SIZE           = 16,
   parameter N              = 1
@@ -116,11 +116,11 @@ module mpi_buffer #(
 
   generate
     for (n = 0; n < N; n=n+1) begin
-      mpi_buffer_endpoint #(
+      peripheral_mpi_buffer_endpoint #(
        .NOC_FLIT_WIDTH (NOC_FLIT_WIDTH),
        .SIZE           (SIZE)
       )
-      u_endpoint (
+      mpi_buffer_endpoint (
        .clk (clk),
        .rst (rst),
 

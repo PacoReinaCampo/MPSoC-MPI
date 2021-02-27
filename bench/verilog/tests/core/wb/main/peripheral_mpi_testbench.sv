@@ -41,7 +41,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-module wb_mpi_tb;
+module peripheral_mpi_testbench;
   //////////////////////////////////////////////////////////////////
   //
   // Constants
@@ -81,11 +81,11 @@ module wb_mpi_tb;
   initial #200 wb_rst <= 1'b0;
   always #100 wb_clk <= !wb_clk;
 
-  mpsoc_wb_bfm_transactor #(
+  peripheral_bfm_transactor_wb #(
     .MEM_HIGH (MEMORY_SIZE-1),
     .VERBOSE  (0)
   )
-  master (
+  bfm_transactor_wb (
     .wb_clk_i (wb_clk),
     .wb_rst_i (wbm_rst),
     .wb_adr_o (wb_adr),
@@ -111,7 +111,7 @@ module wb_mpi_tb;
     end
   end
 
-  mpi_wb #(
+  peripheral_mpi_wb #(
     .NOC_FLIT_WIDTH ( 32 )
   )
   mpi_wb (

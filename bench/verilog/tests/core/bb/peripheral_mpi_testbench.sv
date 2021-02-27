@@ -42,7 +42,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-module mpsoc_mpi_testbench;
+module peripheral_mpi_testbench;
 
   //////////////////////////////////////////////////////////////////
   //
@@ -86,12 +86,12 @@ module mpsoc_mpi_testbench;
   //
 
   //DUT BB
-  mpi_bb #(
+  peripheral_mpi_bb #(
     .NOC_FLIT_WIDTH (NOC_FLIT_WIDTH),
     .SIZE           (SIZE),
     .N              (N)
   )
-  mpi (
+  mpi_bb (
     .clk ( clk ),
     .rst ( rst ),
 

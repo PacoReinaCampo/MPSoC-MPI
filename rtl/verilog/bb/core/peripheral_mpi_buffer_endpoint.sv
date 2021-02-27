@@ -43,7 +43,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-module mpi_buffer_endpoint #(
+module peripheral_mpi_buffer_endpoint #(
   parameter NOC_FLIT_WIDTH = 32,
   parameter SIZE           = 16
 )
@@ -503,12 +503,12 @@ module mpi_buffer_endpoint #(
   end
 
   // The output packet buffer
-  noc_buffer #(
+  peripheral_noc_buffer #(
     .DEPTH      (SIZE),
     .FLIT_WIDTH (NOC_FLIT_WIDTH),
     .FULLPACKET (1)
   )
-  u_packetbuffer_out (
+  noc_buffer_out (
     .clk              (clk),
     .rst              (rst),
 
@@ -526,12 +526,12 @@ module mpi_buffer_endpoint #(
   );
 
   // The input packet buffer
-  noc_buffer #(
+  peripheral_noc_buffer #(
     .DEPTH      (SIZE),
     .FLIT_WIDTH (NOC_FLIT_WIDTH),
     .FULLPACKET (1)
   )
-  u_packetbuffer_in (
+  noc_buffer_in (
     .clk               (clk),
     .rst               (rst),
 

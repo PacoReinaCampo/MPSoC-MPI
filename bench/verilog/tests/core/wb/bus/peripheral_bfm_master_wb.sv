@@ -41,7 +41,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-module mpsoc_wb_bfm_master #(
+module peripheral_bfm_master_wb #(
   parameter AW              = 32,
   parameter DW              = 32,
   parameter TP              = 0,
@@ -71,7 +71,7 @@ module mpsoc_wb_bfm_master #(
   // Constants
   //
 
-  `include "mpsoc_bfm_wb_pkg.sv"
+  `include "peripheral_bfm_wb_pkg.sv"
 
   parameter BUFFER_WIDTH = $clog2(MAX_BURST_LEN);
   parameter ADR_LSB      = $clog2(DW/8);
@@ -148,8 +148,8 @@ module mpsoc_wb_bfm_master #(
     input  [     2:0]        burst_type_i;
     input  [    31:0]        burst_length_i;
     output                   err_o;
-    begin
 
+    begin
       addr                     = addr_i;
       buffer_addr_tmp          = addr_i - base_addr;
       buffer_addr              = buffer_addr_tmp[ADR_LSB+BUFFER_WIDTH-1:ADR_LSB];
@@ -333,5 +333,5 @@ module mpsoc_wb_bfm_master #(
         @(posedge wb_clk_i);
       data = wb_dat_i;
     end
-  endtask // while
+  endtask
 endmodule

@@ -1,4 +1,4 @@
--- Converted from bench/verilog/regression/mpsoc_mpi_testbench.sv
+-- Converted from bench/verilog/regression/peripheral_mpi_testbench.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -48,18 +48,18 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-entity mpsoc_mpi_testbench is
-end mpsoc_mpi_testbench;
+entity peripheral_mpi_testbench is
+end peripheral_mpi_testbench;
 
-architecture RTL of mpsoc_mpi_testbench is
-  component mpsoc_mpi_ahb3
+architecture RTL of peripheral_mpi_testbench is
+  component peripheral_mpi_ahb3
     generic (
       NoC_DATA_WIDTH : integer := 32;
       NoC_TYPE_WIDTH : integer := 2;
       FIFO_DEPTH     : integer := 16;
       NoC_FLIT_WIDTH : integer := 34;
       SIZE_WIDTH     : integer := 5
-      );
+    );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -82,7 +82,7 @@ architecture RTL of mpsoc_mpi_testbench is
       HREADY    : out std_logic;
 
       irq : out std_logic
-      );
+    );
   end component;
 
   --////////////////////////////////////////////////////////////////
@@ -128,14 +128,14 @@ begin
   --
 
   --DUT AHB3
-  mpi_ahb : mpsoc_mpi_ahb3
+  mpi_ahb3 : peripheral_mpi_ahb3
     generic map (
       NoC_DATA_WIDTH => NoC_DATA_WIDTH,
       NoC_TYPE_WIDTH => NoC_TYPE_WIDTH,
       FIFO_DEPTH     => FIFO_DEPTH,
       NoC_FLIT_WIDTH => NoC_FLIT_WIDTH,
       SIZE_WIDTH     => SIZE_WIDTH
-      )
+    )
     port map (
       clk => clk,
       rst => rst,

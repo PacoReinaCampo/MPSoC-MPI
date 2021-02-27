@@ -41,7 +41,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-module mpsoc_mpi_testbench;
+module peripheral_mpi_testbench;
 
   //////////////////////////////////////////////////////////////////
   //
@@ -91,12 +91,12 @@ module mpsoc_mpi_testbench;
   //
 
   //DUT AHB3
-  mpi_ahb3 #(
+  peripheral_mpi_ahb3 #(
     .NOC_FLIT_WIDTH (NOC_FLIT_WIDTH),
     .SIZE           (SIZE),
     .N              (N)
   )
-  mpi (
+  mpi_ahb3 (
     .clk ( clk ),
     .rst ( rst ),
 

@@ -1,4 +1,4 @@
--- Converted from mpsoc_mpi.sv
+-- Converted from peripheral_mpi.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -62,7 +62,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity mpsoc_mpi is
+entity peripheral_mpi is
   generic (
     NoC_DATA_WIDTH       : integer := 32;
     NoC_TYPE_WIDTH       : integer := 2;
@@ -95,10 +95,10 @@ entity mpsoc_mpi is
 
     irq : out std_logic
   );
-end mpsoc_mpi;
+end peripheral_mpi;
 
-architecture RTL of mpsoc_mpi is
-  component mpsoc_packet_buffer
+architecture RTL of peripheral_mpi is
+  component peripheral_packet_buffer
     generic (
       DATA_WIDTH : integer   := 32;
       FIFO_DEPTH : integer   := 16;
@@ -506,7 +506,7 @@ begin
   end process;
 
   -- The output packet buffer
-  u_packetbuffer_out : mpsoc_packet_buffer
+  packet_buffer_out : peripheral_packet_buffer
     generic map (
       DATA_WIDTH => DATA_WIDTH,
       FIFO_DEPTH => FIFO_DEPTH,
@@ -533,7 +533,7 @@ begin
       out_size => open
     );
 
-  u_packetbuffer_in : mpsoc_packet_buffer
+  packet_buffer_in : peripheral_packet_buffer
     generic map (
       DATA_WIDTH => DATA_WIDTH,
       FIFO_DEPTH => FIFO_DEPTH,
