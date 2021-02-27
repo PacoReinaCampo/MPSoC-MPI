@@ -1,6 +1,6 @@
-../../../../../../rtl/vhdl/wb/wb/mpsoc_mpi_wb.vhd
+../../../../../../rtl/vhdl/wb/wb/peripheral_mpi_wb.vhd
 
-../../../../../../rtl/vhdl/wb/core/mpsoc_mpi.vhd
-../../../../../../rtl/vhdl/wb/core/mpsoc_packet_buffer.vhd
+../../../../../../rtl/vhdl/wb/core/peripheral_mpi.vhd
+../../../../../../rtl/vhdl/wb/core/peripheral_packet_buffer.vhd
 
-../../../../../../bench/vhdl/tests/core/wb/mpsoc_mpi_testbench.vhd
+../../../../../../bench/vhdl/tests/core/wb/peripheral_mpi_testbench.vhd
