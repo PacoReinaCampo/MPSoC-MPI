@@ -9,9 +9,9 @@
 //                  |_|                                                       //
 //                                                                            //
 //                                                                            //
-//              MPSoC-RISCV CPU                                               //
-//              Message Passing Interface                                     //
-//              Wishbone Bus Interface                                        //
+//              Peripheral-MPI for MPSoC                                      //
+//              Message Passing Interface for MPSoC                           //
+//              WishBone Bus Interface                                        //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -74,7 +74,7 @@ module peripheral_mpi_testbench;
   //
   // Module Body
   //
-  vlog_tb_utils vlog_tb_utils0();
+  peripheral_testbench_utils testbench_utils();
 
   initial #1800 wbm_rst <= 1'b0;
 

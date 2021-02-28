@@ -12,8 +12,8 @@
 --                  |_|                                                       //
 --                                                                            //
 --                                                                            //
---              MPSoC-RISCV CPU                                               //
---              Message Passing Interface                                     //
+--              Peripheral-MPI for MPSoC                                      //
+--              Message Passing Interface for MPSoC                           //
 --              WishBone Bus Interface                                        //
 --                                                                            //
 --//////////////////////////////////////////////////////////////////////////////

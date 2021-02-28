@@ -9,9 +9,9 @@
 //                  |_|                                                       //
 //                                                                            //
 //                                                                            //
-//              MPSoC-RISCV CPU                                               //
-//              Message Passing Interface                                     //
-//              Blackbone Bus Interface                                       //
+//              Peripheral-MPI for MPSoC                                      //
+//              Message Passing Interface for MPSoC                           //
+//              BlackBone Bus Interface                                       //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 

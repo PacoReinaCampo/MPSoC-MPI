@@ -5,7 +5,7 @@ build:
 	vlog -sv -f system.vc
 
 simulate:
-	vsim -c -do run.do work.mpsoc_mpi_testbench
+	vsim -c -do run.do work.peripheral_mpi_testbench
 
 clean:
 	rm -rf work transcript

@@ -1,6 +1,7 @@
 @echo off
 call ../../../../../../settings64_ghdl.bat
 
+ghdl -a --std=08 ../../../../../../rtl/vhdl/wb/pkg/vhdl_pkg.vhd
 ghdl -a --std=08 ../../../../../../rtl/vhdl/wb/wb/mpsoc_mpi_wb.vhd
 ghdl -a --std=08 ../../../../../../rtl/vhdl/wb/core/mpsoc_mpi.vhd
 ghdl -a --std=08 ../../../../../../rtl/vhdl/wb/core/mpsoc_packet_buffer.vhd

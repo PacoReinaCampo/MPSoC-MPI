@@ -1,3 +1,5 @@
+../../../../../../rtl/vhdl/wb/pkg/vhdl_pkg.vhd
+
 ../../../../../../rtl/vhdl/wb/wb/peripheral_mpi_wb.vhd
 
 ../../../../../../rtl/vhdl/wb/core/peripheral_mpi.vhd

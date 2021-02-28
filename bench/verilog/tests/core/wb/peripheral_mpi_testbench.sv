@@ -9,9 +9,8 @@
 //                  |_|                                                       //
 //                                                                            //
 //                                                                            //
-//              MPSoC-RISCV CPU                                               //
-//              Message Passing Interface                                     //
-//              AMBA3 AHB-Lite Bus Interface                                  //
+//              Peripheral-MPI for MPSoC                                      //
+//              Message Passing Interface for MPSoC                           //
 //              WishBone Bus Interface                                        //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////

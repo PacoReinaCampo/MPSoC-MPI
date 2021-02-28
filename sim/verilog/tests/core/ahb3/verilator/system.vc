@@ -1,4 +1,4 @@
-+incdir+../../../../../rtl/verilog/wb/pkg
+../../../../../../rtl/verilog/wb/pkg/peripheral_wb_pkg.sv
 
 ../../../../../../rtl/verilog/ahb3/ahb3/peripheral_mpi_ahb3.sv
 

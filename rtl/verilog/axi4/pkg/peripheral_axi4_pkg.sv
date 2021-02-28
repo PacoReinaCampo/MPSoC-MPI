@@ -11,7 +11,7 @@
 //                                                                            //
 //              Package                                                       //
 //              Bus Functional Model                                          //
-//              WishBone Bus Interface                                        //
+//              AMBA4 AXI-Lite Bus Interface                                  //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -40,81 +40,63 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-package peripheral_wb_pkg;
+package peripheral_axi4_pkg;
 
-  //////////////////////////////////////////////////////////////////
-  //
-  // Constants
-  //
+  localparam AXI_ADDR_WIDTH = 64;
+  localparam AXI_DATA_WIDTH = 64;
+  
+  // Burst length specifies the number of data transfers that occur within each burst
+  localparam AXI_BURST_LENGTH_1  = 4'h0;
+  localparam AXI_BURST_LENGTH_2  = 4'h1;
+  localparam AXI_BURST_LENGTH_3  = 4'h2;
+  localparam AXI_BURST_LENGTH_4  = 4'h3;
+  localparam AXI_BURST_LENGTH_5  = 4'h4;
+  localparam AXI_BURST_LENGTH_6  = 4'h5;
+  localparam AXI_BURST_LENGTH_7  = 4'h6;
+  localparam AXI_BURST_LENGTH_8  = 4'h7;
+  localparam AXI_BURST_LENGTH_9  = 4'h8;
+  localparam AXI_BURST_LENGTH_10 = 4'h9;
+  localparam AXI_BURST_LENGTH_11 = 4'hA;
+  localparam AXI_BURST_LENGTH_12 = 4'hB;
+  localparam AXI_BURST_LENGTH_13 = 4'hC;
+  localparam AXI_BURST_LENGTH_14 = 4'hD;
+  localparam AXI_BURST_LENGTH_15 = 4'he;
+  localparam AXI_BURST_LENGTH_16 = 4'hF;
+  
+  //Burst Size specifies the maximum number of data bytes to transfer in each beat, or data transfer, within a burst
+  localparam AXI_BURST_SIZE_BYTE      = 3'b000;
+  localparam AXI_BURST_SIZE_HALF      = 3'b001;
+  localparam AXI_BURST_SIZE_WORD      = 3'b010;
+  localparam AXI_BURST_SIZE_LONG_WORD = 3'b011;
+  localparam AXI_BURST_SIZE_16BYTES   = 3'b100;
+  localparam AXI_BURST_SIZE_32BYTES   = 3'b101;
+  localparam AXI_BURST_SIZE_64BYTES   = 3'b110;
+  localparam AXI_BURST_SIZE_128BYTES  = 3'b111;
 
-  localparam CLASSIC_CYCLE = 1'b0;
-  localparam BURST_CYCLE   = 1'b1;
-
-  localparam READ  = 1'b0;
-  localparam WRITE = 1'b1;
-
-  localparam [2:0] CTI_CLASSIC      = 3'b000;
-  localparam [2:0] CTI_CONST_BURST  = 3'b001;
-  localparam [2:0] CTI_INC_BURST    = 3'b010;
-  localparam [2:0] CTI_END_OF_BURST = 3'b111;
-
-
-  localparam [1:0] BTE_LINEAR  = 2'd0;
-  localparam [1:0] BTE_WRAP_4  = 2'd1;
-  localparam [1:0] BTE_WRAP_8  = 2'd2;
-  localparam [1:0] BTE_WRAP_16 = 2'd3;
-
-  //////////////////////////////////////////////////////////////////
-  //
-  // Functions
-  //
-
-  function get_cycle_type;
-    input [2:0] cti;
-    begin
-      get_cycle_type = (cti === CTI_CLASSIC) ? CLASSIC_CYCLE : BURST_CYCLE;
-    end
-  endfunction
-
-  function wb_is_last;
-    input [2:0] cti;
-    begin
-      case (cti)
-        CTI_CLASSIC      : wb_is_last = 1'b1;
-        CTI_CONST_BURST  : wb_is_last = 1'b0;
-        CTI_INC_BURST    : wb_is_last = 1'b0;
-        CTI_END_OF_BURST : wb_is_last = 1'b1;
-        default          : $display("%d : Illegal Wishbone B3 cycle type (%b)", $time, cti);
-      endcase
-    end
-  endfunction
-
-  function [31:0] wb_next_adr;
-    input [31:0] adr_i;
-    input [ 2:0] cti_i;
-    input [ 2:0] bte_i;
-
-    input integer dw;
-
-    reg [31:0] adr;
-
-    integer shift;
-
-    begin
-      if (dw == 64) shift = 3;
-      else if (dw == 32) shift = 2;
-      else if (dw == 16) shift = 1;
-      else shift = 0;
-      adr = adr_i >> shift;
-      if (cti_i == CTI_INC_BURST)
-        case (bte_i)
-          BTE_LINEAR   : adr = adr + 1;
-          BTE_WRAP_4   : adr = {adr[31:2], adr[1:0]+2'd1};
-          BTE_WRAP_8   : adr = {adr[31:3], adr[2:0]+3'd1};
-          BTE_WRAP_16  : adr = {adr[31:4], adr[3:0]+4'd1};
-        endcase
-      wb_next_adr = adr << shift;
-    end
-  endfunction
+  // Burst Type
+  localparam AXI_BURST_TYPE_FIXED = 2'b00;
+  localparam AXI_BURST_TYPE_INCR  = 2'b01;
+  localparam AXI_BURST_TYPE_WRAP  = 2'b10;
+  localparam AXI_BURST_TYPE_RSRV  = 2'b11;
+  
+  // Lock Type
+  localparam AXI_LOCK_NORMAL    = 2'b00;
+  localparam AXI_LOCK_EXCLUSIVE = 2'b01;
+  localparam AXI_LOCK_LOCKED    = 2'b10;
+  localparam AXI_LOCK__RESERVED = 2'b11;
+  
+  // Protection Type
+  localparam AXI_PROTECTION_NORMAL      = 3'b000;
+  localparam AXI_PROTECTION_PRIVILEGED  = 3'b001;
+  localparam AXI_PROTECTION_SECURE      = 3'b000;
+  localparam AXI_PROTECTION_NONSECURE   = 3'b010;
+  localparam AXI_PROTECTION_INSTRUCTION = 3'b100;
+  localparam AXI_PROTECTION_DATA        = 3'b000;
+  
+  // Response Type
+  localparam AXI_RESPONSE_OKAY         = 2'b00;
+  localparam AXI_RESPONSE_EXOKAY       = 2'b01;
+  localparam AXI_RESPONSE_SLAVE_ERROR  = 2'b10;
+  localparam AXI_RESPONSE_DECODE_ERROR = 2'b10;
 
 endpackage

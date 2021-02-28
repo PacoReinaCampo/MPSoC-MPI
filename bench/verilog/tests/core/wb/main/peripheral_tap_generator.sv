@@ -9,9 +9,9 @@
 //                  |_|                                                       //
 //                                                                            //
 //                                                                            //
-//              MPSoC-RISCV CPU                                               //
-//              Bus Functional Model                                          //
-//              Wishbone Bus Interface                                        //
+//              Peripheral-MPI for MPSoC                                      //
+//              Message Passing Interface for MPSoC                           //
+//              WishBone Bus Interface                                        //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 

@@ -9,8 +9,8 @@
 //                  |_|                                                       //
 //                                                                            //
 //                                                                            //
-//              MPSoC-RISCV CPU                                               //
-//              Bus Functional Model                                          //
+//              Peripheral-BFM for MPSoC                                      //
+//              Bus Functional Model for MPSoC                                //
 //              Wishbone Bus Interface                                        //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
@@ -40,6 +40,8 @@
  *   Olof Kindgren <olof.kindgren@gmail.com>
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
+
+import peripheral_wb_pkg::*;
 
 module peripheral_bfm_memory_wb #(
   //Wishbone parameters
@@ -75,8 +77,6 @@ module peripheral_bfm_memory_wb #(
   //
   // Constants
   //
-
-  `include "peripheral_bfm_wb_pkg.sv"
 
   localparam bytes_per_dw = (DW/8);
   localparam mem_words = (MEM_SIZE_BYTES/bytes_per_dw);
@@ -129,39 +129,39 @@ module peripheral_bfm_memory_wb #(
   );
 
   always begin
-    bfm0.init();
-    address = bfm0.address; //Fetch start address
+    bfm_slave_wb.init();
+    address = bfm_slave_wb.address; //Fetch start address
 
-    if(bfm0.op === WRITE)
+    if(bfm_slave_wb.op === WRITE)
       writes = writes + 1;
     else
       reads = reads + 1;
-    while(bfm0.has_next) begin
+    while(bfm_slave_wb.has_next) begin
       //Set error on out of range accesses
       if(address[31:ADR_LSB] > mem_words) begin
         $display("%0d : Error : Attempt to access %x, which is outside of memory", $time, address);
-        bfm0.error_response();
+        bfm_slave_wb.error_response();
       end
       else begin
-        if(bfm0.op === WRITE) begin
-          bfm0.write_ack(data);
-          if(DEBUG) $display("%d : ram Write 0x%h = 0x%h %b", $time, address, data, bfm0.mask);
+        if(bfm_slave_wb.op === WRITE) begin
+          bfm_slave_wb.write_ack(data);
+          if(DEBUG) $display("%d : ram Write 0x%h = 0x%h %b", $time, address, data, bfm_slave_wb.mask);
           for(i=0;i < DW/8; i=i+1)
-            if(bfm0.mask[i])
+            if(bfm_slave_wb.mask[i])
               mem[address[31:ADR_LSB]][i*8+:8] = data[i*8+:8];
         end
         else begin
           data = {AW{1'b0}};
           for(i=0;i < DW/8; i=i+1)
-            if(bfm0.mask[i])
+            if(bfm_slave_wb.mask[i])
               data[i*8+:8] = mem[address[31:ADR_LSB]][i*8+:8];
-          if(DEBUG) $display("%d : ram Read  0x%h = 0x%h %b", $time, address, data, bfm0.mask);
+          if(DEBUG) $display("%d : ram Read  0x%h = 0x%h %b", $time, address, data, bfm_slave_wb.mask);
           delay = $dist_uniform(seed, RD_MIN_DELAY, RD_MAX_DELAY);
           repeat(delay) @(posedge wb_clk_i);
-          bfm0.read_ack(data);
+          bfm_slave_wb.read_ack(data);
         end
       end
-      if(bfm0.cycle_type === BURST_CYCLE)
+      if(bfm_slave_wb.cycle_type === BURST_CYCLE)
         address = wb_next_adr(address, wb_cti_i, wb_bte_i, DW);
     end
   end

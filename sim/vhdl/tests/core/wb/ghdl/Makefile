@@ -1,6 +1,7 @@
 all: build simulate
 
 build:
+	ghdl -a --std=08 ../../../../../../rtl/vhdl/wb/pkg/vhdl_pkg.vhd
 	ghdl -a --std=08 ../../../../../../rtl/vhdl/wb/wb/peripheral_mpi_wb.vhd
 	ghdl -a --std=08 ../../../../../../rtl/vhdl/wb/core/peripheral_mpi.vhd
 	ghdl -a --std=08 ../../../../../../rtl/vhdl/wb/core/peripheral_packet_buffer.vhd
