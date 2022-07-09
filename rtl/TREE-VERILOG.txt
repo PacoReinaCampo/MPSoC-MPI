@@ -1,0 +1,28 @@
+├── ahb3
+│   ├── ahb3
+│   │   └── peripheral_mpi_ahb3.sv
+│   ├── core
+│   │   ├── peripheral_mpi_buffer_endpoint.sv
+│   │   ├── peripheral_mpi_buffer.sv
+│   │   └── peripheral_noc_buffer.sv
+│   └── pkg
+│       └── peripheral_ahb3_pkg.sv
+├── axi4
+│   └── pkg
+│       └── peripheral_axi4_pkg.sv
+├── bb
+│   ├── bb
+│   │   └── peripheral_mpi_bb.sv
+│   └── core
+│       ├── peripheral_mpi_buffer_endpoint.sv
+│       ├── peripheral_mpi_buffer.sv
+│       └── peripheral_noc_buffer.sv
+└── wb
+    ├── core
+    │   ├── peripheral_mpi_buffer_endpoint.sv
+    │   ├── peripheral_mpi_buffer.sv
+    │   └── peripheral_noc_buffer.sv
+    ├── pkg
+    │   └── peripheral_wb_pkg.sv
+    └── wb
+        └── peripheral_mpi_wb.sv

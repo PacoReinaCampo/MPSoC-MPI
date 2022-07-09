@@ -1,0 +1,16 @@
+├── ahb3
+│   ├── ahb3
+│   │   └── peripheral_mpi_ahb3.vhd
+│   ├── core
+│   │   ├── peripheral_mpi.vhd
+│   │   └── peripheral_packet_buffer.vhd
+│   └── pkg
+│       └── vhdl_pkg.vhd
+└── wb
+    ├── core
+    │   ├── peripheral_mpi.vhd
+    │   └── peripheral_packet_buffer.vhd
+    ├── pkg
+    │   └── vhdl_pkg.vhd
+    └── wb
+        └── peripheral_mpi_wb.vhd
