@@ -8,6 +8,12 @@
 │   └── pkg
 │       └── peripheral_ahb3_pkg.sv
 ├── axi4
+│   ├── axi4
+│   │   └── peripheral_mpi_axi4.sv
+│   ├── core
+│   │   ├── peripheral_mpi_buffer_endpoint.sv
+│   │   ├── peripheral_mpi_buffer.sv
+│   │   └── peripheral_noc_buffer.sv
 │   └── pkg
 │       └── peripheral_axi4_pkg.sv
 ├── bb
