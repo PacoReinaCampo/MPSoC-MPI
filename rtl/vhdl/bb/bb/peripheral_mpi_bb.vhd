@@ -1,4 +1,4 @@
--- Converted from peripheral_mpi_wb.sv
+-- Converted from peripheral_mpi_bb.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -48,7 +48,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity peripheral_mpi_wb is
+entity peripheral_mpi_bb is
   generic (
     NoC_DATA_WIDTH : integer := 32;
     NoC_TYPE_WIDTH : integer := 2;
@@ -79,9 +79,9 @@ entity peripheral_mpi_wb is
 
     irq : out std_logic
   );
-end peripheral_mpi_wb;
+end peripheral_mpi_bb;
 
-architecture RTL of peripheral_mpi_wb is
+architecture RTL of peripheral_mpi_bb is
   component peripheral_mpi
     generic (
       NoC_DATA_WIDTH       : integer := 32;

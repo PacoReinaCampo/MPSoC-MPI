@@ -52,7 +52,7 @@ entity peripheral_mpi_testbench is
 end peripheral_mpi_testbench;
 
 architecture RTL of peripheral_mpi_testbench is
-  component peripheral_mpi_wb
+  component peripheral_mpi_bb
     generic (
       NoC_DATA_WIDTH : integer := 32;
       NoC_TYPE_WIDTH : integer := 2;
@@ -128,7 +128,7 @@ begin
   --
 
   --DUT WB
-  mpi_wb : peripheral_mpi_wb
+  mpi_bb : peripheral_mpi_bb
     generic map (
       NoC_DATA_WIDTH => NoC_DATA_WIDTH,
       NoC_TYPE_WIDTH => NoC_TYPE_WIDTH,
