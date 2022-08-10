@@ -1,3 +1,4 @@
+verilog
 ├── ahb3
 │   ├── ahb3
 │   │   └── peripheral_mpi_ahb3.sv
@@ -32,3 +33,5 @@
     │   └── peripheral_wb_pkg.sv
     └── wb
         └── peripheral_mpi_wb.sv
+
+15 directories, 19 files
