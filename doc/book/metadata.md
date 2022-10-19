@@ -1,6 +1,6 @@
 ---
 title: 'MPSoC-MPI'
-subtitle: 'QueenField ![](../../icon.jpg)'
+subtitle: 'QueenField ![](../../mpsoc-mpi.svg){width=17cm}'
 
 author: Paco Reina Campo
 
