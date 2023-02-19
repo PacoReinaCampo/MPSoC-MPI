@@ -1,37 +1,24 @@
 verilog
-├── ahb3
+├── core
+│   ├── peripheral_mpi_buffer_endpoint.sv
+│   ├── peripheral_mpi_buffer.sv
+│   └── peripheral_noc_buffer.sv
+├── peripheral
 │   ├── ahb3
 │   │   └── peripheral_mpi_ahb3.sv
-│   ├── core
-│   │   ├── peripheral_mpi_buffer_endpoint.sv
-│   │   ├── peripheral_mpi_buffer.sv
-│   │   └── peripheral_noc_buffer.sv
-│   └── pkg
-│       └── peripheral_ahb3_pkg.sv
-├── axi4
 │   ├── axi4
 │   │   └── peripheral_mpi_axi4.sv
-│   ├── core
-│   │   ├── peripheral_mpi_buffer_endpoint.sv
-│   │   ├── peripheral_mpi_buffer.sv
-│   │   └── peripheral_noc_buffer.sv
-│   └── pkg
-│       └── peripheral_axi4_pkg.sv
-├── bb
 │   ├── bb
 │   │   └── peripheral_mpi_bb.sv
-│   └── core
-│       ├── peripheral_mpi_buffer_endpoint.sv
-│       ├── peripheral_mpi_buffer.sv
-│       └── peripheral_noc_buffer.sv
-└── wb
-    ├── core
-    │   ├── peripheral_mpi_buffer_endpoint.sv
-    │   ├── peripheral_mpi_buffer.sv
-    │   └── peripheral_noc_buffer.sv
-    ├── pkg
-    │   └── peripheral_wb_pkg.sv
-    └── wb
-        └── peripheral_mpi_wb.sv
+│   └── wb
+│       └── peripheral_mpi_wb.sv
+└── pkg
+    └── peripheral
+        ├── ahb3
+        │   └── peripheral_ahb3_pkg.sv
+        ├── axi4
+        │   └── peripheral_axi4_pkg.sv
+        └── wb
+            └── peripheral_wb_pkg.sv
 
-15 directories, 19 files
+11 directories, 10 files

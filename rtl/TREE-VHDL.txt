@@ -1,35 +1,18 @@
 vhdl
-├── ahb3
+├── core
+│   ├── peripheral_mpi.vhd
+│   └── peripheral_packet_buffer.vhd
+├── peripheral
 │   ├── ahb3
 │   │   └── peripheral_mpi_ahb3.vhd
-│   ├── core
-│   │   ├── peripheral_mpi.vhd
-│   │   └── peripheral_packet_buffer.vhd
-│   └── pkg
-│       └── vhdl_pkg.vhd
-├── axi4
 │   ├── axi4
 │   │   └── peripheral_mpi_axi4.vhd
-│   ├── core
-│   │   ├── peripheral_mpi.vhd
-│   │   └── peripheral_packet_buffer.vhd
-│   └── pkg
-│       └── vhdl_pkg.vhd
-├── bb
 │   ├── bb
 │   │   └── peripheral_mpi_bb.vhd
-│   ├── core
-│   │   ├── peripheral_mpi.vhd
-│   │   └── peripheral_packet_buffer.vhd
-│   └── pkg
-│       └── vhdl_pkg.vhd
-└── wb
-    ├── core
-    │   ├── peripheral_mpi.vhd
-    │   └── peripheral_packet_buffer.vhd
-    ├── pkg
-    │   └── vhdl_pkg.vhd
-    └── wb
-        └── peripheral_mpi_wb.vhd
+│   └── wb
+│       └── peripheral_mpi_wb.vhd
+└── pkg
+    └── core
+        └── vhdl_pkg.vhd
 
-16 directories, 16 files
+8 directories, 7 files
