@@ -1,9 +1,0 @@
-+incdir+../../../../../../rtl/verilog/bb/pkg
-
-../../../../../../rtl/verilog/bb/bb/peripheral_mpi_bb.sv
-
-../../../../../../rtl/verilog/bb/core/peripheral_mpi_buffer.sv
-../../../../../../rtl/verilog/bb/core/peripheral_mpi_buffer_endpoint.sv
-../../../../../../rtl/verilog/bb/core/peripheral_noc_buffer.sv
-
-../../../../../../bench/verilog/tests/core/bb/peripheral_mpi_testbench.sv

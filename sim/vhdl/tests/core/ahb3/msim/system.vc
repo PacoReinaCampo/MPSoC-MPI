@@ -1,8 +1,0 @@
-../../../../../../rtl/vhdl/ahb3/pkg/vhdl_pkg.vhd
-
-../../../../../../rtl/vhdl/ahb3/ahb3/peripheral_mpi_ahb3.vhd
-
-../../../../../../rtl/vhdl/ahb3/core/peripheral_mpi.vhd
-../../../../../../rtl/vhdl/ahb3/core/peripheral_packet_buffer.vhd
-
-../../../../../../bench/vhdl/tests/core/ahb3/peripheral_mpi_testbench.vhd
