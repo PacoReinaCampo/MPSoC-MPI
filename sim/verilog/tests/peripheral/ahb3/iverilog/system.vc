@@ -1,6 +1,6 @@
 ../../../../../../rtl/verilog/pkg/peripheral/wb/peripheral_wb_pkg.sv
 
-../../../../../../rtl/verilog/peripheral/ahb3/peripheral_mpi_peripheral_ahb3.sv
+../../../../../../rtl/verilog/peripheral/ahb3/peripheral_mpi_ahb3.sv
 
 ../../../../../../rtl/verilog/core/peripheral_mpi_buffer.sv
 ../../../../../../rtl/verilog/core/peripheral_mpi_buffer_endpoint.sv
