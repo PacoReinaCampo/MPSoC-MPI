@@ -85,9 +85,8 @@ end peripheral_mpi_synthesis;
 architecture rtl of peripheral_mpi_synthesis is
 
   ------------------------------------------------------------------------------
-  --
   -- Components
-  --
+  ------------------------------------------------------------------------------
   component peripheral_wb_mpi
     generic (
       SIM   : integer := 0;
@@ -125,9 +124,8 @@ architecture rtl of peripheral_mpi_synthesis is
 
 begin
   ------------------------------------------------------------------------------
-  --
   -- Module Body
-  --
+  ------------------------------------------------------------------------------
 
   --DUT WB
   wb_mpi : peripheral_wb_mpi

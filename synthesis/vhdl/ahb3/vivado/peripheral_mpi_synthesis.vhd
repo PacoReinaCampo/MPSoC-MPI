@@ -145,9 +145,8 @@ architecture rtl of peripheral_mpi_synthesis is
   end component;
 
   ------------------------------------------------------------------------------
-  --
   -- Variables
-  --
+  ------------------------------------------------------------------------------
 
   signal mpi_PADDR   : std_logic_vector(APB_ADDR_WIDTH-1 downto 0);
   signal mpi_PWDATA  : std_logic_vector(APB_DATA_WIDTH-1 downto 0);
@@ -165,9 +164,8 @@ architecture rtl of peripheral_mpi_synthesis is
 
 begin
   ------------------------------------------------------------------------------
-  --
   -- Module Body
-  --
+  ------------------------------------------------------------------------------
 
   --DUT AHB3
   bridge_apb2ahb : peripheral_bridge_apb2ahb
