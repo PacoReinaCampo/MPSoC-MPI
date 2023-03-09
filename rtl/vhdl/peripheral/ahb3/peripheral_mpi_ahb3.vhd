@@ -81,6 +81,11 @@ entity peripheral_mpi_ahb3 is
 end peripheral_mpi_ahb3;
 
 architecture rtl of peripheral_mpi_ahb3 is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_mpi
     generic (
       NoC_DATA_WIDTH       : integer := 32;

@@ -98,6 +98,11 @@ entity peripheral_mpi is
 end peripheral_mpi;
 
 architecture rtl of peripheral_mpi is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_packet_buffer
     generic (
       DATA_WIDTH : integer   := 32;

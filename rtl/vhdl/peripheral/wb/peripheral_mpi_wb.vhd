@@ -81,6 +81,11 @@ entity peripheral_mpi_wb is
 end peripheral_mpi_wb;
 
 architecture rtl of peripheral_mpi_wb is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_mpi
     generic (
       NoC_DATA_WIDTH       : integer := 32;

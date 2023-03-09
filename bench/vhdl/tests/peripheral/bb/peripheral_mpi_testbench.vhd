@@ -51,6 +51,11 @@ entity peripheral_mpi_testbench is
 end peripheral_mpi_testbench;
 
 architecture rtl of peripheral_mpi_testbench is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_mpi_bb
     generic (
       NoC_DATA_WIDTH : integer := 32;

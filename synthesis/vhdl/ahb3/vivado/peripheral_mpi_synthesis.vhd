@@ -78,6 +78,11 @@ entity peripheral_mpi_synthesis is
 end peripheral_mpi_synthesis;
 
 architecture rtl of peripheral_mpi_synthesis is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_bridge_apb2ahb
     generic (
       HADDR_SIZE : integer := 32;
