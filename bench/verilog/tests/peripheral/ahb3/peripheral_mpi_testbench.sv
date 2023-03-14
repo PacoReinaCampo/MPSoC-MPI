@@ -91,9 +91,9 @@ module peripheral_mpi_testbench;
 
   //DUT AHB3
   peripheral_mpi_ahb3 #(
-    .NOC_FLIT_WIDTH (NOC_FLIT_WIDTH),
-    .SIZE           (SIZE),
-    .N              (N)
+  .NOC_FLIT_WIDTH (NOC_FLIT_WIDTH),
+  .SIZE           (SIZE),
+  .N              (N)
   )
   mpi_ahb3 (
     .clk ( clk ),

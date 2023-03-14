@@ -50,35 +50,35 @@ module peripheral_mpi_ahb3 #(
   parameter N              = 1
 )
   (
-    input clk,
-    input rst,
+  input clk,
+  input rst,
 
-    output [N*NOC_FLIT_WIDTH-1:0] noc_out_flit,
-    output [N               -1:0] noc_out_last,
-    output [N               -1:0] noc_out_valid,
-    input  [N               -1:0] noc_out_ready,
+  output [N*NOC_FLIT_WIDTH-1:0] noc_out_flit,
+  output [N               -1:0] noc_out_last,
+  output [N               -1:0] noc_out_valid,
+  input  [N               -1:0] noc_out_ready,
 
-    input  [N*NOC_FLIT_WIDTH-1:0] noc_in_flit,
-    input  [N               -1:0] noc_in_last,
-    input  [N               -1:0] noc_in_valid,
-    output [N               -1:0] noc_in_ready,
+  input  [N*NOC_FLIT_WIDTH-1:0] noc_in_flit,
+  input  [N               -1:0] noc_in_last,
+  input  [N               -1:0] noc_in_valid,
+  output [N               -1:0] noc_in_ready,
 
-    input                         ahb3_hsel_i,
-    input  [PLEN            -1:0] ahb3_haddr_i,
-    input  [XLEN            -1:0] ahb3_hwdata_i,
-    input                         ahb3_hwrite_i,
-    input  [                 2:0] ahb3_hsize_i,
-    input  [                 2:0] ahb3_hburst_i,
-    input  [                 3:0] ahb3_hprot_i,
-    input  [                 1:0] ahb3_htrans_i,
-    input                         ahb3_hmastlock_i,
+  input                         ahb3_hsel_i,
+  input  [PLEN            -1:0] ahb3_haddr_i,
+  input  [XLEN            -1:0] ahb3_hwdata_i,
+  input                         ahb3_hwrite_i,
+  input  [                 2:0] ahb3_hsize_i,
+  input  [                 2:0] ahb3_hburst_i,
+  input  [                 3:0] ahb3_hprot_i,
+  input  [                 1:0] ahb3_htrans_i,
+  input                         ahb3_hmastlock_i,
 
-    output [XLEN            -1:0] ahb3_hrdata_o,
-    output                        ahb3_hready_o,
-    output                        ahb3_hresp_o,
+  output [XLEN            -1:0] ahb3_hrdata_o,
+  output                        ahb3_hready_o,
+  output                        ahb3_hresp_o,
 
-    output                        irq
-  );
+  output                        irq
+);
 
   //////////////////////////////////////////////////////////////////////////////
   //
@@ -107,9 +107,9 @@ module peripheral_mpi_ahb3 #(
   assign ahb3_hready_o = bus_ack;
 
   peripheral_mpi_buffer #(
-    .NOC_FLIT_WIDTH (NOC_FLIT_WIDTH),
-    .SIZE           (SIZE),
-    .N              (N)
+  .NOC_FLIT_WIDTH (NOC_FLIT_WIDTH),
+  .SIZE           (SIZE),
+  .N              (N)
   )
   mpi_buffer (
     .clk           (clk),

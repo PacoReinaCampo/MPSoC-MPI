@@ -85,9 +85,9 @@ module peripheral_mpi_testbench;
 
   //DUT BB
   peripheral_mpi_bb #(
-    .NOC_FLIT_WIDTH (NOC_FLIT_WIDTH),
-    .SIZE           (SIZE),
-    .N              (N)
+  .NOC_FLIT_WIDTH (NOC_FLIT_WIDTH),
+  .SIZE           (SIZE),
+  .N              (N)
   )
   mpi_bb (
     .clk ( clk ),

@@ -47,30 +47,30 @@ module peripheral_mpi_wb #(
   parameter N              = 1
 )
   (
-    input                         clk,
-    input                         rst,
+  input                         clk,
+  input                         rst,
 
-    output [N*NOC_FLIT_WIDTH-1:0] noc_out_flit,
-    output [N               -1:0] noc_out_last,
-    output [N               -1:0] noc_out_valid,
-    input  [N               -1:0] noc_out_ready,
+  output [N*NOC_FLIT_WIDTH-1:0] noc_out_flit,
+  output [N               -1:0] noc_out_last,
+  output [N               -1:0] noc_out_valid,
+  input  [N               -1:0] noc_out_ready,
 
-    input  [N*NOC_FLIT_WIDTH-1:0] noc_in_flit,
-    input  [N               -1:0] noc_in_last,
-    input  [N               -1:0] noc_in_valid,
-    output [N               -1:0] noc_in_ready,
+  input  [N*NOC_FLIT_WIDTH-1:0] noc_in_flit,
+  input  [N               -1:0] noc_in_last,
+  input  [N               -1:0] noc_in_valid,
+  output [N               -1:0] noc_in_ready,
 
-    input  [                31:0] wb_adr_i,
-    input                         wb_we_i,
-    input                         wb_cyc_i,
-    input                         wb_stb_i,
-    input  [                31:0] wb_dat_i,
-    output [                31:0] wb_dat_o,
-    output                        wb_ack_o,
-    output                        wb_err_o,
+  input  [                31:0] wb_adr_i,
+  input                         wb_we_i,
+  input                         wb_cyc_i,
+  input                         wb_stb_i,
+  input  [                31:0] wb_dat_i,
+  output [                31:0] wb_dat_o,
+  output                        wb_ack_o,
+  output                        wb_err_o,
 
-    output                        irq
-  );
+  output                        irq
+);
 
   //////////////////////////////////////////////////////////////////////////////
   //
@@ -100,9 +100,9 @@ module peripheral_mpi_wb #(
   assign wb_err_o    = bus_err;
 
   peripheral_mpi_buffer #(
-    .NOC_FLIT_WIDTH (NOC_FLIT_WIDTH),
-    .SIZE           (SIZE),
-    .N              (N)
+  .NOC_FLIT_WIDTH (NOC_FLIT_WIDTH),
+  .SIZE           (SIZE),
+  .N              (N)
   )
   mpi_buffer (
     .clk (clk),

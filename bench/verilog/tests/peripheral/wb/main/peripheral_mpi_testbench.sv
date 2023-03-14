@@ -82,8 +82,8 @@ module peripheral_mpi_testbench;
   always #100 wb_clk <= !wb_clk;
 
   peripheral_bfm_transactor_wb #(
-    .MEM_HIGH (MEMORY_SIZE-1),
-    .VERBOSE  (0)
+  .MEM_HIGH (MEMORY_SIZE-1),
+  .VERBOSE  (0)
   )
   bfm_transactor_wb (
     .wb_clk_i (wb_clk),
@@ -91,7 +91,7 @@ module peripheral_mpi_testbench;
     .wb_adr_o (wb_adr),
     .wb_dat_o (wb_dat),
     .wb_sel_o (wb_sel),
-    .wb_we_o  (wb_we), 
+    .wb_we_o  (wb_we),
     .wb_cyc_o (wb_cyc),
     .wb_stb_o (wb_stb),
     .wb_cti_o (wb_cti),
@@ -112,7 +112,7 @@ module peripheral_mpi_testbench;
   end
 
   peripheral_mpi_wb #(
-    .NOC_FLIT_WIDTH ( 32 )
+  .NOC_FLIT_WIDTH ( 32 )
   )
   mpi_wb (
     .clk ( wb_clk ),

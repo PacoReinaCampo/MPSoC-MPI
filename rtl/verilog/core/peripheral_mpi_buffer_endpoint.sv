@@ -46,30 +46,30 @@ module peripheral_mpi_buffer_endpoint #(
   parameter SIZE           = 16
 )
   (
-    input                           clk,
-    input                           rst,
+  input                           clk,
+  input                           rst,
 
-    output reg [NOC_FLIT_WIDTH-1:0] noc_out_flit,
-    output reg                      noc_out_last,
-    output reg                      noc_out_valid,
-    input                           noc_out_ready,
+  output reg [NOC_FLIT_WIDTH-1:0] noc_out_flit,
+  output reg                      noc_out_last,
+  output reg                      noc_out_valid,
+  input                           noc_out_ready,
 
-    input      [NOC_FLIT_WIDTH-1:0] noc_in_flit,
-    input                           noc_in_last,
-    input                           noc_in_valid,
-    output reg                      noc_in_ready,
+  input      [NOC_FLIT_WIDTH-1:0] noc_in_flit,
+  input                           noc_in_last,
+  input                           noc_in_valid,
+  output reg                      noc_in_ready,
 
-    // Bus side (generic)
-    input      [31:0]               bus_addr,
-    input                           bus_we,
-    input                           bus_en,
-    input      [31:0]               bus_data_in,
-    output reg [31:0]               bus_data_out,
-    output reg                      bus_ack,
-    output reg                      bus_err,
+  // Bus side (generic)
+  input      [31:0]               bus_addr,
+  input                           bus_we,
+  input                           bus_en,
+  input      [31:0]               bus_data_in,
+  output reg [31:0]               bus_data_out,
+  output reg                      bus_ack,
+  output reg                      bus_err,
 
-    output                          irq
-  );
+  output                          irq
+);
 
   /*
    *
@@ -185,18 +185,18 @@ module peripheral_mpi_buffer_endpoint #(
   reg                       control_pending;
   reg                       nxt_control_pending;
 
-   /*
-    * +------+---+------------------------+
-    * | 0x0  | R | Read from Ingress FIFO |
-    * +------+---+------------------------+
-    * |      | W | Write to Egress FIFO   |
-    * +------+---+------------------------+
-    * | 0x4  | W | Enable interface       |
-    * +------+---+------------------------+
-    * |      | R | Status                 |
-    * +------+---+------------------------+
-    *
-    */
+  /*
+   * +------+---+------------------------+
+   * | 0x0  | R | Read from Ingress FIFO |
+   * +------+---+------------------------+
+   * |      | W | Write to Egress FIFO   |
+   * +------+---+------------------------+
+   * | 0x4  | W | Enable interface       |
+   * +------+---+------------------------+
+   * |      | R | Status                 |
+   * +------+---+------------------------+
+   *
+   */
 
   //////////////////////////////////////////////////////////////////////////////
   //
@@ -252,11 +252,11 @@ module peripheral_mpi_buffer_endpoint #(
     end
   end
 
-   /*
-    * Simple writes to 0x0
-    *  * Start transfer and set size S
-    *  * For S flits: Write flit
-    */
+  /*
+   * Simple writes to 0x0
+   *  * Start transfer and set size S
+   *  * For S flits: Write flit
+   */
 
   // Combinational part of input state machine
   always @(*) begin
@@ -311,8 +311,8 @@ module peripheral_mpi_buffer_endpoint #(
   always @(*) begin
     // default values
     out_valid       = 1'b0; // no flit
-    nxt_size_out    = size_out;  // keep size
-    if_fifo_out_ack = 1'b0;   // don't acknowledge
+    nxt_size_out    = size_out; // keep size
+    if_fifo_out_ack = 1'b0; // don't acknowledge
     out_last        = 1'bx; // Default is undefined
 
     case(state_out)
@@ -493,7 +493,7 @@ module peripheral_mpi_buffer_endpoint #(
     if (rst) begin
       control_pending <= 1'b0;
       control_flit    <= {NOC_FLIT_WIDTH{1'hx}};
-    end 
+    end
     else begin
       control_pending <= nxt_control_pending;
       control_flit    <= nxt_control_flit;
@@ -502,9 +502,9 @@ module peripheral_mpi_buffer_endpoint #(
 
   // The output packet buffer
   peripheral_noc_buffer #(
-    .DEPTH      (SIZE),
-    .FLIT_WIDTH (NOC_FLIT_WIDTH),
-    .FULLPACKET (1)
+  .DEPTH      (SIZE),
+  .FLIT_WIDTH (NOC_FLIT_WIDTH),
+  .FULLPACKET (1)
   )
   noc_buffer_out (
     .clk              (clk),
@@ -525,9 +525,9 @@ module peripheral_mpi_buffer_endpoint #(
 
   // The input packet buffer
   peripheral_noc_buffer #(
-    .DEPTH      (SIZE),
-    .FLIT_WIDTH (NOC_FLIT_WIDTH),
-    .FULLPACKET (1)
+  .DEPTH      (SIZE),
+  .FLIT_WIDTH (NOC_FLIT_WIDTH),
+  .FULLPACKET (1)
   )
   noc_buffer_in (
     .clk               (clk),
