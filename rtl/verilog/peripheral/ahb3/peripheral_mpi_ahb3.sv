@@ -48,8 +48,7 @@ module peripheral_mpi_ahb3 #(
   parameter NOC_FLIT_WIDTH = 32,
   parameter SIZE           = 16,
   parameter N              = 1
-)
-  (
+) (
   input clk,
   input rst,
 
@@ -63,21 +62,21 @@ module peripheral_mpi_ahb3 #(
   input  [N               -1:0] noc_in_valid,
   output [N               -1:0] noc_in_ready,
 
-  input                         ahb3_hsel_i,
-  input  [PLEN            -1:0] ahb3_haddr_i,
-  input  [XLEN            -1:0] ahb3_hwdata_i,
-  input                         ahb3_hwrite_i,
-  input  [                 2:0] ahb3_hsize_i,
-  input  [                 2:0] ahb3_hburst_i,
-  input  [                 3:0] ahb3_hprot_i,
-  input  [                 1:0] ahb3_htrans_i,
-  input                         ahb3_hmastlock_i,
+  input                        ahb3_hsel_i,
+  input [PLEN            -1:0] ahb3_haddr_i,
+  input [XLEN            -1:0] ahb3_hwdata_i,
+  input                        ahb3_hwrite_i,
+  input [                 2:0] ahb3_hsize_i,
+  input [                 2:0] ahb3_hburst_i,
+  input [                 3:0] ahb3_hprot_i,
+  input [                 1:0] ahb3_htrans_i,
+  input                        ahb3_hmastlock_i,
 
   output [XLEN            -1:0] ahb3_hrdata_o,
   output                        ahb3_hready_o,
   output                        ahb3_hresp_o,
 
-  output                        irq
+  output irq
 );
 
   //////////////////////////////////////////////////////////////////////////////
@@ -107,33 +106,32 @@ module peripheral_mpi_ahb3 #(
   assign ahb3_hready_o = bus_ack;
 
   peripheral_mpi_buffer #(
-  .NOC_FLIT_WIDTH (NOC_FLIT_WIDTH),
-  .SIZE           (SIZE),
-  .N              (N)
-  )
-  mpi_buffer (
-    .clk           (clk),
-    .rst           (rst),
+    .NOC_FLIT_WIDTH(NOC_FLIT_WIDTH),
+    .SIZE          (SIZE),
+    .N             (N)
+  ) mpi_buffer (
+    .clk(clk),
+    .rst(rst),
 
-    .noc_out_flit  (noc_out_flit),
-    .noc_out_last  (noc_out_last),
-    .noc_out_valid (noc_out_valid),
-    .noc_out_ready (noc_out_ready),
+    .noc_out_flit (noc_out_flit),
+    .noc_out_last (noc_out_last),
+    .noc_out_valid(noc_out_valid),
+    .noc_out_ready(noc_out_ready),
 
-    .noc_in_flit   (noc_in_flit),
-    .noc_in_last   (noc_in_last),
-    .noc_in_valid  (noc_in_valid),
-    .noc_in_ready  (noc_in_ready),
+    .noc_in_flit (noc_in_flit),
+    .noc_in_last (noc_in_last),
+    .noc_in_valid(noc_in_valid),
+    .noc_in_ready(noc_in_ready),
 
     // Bus side (generic)
-    .bus_addr     (bus_addr),
-    .bus_we       (bus_we),
-    .bus_en       (bus_en),
-    .bus_data_in  (bus_data_in),
-    .bus_data_out (bus_data_out),
-    .bus_ack      (bus_ack),
-    .bus_err      (bus_err),
+    .bus_addr    (bus_addr),
+    .bus_we      (bus_we),
+    .bus_en      (bus_en),
+    .bus_data_in (bus_data_in),
+    .bus_data_out(bus_data_out),
+    .bus_ack     (bus_ack),
+    .bus_err     (bus_err),
 
-    .irq (irq)
+    .irq(irq)
   );
 endmodule

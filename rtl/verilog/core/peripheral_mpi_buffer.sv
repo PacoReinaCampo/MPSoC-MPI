@@ -45,10 +45,9 @@ module peripheral_mpi_buffer #(
   parameter NOC_FLIT_WIDTH = 32,
   parameter SIZE           = 16,
   parameter N              = 1
-)
-  (
-  input                         clk,
-  input                         rst,
+) (
+  input clk,
+  input rst,
 
   output [N*NOC_FLIT_WIDTH-1:0] noc_out_flit,
   output [N               -1:0] noc_out_last,
@@ -61,15 +60,15 @@ module peripheral_mpi_buffer #(
   output [N               -1:0] noc_in_ready,
 
   // Bus side (generic)
-  input      [31:0]             bus_addr,
-  input                         bus_we,
-  input                         bus_en,
-  input      [31:0]             bus_data_in,
-  output reg [31:0]             bus_data_out,
-  output                        bus_ack,
-  output                        bus_err,
+  input      [31:0] bus_addr,
+  input             bus_we,
+  input             bus_en,
+  input      [31:0] bus_data_in,
+  output reg [31:0] bus_data_out,
+  output            bus_ack,
+  output            bus_err,
 
-  output                        irq
+  output irq
 );
 
   //////////////////////////////////////////////////////////////////////////////
@@ -77,11 +76,11 @@ module peripheral_mpi_buffer #(
   // Variables
   //
 
-  wire [N  :0]                    bus_sel_mod;
-  wire [N  :0]                    bus_err_mod;
-  wire [N  :0]                    bus_ack_mod;
-  wire [N  :0][31:0]              bus_data_mod;
-  wire [N-1:0]                    irq_mod;
+  wire [N : 0]       bus_sel_mod;
+  wire [N : 0]       bus_err_mod;
+  wire [N : 0]       bus_ack_mod;
+  wire [N : 0][31:0] bus_data_mod;
+  wire [N-1:0]       irq_mod;
 
   genvar n;
 
@@ -91,7 +90,7 @@ module peripheral_mpi_buffer #(
   //
 
   generate
-    for (n = 0; n <= N; n=n+1) begin
+    for (n = 0; n <= N; n = n + 1) begin
       assign bus_sel_mod[n] = (bus_addr[19:13] == n);
     end
   endgenerate
@@ -99,48 +98,46 @@ module peripheral_mpi_buffer #(
   always @(*) begin
     bus_data_out = 32'hx;
     for (int i = 0; i <= N; i++) begin
-      if (bus_sel_mod[i])
-        bus_data_out = bus_data_mod[i];
+      if (bus_sel_mod[i]) bus_data_out = bus_data_mod[i];
     end
   end
 
-  assign bus_ack = |bus_ack_mod;
-  assign bus_err = |bus_err_mod;
-  assign irq = |irq_mod;
+  assign bus_ack         = |bus_ack_mod;
+  assign bus_err         = |bus_err_mod;
+  assign irq             = |irq_mod;
 
-  assign bus_ack_mod[0] = bus_en & bus_sel_mod[0] & !bus_we & (bus_addr[12:0] == 0);
-  assign bus_err_mod[0] = bus_en & bus_sel_mod[0] & (bus_we | (bus_addr[12:0] != 0));
+  assign bus_ack_mod[0]  = bus_en & bus_sel_mod[0] & !bus_we & (bus_addr[12:0] == 0);
+  assign bus_err_mod[0]  = bus_en & bus_sel_mod[0] & (bus_we | (bus_addr[12:0] != 0));
   assign bus_data_mod[0] = N;
 
   generate
-    for (n = 0; n < N; n=n+1) begin
+    for (n = 0; n < N; n = n + 1) begin
       peripheral_mpi_buffer_endpoint #(
-      .NOC_FLIT_WIDTH (NOC_FLIT_WIDTH),
-      .SIZE           (SIZE)
-      )
-      mpi_buffer_endpoint (
-        .clk (clk),
-        .rst (rst),
+        .NOC_FLIT_WIDTH(NOC_FLIT_WIDTH),
+        .SIZE          (SIZE)
+      ) mpi_buffer_endpoint (
+        .clk(clk),
+        .rst(rst),
 
-        .noc_out_flit  (noc_out_flit  [n*NOC_FLIT_WIDTH +: NOC_FLIT_WIDTH]),
-        .noc_out_last  (noc_out_last  [n]),
-        .noc_out_valid (noc_out_valid [n]),
-        .noc_out_ready (noc_out_ready [n]),
+        .noc_out_flit (noc_out_flit[n*NOC_FLIT_WIDTH+:NOC_FLIT_WIDTH]),
+        .noc_out_last (noc_out_last[n]),
+        .noc_out_valid(noc_out_valid[n]),
+        .noc_out_ready(noc_out_ready[n]),
 
-        .noc_in_flit   (noc_in_flit   [n*NOC_FLIT_WIDTH +: NOC_FLIT_WIDTH]),
-        .noc_in_last   (noc_in_last   [n]),
-        .noc_in_valid  (noc_in_valid  [n]),
-        .noc_in_ready  (noc_in_ready  [n]),
+        .noc_in_flit (noc_in_flit[n*NOC_FLIT_WIDTH+:NOC_FLIT_WIDTH]),
+        .noc_in_last (noc_in_last[n]),
+        .noc_in_valid(noc_in_valid[n]),
+        .noc_in_ready(noc_in_ready[n]),
 
-        .bus_addr      (bus_addr),
-        .bus_we        (bus_we),
-        .bus_en        (bus_en & bus_sel_mod [n+1]),
-        .bus_data_in   (bus_data_in),
-        .bus_data_out  (bus_data_mod         [n+1]),
-        .bus_ack       (bus_ack_mod          [n+1]),
-        .bus_err       (bus_err_mod          [n+1]),
+        .bus_addr    (bus_addr),
+        .bus_we      (bus_we),
+        .bus_en      (bus_en & bus_sel_mod[n+1]),
+        .bus_data_in (bus_data_in),
+        .bus_data_out(bus_data_mod[n+1]),
+        .bus_ack     (bus_ack_mod[n+1]),
+        .bus_err     (bus_err_mod[n+1]),
 
-        .irq           (irq_mod [n])
+        .irq(irq_mod[n])
       );
     end
   endgenerate

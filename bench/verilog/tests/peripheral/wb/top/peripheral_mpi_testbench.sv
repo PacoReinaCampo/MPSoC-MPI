@@ -47,15 +47,15 @@ module peripheral_mpi_testbench;
   // Constants
   //
   parameter NOC_FLIT_WIDTH = 32;
-  parameter SIZE           = 16;
-  parameter N              = 1;
+  parameter SIZE = 16;
+  parameter N = 1;
 
   //////////////////////////////////////////////////////////////////////////////
   //
   // Variables
   //
-  logic clk;
-  logic rst;
+  logic                        clk;
+  logic                        rst;
 
   // WB
   logic [N*NOC_FLIT_WIDTH-1:0] wb_noc_out_flit;
@@ -86,34 +86,33 @@ module peripheral_mpi_testbench;
 
   //DUT WB
   peripheral_mpi_wb #(
-  .NOC_FLIT_WIDTH ( NOC_FLIT_WIDTH ),
-  .SIZE           ( SIZE           ),
-  .N              ( N              )
-  )
-  mpi_wb (
-    .clk ( clk ),
-    .rst ( rst ),
+    .NOC_FLIT_WIDTH(NOC_FLIT_WIDTH),
+    .SIZE          (SIZE),
+    .N             (N)
+  ) mpi_wb (
+    .clk(clk),
+    .rst(rst),
 
     // NoC interface
-    .noc_out_flit  ( wb_noc_out_flit  ),
-    .noc_out_last  ( wb_noc_out_last  ),
-    .noc_out_valid ( wb_noc_out_valid ),
-    .noc_out_ready ( wb_noc_out_ready ),
+    .noc_out_flit (wb_noc_out_flit),
+    .noc_out_last (wb_noc_out_last),
+    .noc_out_valid(wb_noc_out_valid),
+    .noc_out_ready(wb_noc_out_ready),
 
-    .noc_in_flit  ( wb_noc_in_flit  ),
-    .noc_in_last  ( wb_noc_in_last  ),
-    .noc_in_valid ( wb_noc_in_valid ),
-    .noc_in_ready ( wb_noc_in_ready ),
+    .noc_in_flit (wb_noc_in_flit),
+    .noc_in_last (wb_noc_in_last),
+    .noc_in_valid(wb_noc_in_valid),
+    .noc_in_ready(wb_noc_in_ready),
 
-    .wb_adr_i ( wb_mpi_adr_i ),
-    .wb_we_i  ( wb_mpi_we_i  ),
-    .wb_cyc_i ( wb_mpi_cyc_i ),
-    .wb_stb_i ( wb_mpi_stb_i ),
-    .wb_dat_i ( wb_mpi_dat_i ),
-    .wb_dat_o ( wb_mpi_dat_o ),
-    .wb_ack_o ( wb_mpi_ack_o ),
-    .wb_err_o ( wb_mpi_err_o ),
+    .wb_adr_i(wb_mpi_adr_i),
+    .wb_we_i (wb_mpi_we_i),
+    .wb_cyc_i(wb_mpi_cyc_i),
+    .wb_stb_i(wb_mpi_stb_i),
+    .wb_dat_i(wb_mpi_dat_i),
+    .wb_dat_o(wb_mpi_dat_o),
+    .wb_ack_o(wb_mpi_ack_o),
+    .wb_err_o(wb_mpi_err_o),
 
-    .irq ( wb_irq )
+    .irq(wb_irq)
   );
 endmodule

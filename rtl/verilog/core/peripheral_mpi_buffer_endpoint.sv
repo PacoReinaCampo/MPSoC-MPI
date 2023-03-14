@@ -44,10 +44,9 @@
 module peripheral_mpi_buffer_endpoint #(
   parameter NOC_FLIT_WIDTH = 32,
   parameter SIZE           = 16
-)
-  (
-  input                           clk,
-  input                           rst,
+) (
+  input clk,
+  input rst,
 
   output reg [NOC_FLIT_WIDTH-1:0] noc_out_flit,
   output reg                      noc_out_last,
@@ -60,15 +59,15 @@ module peripheral_mpi_buffer_endpoint #(
   output reg                      noc_in_ready,
 
   // Bus side (generic)
-  input      [31:0]               bus_addr,
-  input                           bus_we,
-  input                           bus_en,
-  input      [31:0]               bus_data_in,
-  output reg [31:0]               bus_data_out,
-  output reg                      bus_ack,
-  output reg                      bus_err,
+  input      [31:0] bus_addr,
+  input             bus_we,
+  input             bus_en,
+  input      [31:0] bus_data_in,
+  output reg [31:0] bus_data_out,
+  output reg        bus_ack,
+  output reg        bus_err,
 
-  output                          irq
+  output irq
 );
 
   /*
@@ -108,8 +107,7 @@ module peripheral_mpi_buffer_endpoint #(
     begin
       if (value == 1) begin
         clog2_width = 1;
-      end
-      else begin
+      end else begin
         clog2_width = clog2(value);
       end
     end
@@ -120,11 +118,11 @@ module peripheral_mpi_buffer_endpoint #(
   // Constants
   //
 
-  localparam SIZE_WIDTH = clog2_width(SIZE+1);
+  localparam SIZE_WIDTH = clog2_width(SIZE + 1);
 
   // States of output state machine
-  localparam OUT_IDLE    = 0;
-  localparam OUT_FIRST   = 1;
+  localparam OUT_IDLE = 0;
+  localparam OUT_FIRST = 1;
   localparam OUT_PAYLOAD = 2;
 
   // States of input state machine
@@ -150,38 +148,38 @@ module peripheral_mpi_buffer_endpoint #(
   reg                       enabled;
   reg                       nxt_enabled;
 
-  reg        if_fifo_in_en;
-  reg        if_fifo_in_ack;
-  reg [31:0] if_fifo_in_data;
-  reg        if_fifo_out_en;
-  reg        if_fifo_out_ack;
+  reg                       if_fifo_in_en;
+  reg                       if_fifo_in_ack;
+  reg  [              31:0] if_fifo_in_data;
+  reg                       if_fifo_out_en;
+  reg                       if_fifo_out_ack;
 
   // State register
-  reg [1:0]                  state_out;
-  reg [1:0]                  nxt_state_out;
+  reg  [               1:0] state_out;
+  reg  [               1:0] nxt_state_out;
 
-  reg                        state_in;
-  reg                        nxt_state_in;
+  reg                       state_in;
+  reg                       nxt_state_in;
 
   // Size register that is also used to count down the remaining
   // flits to be send out
-  reg [SIZE_WIDTH-1:0]       size_out;
-  reg [SIZE_WIDTH-1:0]       nxt_size_out;
+  reg  [    SIZE_WIDTH-1:0] size_out;
+  reg  [    SIZE_WIDTH-1:0] nxt_size_out;
 
-  wire [SIZE_WIDTH-1:0]      size_in;
+  wire [    SIZE_WIDTH-1:0] size_in;
 
-  reg [NOC_FLIT_WIDTH-1:0] ingress_flit;
-  reg                      ingress_last;
-  reg                      ingress_valid;
-  wire                     ingress_ready;
+  reg  [NOC_FLIT_WIDTH-1:0] ingress_flit;
+  reg                       ingress_last;
+  reg                       ingress_valid;
+  wire                      ingress_ready;
 
   wire [NOC_FLIT_WIDTH-1:0] egress_flit;
   wire                      egress_last;
   wire                      egress_valid;
   reg                       egress_ready;
 
-  reg [NOC_FLIT_WIDTH-1:0]  control_flit;
-  reg [NOC_FLIT_WIDTH-1:0]  nxt_control_flit;
+  reg  [NOC_FLIT_WIDTH-1:0] control_flit;
+  reg  [NOC_FLIT_WIDTH-1:0] nxt_control_flit;
   reg                       control_pending;
   reg                       nxt_control_pending;
 
@@ -203,17 +201,17 @@ module peripheral_mpi_buffer_endpoint #(
   // Module body
   //
 
-  assign irq = in_valid;
+  assign irq      = in_valid;
 
   assign out_flit = bus_data_in;
 
   always @(*) begin
-    bus_ack = 0;
-    bus_err = 0;
-    bus_data_out = 32'hx;
-    nxt_enabled = enabled;
+    bus_ack        = 0;
+    bus_err        = 0;
+    bus_data_out   = 32'hx;
+    nxt_enabled    = enabled;
 
-    if_fifo_in_en = 1'b0;
+    if_fifo_in_en  = 1'b0;
     if_fifo_out_en = 1'b0;
 
     if (bus_en) begin
@@ -222,22 +220,18 @@ module peripheral_mpi_buffer_endpoint #(
           if_fifo_in_en = 1'b1;
           bus_ack       = if_fifo_in_ack;
           bus_data_out  = if_fifo_in_data;
-        end
-        else begin
+        end else begin
           if_fifo_out_en = 1'b1;
-          bus_ack = if_fifo_out_ack;
+          bus_ack        = if_fifo_out_ack;
         end
-      end
-      else if (bus_addr[5:2] == 4'h1) begin
+      end else if (bus_addr[5:2] == 4'h1) begin
         bus_ack = 1'b1;
         if (bus_we) begin
           nxt_enabled = 1'b1;
-        end
-        else begin
+        end else begin
           bus_data_out = {30'h0, noc_out_valid, in_valid};
         end
-      end
-      else begin
+      end else begin
         bus_err = 1'b1;
       end
     end
@@ -246,8 +240,7 @@ module peripheral_mpi_buffer_endpoint #(
   always @(posedge clk) begin
     if (rst) begin
       enabled <= 1'b0;
-    end
-    else begin
+    end else begin
       enabled <= nxt_enabled;
     end
   end
@@ -265,23 +258,21 @@ module peripheral_mpi_buffer_endpoint #(
     if_fifo_in_data = 32'hx;
     nxt_state_in    = state_in;
 
-    case(state_in)
+    case (state_in)
       IN_IDLE: begin
         if (if_fifo_in_en) begin
           if (in_valid) begin
-            if_fifo_in_data = {{32-SIZE_WIDTH{1'b0}},size_in};
+            if_fifo_in_data = {{32 - SIZE_WIDTH{1'b0}}, size_in};
             if_fifo_in_ack  = 1'b1;
-            if (size_in!=0) begin
+            if (size_in != 0) begin
               nxt_state_in = IN_FLIT;
             end
-          end
-          else begin
+          end else begin
             if_fifo_in_data = 0;
             if_fifo_in_ack  = 1'b1;
             nxt_state_in    = IN_IDLE;
           end
-        end
-        else begin
+        end else begin
           nxt_state_in = IN_IDLE;
         end
       end
@@ -290,14 +281,12 @@ module peripheral_mpi_buffer_endpoint #(
           if_fifo_in_data = in_flit[31:0];
           in_ready        = 1'b1;
           if_fifo_in_ack  = 1'b1;
-          if (size_in==1) begin
+          if (size_in == 1) begin
             nxt_state_in = IN_IDLE;
-          end
-          else begin
+          end else begin
             nxt_state_in = IN_FLIT;
           end
-        end
-        else begin
+        end else begin
           nxt_state_in = IN_FLIT;
         end
       end
@@ -310,23 +299,22 @@ module peripheral_mpi_buffer_endpoint #(
   // Combinational part of output state machine
   always @(*) begin
     // default values
-    out_valid       = 1'b0; // no flit
-    nxt_size_out    = size_out; // keep size
-    if_fifo_out_ack = 1'b0; // don't acknowledge
-    out_last        = 1'bx; // Default is undefined
+    out_valid       = 1'b0;  // no flit
+    nxt_size_out    = size_out;  // keep size
+    if_fifo_out_ack = 1'b0;  // don't acknowledge
+    out_last        = 1'bx;  // Default is undefined
 
-    case(state_out)
+    case (state_out)
       OUT_IDLE: begin
         // Transition from IDLE to FIRST
         // when write on bus, which is the size
         if (if_fifo_out_en) begin
           // Store the written value as size
-          nxt_size_out = bus_data_in[SIZE_WIDTH-1:0];
+          nxt_size_out    = bus_data_in[SIZE_WIDTH-1:0];
           // Acknowledge to the bus
           if_fifo_out_ack = 1'b1;
-          nxt_state_out = OUT_FIRST;
-        end
-        else begin
+          nxt_state_out   = OUT_FIRST;
+        end else begin
           nxt_state_out = OUT_IDLE;
         end
       end
@@ -341,7 +329,7 @@ module peripheral_mpi_buffer_endpoint #(
           // be output
           out_valid = 1'b1;
 
-          if (size_out==1) begin
+          if (size_out == 1) begin
             out_last = 1'b1;
           end
 
@@ -350,28 +338,25 @@ module peripheral_mpi_buffer_endpoint #(
             // the flit has been stored in the packet buffer
 
             // Decrement size
-            nxt_size_out = size_out-1;
+            nxt_size_out    = size_out - 1;
 
             // Acknowledge to the bus
             if_fifo_out_ack = 1'b1;
 
-            if (size_out==1) begin
+            if (size_out == 1) begin
               // When this was the only flit, go to IDLE again
               nxt_state_out = OUT_IDLE;
-            end
-            else begin
+            end else begin
               // Otherwise accept further flis as payload
               nxt_state_out = OUT_PAYLOAD;
             end
-          end
-          else begin
+          end else begin
             // If the packet buffer is not ready, we simply hold
             // the data and valid and wait another cycle for the
             // packet buffer to become ready
             nxt_state_out = OUT_FIRST;
           end
-        end
-        else begin
+        end else begin
           // Wait for the bus
           nxt_state_out = OUT_FIRST;
         end
@@ -387,7 +372,7 @@ module peripheral_mpi_buffer_endpoint #(
           // be output
           out_valid = 1'b1;
 
-          if (size_out==1) begin
+          if (size_out == 1) begin
             out_last = 1'b1;
           end
 
@@ -396,28 +381,25 @@ module peripheral_mpi_buffer_endpoint #(
             // the flit has been stored in the packet buffer
 
             // Decrement size
-            nxt_size_out = size_out-1;
+            nxt_size_out    = size_out - 1;
 
             // Acknowledge to the bus
             if_fifo_out_ack = 1'b1;
 
-            if (size_out==1) begin
+            if (size_out == 1) begin
               // When this was the last flit, go to IDLE again
               nxt_state_out = OUT_IDLE;
-            end
-            else begin
+            end else begin
               // Otherwise accept further flis as payload
               nxt_state_out = OUT_PAYLOAD;
             end
-          end
-          else begin
+          end else begin
             // If the packet buffer is not ready, we simply hold
             // the data and valid and wait another cycle for the
             // packet buffer to become ready
             nxt_state_out = OUT_PAYLOAD;
           end
-        end
-        else begin
+        end else begin
           // Wait for the bus
           nxt_state_out = OUT_PAYLOAD;
         end
@@ -432,11 +414,10 @@ module peripheral_mpi_buffer_endpoint #(
   // Sequential part of both state machines
   always @(posedge clk) begin
     if (rst) begin
-      state_out <= OUT_IDLE; // Start in idle state
+      state_out <= OUT_IDLE;  // Start in idle state
       // size does not require a reset value (not used before set)
       state_in  <= IN_IDLE;
-    end
-    else begin
+    end else begin
       // Register combinational values
       state_out <= nxt_state_out;
       size_out  <= nxt_size_out;
@@ -451,8 +432,8 @@ module peripheral_mpi_buffer_endpoint #(
     nxt_control_flit    = control_flit;
 
     // Ingress part
-    ingress_valid = noc_in_valid;
-    ingress_last  = noc_in_last;
+    ingress_valid       = noc_in_valid;
+    ingress_last        = noc_in_last;
     if ((noc_in_valid & !control_pending) && (noc_in_flit[26:24] == 3'b111) && !noc_in_flit[0]) begin
       nxt_control_pending     = 1'b1;
       nxt_control_flit[31:27] = noc_in_flit[23:19];
@@ -471,8 +452,7 @@ module peripheral_mpi_buffer_endpoint #(
       noc_out_valid = egress_valid;
       noc_out_flit  = egress_flit;
       noc_out_last  = egress_last;
-    end
-    else if (control_pending) begin
+    end else if (control_pending) begin
       egress_ready  = 1'b0;
       noc_out_valid = 1'b1;
       noc_out_flit  = control_flit;
@@ -480,8 +460,7 @@ module peripheral_mpi_buffer_endpoint #(
       if (noc_out_ready) begin
         nxt_control_pending = 1'b0;
       end
-    end
-    else begin
+    end else begin
       egress_ready  = noc_out_ready;
       noc_out_valid = egress_valid;
       noc_out_last  = egress_last;
@@ -493,8 +472,7 @@ module peripheral_mpi_buffer_endpoint #(
     if (rst) begin
       control_pending <= 1'b0;
       control_flit    <= {NOC_FLIT_WIDTH{1'hx}};
-    end
-    else begin
+    end else begin
       control_pending <= nxt_control_pending;
       control_flit    <= nxt_control_flit;
     end
@@ -502,46 +480,44 @@ module peripheral_mpi_buffer_endpoint #(
 
   // The output packet buffer
   peripheral_noc_buffer #(
-  .DEPTH      (SIZE),
-  .FLIT_WIDTH (NOC_FLIT_WIDTH),
-  .FULLPACKET (1)
-  )
-  noc_buffer_out (
-    .clk              (clk),
-    .rst              (rst),
+    .DEPTH     (SIZE),
+    .FLIT_WIDTH(NOC_FLIT_WIDTH),
+    .FULLPACKET(1)
+  ) noc_buffer_out (
+    .clk(clk),
+    .rst(rst),
 
-    .in_ready         (out_ready),
-    .in_flit          (out_flit),
-    .in_last          (out_last),
-    .in_valid         (out_valid),
+    .in_ready(out_ready),
+    .in_flit (out_flit),
+    .in_last (out_last),
+    .in_valid(out_valid),
 
-    .packet_size      (),
+    .packet_size(),
 
-    .out_flit         (egress_flit),
-    .out_last         (egress_last),
-    .out_valid        (egress_valid),
-    .out_ready        (egress_ready)
+    .out_flit (egress_flit),
+    .out_last (egress_last),
+    .out_valid(egress_valid),
+    .out_ready(egress_ready)
   );
 
   // The input packet buffer
   peripheral_noc_buffer #(
-  .DEPTH      (SIZE),
-  .FLIT_WIDTH (NOC_FLIT_WIDTH),
-  .FULLPACKET (1)
-  )
-  noc_buffer_in (
-    .clk               (clk),
-    .rst               (rst),
+    .DEPTH     (SIZE),
+    .FLIT_WIDTH(NOC_FLIT_WIDTH),
+    .FULLPACKET(1)
+  ) noc_buffer_in (
+    .clk(clk),
+    .rst(rst),
 
-    .in_ready          (ingress_ready),
-    .in_flit           (ingress_flit),
-    .in_last           (ingress_last),
-    .in_valid          (ingress_valid),
+    .in_ready(ingress_ready),
+    .in_flit (ingress_flit),
+    .in_last (ingress_last),
+    .in_valid(ingress_valid),
 
-    .packet_size       (size_in),
-    .out_flit          (in_flit),
-    .out_last          (in_last),
-    .out_valid         (in_valid),
-    .out_ready         (in_ready)
+    .packet_size(size_in),
+    .out_flit   (in_flit),
+    .out_last   (in_last),
+    .out_valid  (in_valid),
+    .out_ready  (in_ready)
   );
 endmodule

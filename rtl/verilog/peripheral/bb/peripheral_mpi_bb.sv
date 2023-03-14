@@ -45,10 +45,9 @@ module peripheral_mpi_bb #(
   parameter NOC_FLIT_WIDTH = 32,
   parameter SIZE           = 16,
   parameter N              = 1
-)
-  (
-  input                         clk,
-  input                         rst,
+) (
+  input clk,
+  input rst,
 
   output [N*NOC_FLIT_WIDTH-1:0] noc_out_flit,
   output [N               -1:0] noc_out_last,
@@ -60,14 +59,14 @@ module peripheral_mpi_bb #(
   input  [N               -1:0] noc_in_valid,
   output [N               -1:0] noc_in_ready,
 
-  input  [                31:0] bb_addr_i,
-  input  [                31:0] bb_din_i,
-  input                         bb_en_i,
-  input                         bb_we_i,
+  input [31:0] bb_addr_i,
+  input [31:0] bb_din_i,
+  input        bb_en_i,
+  input        bb_we_i,
 
-  output [                31:0] bb_dout_o,
+  output [31:0] bb_dout_o,
 
-  output                        irq
+  output irq
 );
 
   //////////////////////////////////////////////////////////////////////////////
@@ -76,15 +75,15 @@ module peripheral_mpi_bb #(
   //
 
   // Bus side (generic)
-  wire [31:0]                  bus_addr;
-  wire [31:0]                  bus_data_in;
-  wire                         bus_en;
-  wire                         bus_we;
+  wire [31:0] bus_addr;
+  wire [31:0] bus_data_in;
+  wire        bus_en;
+  wire        bus_we;
 
-  wire [31:0]                  bus_data_out;
+  wire [31:0] bus_data_out;
 
-  wire                         bus_ack;
-  wire                         bus_err;
+  wire        bus_ack;
+  wire        bus_err;
 
   //////////////////////////////////////////////////////////////////////////////
   //
@@ -102,33 +101,32 @@ module peripheral_mpi_bb #(
   assign bb_err_o    = bus_err;
 
   peripheral_mpi_buffer #(
-  .NOC_FLIT_WIDTH (NOC_FLIT_WIDTH),
-  .SIZE           (SIZE),
-  .N              (N)
-  )
-  mpi_buffer (
-    .clk (clk),
-    .rst (rst),
+    .NOC_FLIT_WIDTH(NOC_FLIT_WIDTH),
+    .SIZE          (SIZE),
+    .N             (N)
+  ) mpi_buffer (
+    .clk(clk),
+    .rst(rst),
 
-    .noc_out_flit  (noc_out_flit),
-    .noc_out_last  (noc_out_last),
-    .noc_out_valid (noc_out_valid),
-    .noc_out_ready (noc_out_ready),
+    .noc_out_flit (noc_out_flit),
+    .noc_out_last (noc_out_last),
+    .noc_out_valid(noc_out_valid),
+    .noc_out_ready(noc_out_ready),
 
-    .noc_in_flit  (noc_in_flit),
-    .noc_in_last  (noc_in_last),
-    .noc_in_valid (noc_in_valid),
-    .noc_in_ready (noc_in_ready),
+    .noc_in_flit (noc_in_flit),
+    .noc_in_last (noc_in_last),
+    .noc_in_valid(noc_in_valid),
+    .noc_in_ready(noc_in_ready),
 
     // Bus side (generic)
-    .bus_addr     (bus_addr),
-    .bus_we       (bus_we),
-    .bus_en       (bus_en),
-    .bus_data_in  (bus_data_in),
-    .bus_data_out (bus_data_out),
-    .bus_ack      (bus_ack),
-    .bus_err      (bus_err),
+    .bus_addr    (bus_addr),
+    .bus_we      (bus_we),
+    .bus_en      (bus_en),
+    .bus_data_in (bus_data_in),
+    .bus_data_out(bus_data_out),
+    .bus_ack     (bus_ack),
+    .bus_err     (bus_err),
 
-    .irq (irq)
+    .irq(irq)
   );
 endmodule

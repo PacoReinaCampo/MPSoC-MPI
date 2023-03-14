@@ -41,16 +41,15 @@
  */
 
 module peripheral_mpi_synthesis #(
-  parameter HADDR_SIZE =  8,
-  parameter HDATA_SIZE = 32,
-  parameter APB_ADDR_WIDTH =  8,
+  parameter HADDR_SIZE     = 8,
+  parameter HDATA_SIZE     = 32,
+  parameter APB_ADDR_WIDTH = 8,
   parameter APB_DATA_WIDTH = 32,
-  parameter SYNC_DEPTH =  3
-)
-  (
+  parameter SYNC_DEPTH     = 3
+) (
   //Common signals
-  input                         HRESETn,
-  input                         HCLK,
+  input HRESETn,
+  input HCLK,
 
   //UART AHB3
   input                         mpi_HSEL,
@@ -83,8 +82,8 @@ module peripheral_mpi_synthesis #(
   logic                       mpi_PREADY;
   logic                       mpi_PSLVERR;
 
-  logic                       mpi_rx_i; // Receiver input
-  logic                       mpi_tx_o; // Transmitter output
+  logic                       mpi_rx_i;  // Receiver input
+  logic                       mpi_tx_o;  // Transmitter output
 
   logic                       mpi_event_o;
 
@@ -95,67 +94,65 @@ module peripheral_mpi_synthesis #(
 
   //DUT AHB3
   peripheral_bridge_apb2ahb #(
-  .HADDR_SIZE ( HADDR_SIZE     ),
-  .HDATA_SIZE ( HDATA_SIZE     ),
-  .PADDR_SIZE ( APB_ADDR_WIDTH ),
-  .PDATA_SIZE ( APB_DATA_WIDTH ),
-  .SYNC_DEPTH ( SYNC_DEPTH     )
-  )
-  bridge_apb2ahb (
+    .HADDR_SIZE(HADDR_SIZE),
+    .HDATA_SIZE(HDATA_SIZE),
+    .PADDR_SIZE(APB_ADDR_WIDTH),
+    .PDATA_SIZE(APB_DATA_WIDTH),
+    .SYNC_DEPTH(SYNC_DEPTH)
+  ) bridge_apb2ahb (
     //AHB Slave Interface
-    .HRESETn   ( HRESETn ),
-    .HCLK      ( HCLK    ),
+    .HRESETn(HRESETn),
+    .HCLK   (HCLK),
 
-    .HSEL      ( mpi_HSEL      ),
-    .HADDR     ( mpi_HADDR     ),
-    .HWDATA    ( mpi_HWDATA    ),
-    .HRDATA    ( mpi_HRDATA    ),
-    .HWRITE    ( mpi_HWRITE    ),
-    .HSIZE     ( mpi_HSIZE     ),
-    .HBURST    ( mpi_HBURST    ),
-    .HPROT     ( mpi_HPROT     ),
-    .HTRANS    ( mpi_HTRANS    ),
-    .HMASTLOCK ( mpi_HMASTLOCK ),
-    .HREADYOUT ( mpi_HREADYOUT ),
-    .HREADY    ( mpi_HREADY    ),
-    .HRESP     ( mpi_HRESP     ),
+    .HSEL     (mpi_HSEL),
+    .HADDR    (mpi_HADDR),
+    .HWDATA   (mpi_HWDATA),
+    .HRDATA   (mpi_HRDATA),
+    .HWRITE   (mpi_HWRITE),
+    .HSIZE    (mpi_HSIZE),
+    .HBURST   (mpi_HBURST),
+    .HPROT    (mpi_HPROT),
+    .HTRANS   (mpi_HTRANS),
+    .HMASTLOCK(mpi_HMASTLOCK),
+    .HREADYOUT(mpi_HREADYOUT),
+    .HREADY   (mpi_HREADY),
+    .HRESP    (mpi_HRESP),
 
     //APB Master Interface
-    .PRESETn ( HRESETn ),
-    .PCLK    ( HCLK    ),
+    .PRESETn(HRESETn),
+    .PCLK   (HCLK),
 
-    .PSEL    ( mpi_PSEL    ),
-    .PENABLE ( mpi_PENABLE ),
-    .PPROT   (              ),
-    .PWRITE  ( mpi_PWRITE  ),
-    .PSTRB   (              ),
-    .PADDR   ( mpi_PADDR   ),
-    .PWDATA  ( mpi_PWDATA  ),
-    .PRDATA  ( mpi_PRDATA  ),
-    .PREADY  ( mpi_PREADY  ),
-    .PSLVERR ( mpi_PSLVERR )
+    .PSEL   (mpi_PSEL),
+    .PENABLE(mpi_PENABLE),
+    .PPROT  (),
+    .PWRITE (mpi_PWRITE),
+    .PSTRB  (),
+    .PADDR  (mpi_PADDR),
+    .PWDATA (mpi_PWDATA),
+    .PRDATA (mpi_PRDATA),
+    .PREADY (mpi_PREADY),
+    .PSLVERR(mpi_PSLVERR)
   );
 
   peripheral_apb4_mpi #(
-  .APB_ADDR_WIDTH ( APB_ADDR_WIDTH ),
-  .APB_DATA_WIDTH ( APB_DATA_WIDTH )
-  )
-  apb4_mpi (
-    .RSTN ( HRESETn ),
-    .CLK  ( HCLK    ),
+    .APB_ADDR_WIDTH(APB_ADDR_WIDTH),
+    .APB_DATA_WIDTH(APB_DATA_WIDTH)
+  ) apb4_mpi (
+    .RSTN(HRESETn),
+    .CLK (HCLK),
 
-    .PADDR   ( mpi_PADDR   ),
-    .PWDATA  ( mpi_PWDATA  ),
-    .PWRITE  ( mpi_PWRITE  ),
-    .PSEL    ( mpi_PSEL    ),
-    .PENABLE ( mpi_PENABLE ),
-    .PRDATA  ( mpi_PRDATA  ),
-    .PREADY  ( mpi_PREADY  ),
-    .PSLVERR ( mpi_PSLVERR ),
+    .PADDR  (mpi_PADDR),
+    .PWDATA (mpi_PWDATA),
+    .PWRITE (mpi_PWRITE),
+    .PSEL   (mpi_PSEL),
+    .PENABLE(mpi_PENABLE),
+    .PRDATA (mpi_PRDATA),
+    .PREADY (mpi_PREADY),
+    .PSLVERR(mpi_PSLVERR),
 
-    .rx_i ( mpi_rx_i ),
-    .tx_o ( mpi_tx_o ),
+    .rx_i(mpi_rx_i),
+    .tx_o(mpi_tx_o),
 
-    .event_o ( mpi_event_o )
+    .event_o(mpi_event_o)
   );
 endmodule

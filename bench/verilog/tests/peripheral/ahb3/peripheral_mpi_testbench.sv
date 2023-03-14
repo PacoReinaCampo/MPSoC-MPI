@@ -47,15 +47,15 @@ module peripheral_mpi_testbench;
   // Constants
   //
   parameter NOC_FLIT_WIDTH = 32;
-  parameter SIZE           = 16;
-  parameter N              = 1;
+  parameter SIZE = 16;
+  parameter N = 1;
 
   //////////////////////////////////////////////////////////////////////////////
   //
   // Variables
   //
-  logic clk;
-  logic rst;
+  logic                        clk;
+  logic                        rst;
 
   // AHB
   logic [N*NOC_FLIT_WIDTH-1:0] ahb_noc_out_flit;
@@ -91,39 +91,38 @@ module peripheral_mpi_testbench;
 
   //DUT AHB3
   peripheral_mpi_ahb3 #(
-  .NOC_FLIT_WIDTH (NOC_FLIT_WIDTH),
-  .SIZE           (SIZE),
-  .N              (N)
-  )
-  mpi_ahb3 (
-    .clk ( clk ),
-    .rst ( rst ),
+    .NOC_FLIT_WIDTH(NOC_FLIT_WIDTH),
+    .SIZE          (SIZE),
+    .N             (N)
+  ) mpi_ahb3 (
+    .clk(clk),
+    .rst(rst),
 
     // NoC interface
-    .noc_out_flit  ( ahb_noc_out_flit  ),
-    .noc_out_last  ( ahb_noc_out_last  ),
-    .noc_out_valid ( ahb_noc_out_valid ),
-    .noc_out_ready ( ahb_noc_out_ready ),
+    .noc_out_flit (ahb_noc_out_flit),
+    .noc_out_last (ahb_noc_out_last),
+    .noc_out_valid(ahb_noc_out_valid),
+    .noc_out_ready(ahb_noc_out_ready),
 
-    .noc_in_flit  ( ahb_noc_in_flit  ),
-    .noc_in_last  ( ahb_noc_in_last  ),
-    .noc_in_valid ( ahb_noc_in_valid ),
-    .noc_in_ready ( ahb_noc_in_ready ),
+    .noc_in_flit (ahb_noc_in_flit),
+    .noc_in_last (ahb_noc_in_last),
+    .noc_in_valid(ahb_noc_in_valid),
+    .noc_in_ready(ahb_noc_in_ready),
 
-    .ahb3_hsel_i      ( ahb3_hsel_i      ),
-    .ahb3_haddr_i     ( ahb3_haddr_i     ),
-    .ahb3_hwdata_i    ( ahb3_hwdata_i    ),
-    .ahb3_hwrite_i    ( ahb3_hwrite_i    ),
-    .ahb3_hsize_i     ( ahb3_hsize_i     ),
-    .ahb3_hburst_i    ( ahb3_hburst_i    ),
-    .ahb3_hprot_i     ( ahb3_hprot_i     ),
-    .ahb3_htrans_i    ( ahb3_htrans_i    ),
-    .ahb3_hmastlock_i ( ahb3_hmastlock_i ),
+    .ahb3_hsel_i     (ahb3_hsel_i),
+    .ahb3_haddr_i    (ahb3_haddr_i),
+    .ahb3_hwdata_i   (ahb3_hwdata_i),
+    .ahb3_hwrite_i   (ahb3_hwrite_i),
+    .ahb3_hsize_i    (ahb3_hsize_i),
+    .ahb3_hburst_i   (ahb3_hburst_i),
+    .ahb3_hprot_i    (ahb3_hprot_i),
+    .ahb3_htrans_i   (ahb3_htrans_i),
+    .ahb3_hmastlock_i(ahb3_hmastlock_i),
 
-    .ahb3_hrdata_o ( ahb3_hrdata_o ),
-    .ahb3_hready_o ( ahb3_hready_o ),
-    .ahb3_hresp_o  ( ahb3_hresp_o  ),
+    .ahb3_hrdata_o(ahb3_hrdata_o),
+    .ahb3_hready_o(ahb3_hready_o),
+    .ahb3_hresp_o (ahb3_hresp_o),
 
-    .irq ( ahb3_irq )
+    .irq(ahb3_irq)
   );
 endmodule

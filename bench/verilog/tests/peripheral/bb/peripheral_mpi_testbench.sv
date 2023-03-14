@@ -47,15 +47,15 @@ module peripheral_mpi_testbench;
   // Constants
   //
   parameter NOC_FLIT_WIDTH = 32;
-  parameter SIZE           = 16;
-  parameter N              = 1;
+  parameter SIZE = 16;
+  parameter N = 1;
 
   //////////////////////////////////////////////////////////////////////////////
   //
   // Variables
   //
-  logic clk;
-  logic rst;
+  logic                        clk;
+  logic                        rst;
 
   // BB
   logic [N*NOC_FLIT_WIDTH-1:0] bb_noc_out_flit;
@@ -85,32 +85,31 @@ module peripheral_mpi_testbench;
 
   //DUT BB
   peripheral_mpi_bb #(
-  .NOC_FLIT_WIDTH (NOC_FLIT_WIDTH),
-  .SIZE           (SIZE),
-  .N              (N)
-  )
-  mpi_bb (
-    .clk ( clk ),
-    .rst ( rst ),
+    .NOC_FLIT_WIDTH(NOC_FLIT_WIDTH),
+    .SIZE          (SIZE),
+    .N             (N)
+  ) mpi_bb (
+    .clk(clk),
+    .rst(rst),
 
     // NoC interface
-    .noc_out_flit  ( bb_noc_out_flit  ),
-    .noc_out_last  ( bb_noc_out_last  ),
-    .noc_out_valid ( bb_noc_out_valid ),
-    .noc_out_ready ( bb_noc_out_ready ),
+    .noc_out_flit (bb_noc_out_flit),
+    .noc_out_last (bb_noc_out_last),
+    .noc_out_valid(bb_noc_out_valid),
+    .noc_out_ready(bb_noc_out_ready),
 
-    .noc_in_flit  ( bb_noc_in_flit  ),
-    .noc_in_last  ( bb_noc_in_last  ),
-    .noc_in_valid ( bb_noc_in_valid ),
-    .noc_in_ready ( bb_noc_in_ready ),
+    .noc_in_flit (bb_noc_in_flit),
+    .noc_in_last (bb_noc_in_last),
+    .noc_in_valid(bb_noc_in_valid),
+    .noc_in_ready(bb_noc_in_ready),
 
-    .bb_addr_i ( bb_addr_i ),
-    .bb_din_i  ( bb_din_i  ),
-    .bb_en_i   ( bb_en_i   ),
-    .bb_we_i   ( bb_we_i   ),
+    .bb_addr_i(bb_addr_i),
+    .bb_din_i (bb_din_i),
+    .bb_en_i  (bb_en_i),
+    .bb_we_i  (bb_we_i),
 
-    .bb_dout_o ( bb_dout_o ),
+    .bb_dout_o(bb_dout_o),
 
-    .irq ( bb_irq )
+    .irq(bb_irq)
   );
 endmodule
