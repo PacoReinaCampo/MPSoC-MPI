@@ -64,14 +64,14 @@ use ieee.numeric_std.all;
 
 entity peripheral_mpi is
   generic (
-    NoC_DATA_WIDTH       : integer := 32;
-    NoC_TYPE_WIDTH       : integer := 2;
-    FIFO_DEPTH           : integer := 16;
-    NoC_FLIT_WIDTH       : integer := 4;
-    SIZE_WIDTH           : integer := 5;
+    NoC_DATA_WIDTH : integer := 32;
+    NoC_TYPE_WIDTH : integer := 2;
+    FIFO_DEPTH     : integer := 16;
+    NoC_FLIT_WIDTH : integer := 4;
+    SIZE_WIDTH     : integer := 5;
 
     PACKET_CLASS_CONTROL : std_logic_vector(2 downto 0) := "111"
-  );
+    );
   port (
     clk : in std_logic;
     rst : in std_logic;
@@ -94,7 +94,7 @@ entity peripheral_mpi is
     bus_ack      : out std_logic;
 
     irq : out std_logic
-  );
+    );
 end peripheral_mpi;
 
 architecture rtl of peripheral_mpi is
@@ -105,14 +105,14 @@ architecture rtl of peripheral_mpi is
 
   component peripheral_packet_buffer
     generic (
-      DATA_WIDTH : integer   := 32;
-      FIFO_DEPTH : integer   := 16;
-      FLIT_WIDTH : integer   := 34;
-      SIZE_WIDTH : integer   := 5;
+      DATA_WIDTH : integer := 32;
+      FIFO_DEPTH : integer := 16;
+      FLIT_WIDTH : integer := 34;
+      SIZE_WIDTH : integer := 5;
 
       READY : std_logic := '0';
       BUSY  : std_logic := '1'
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -128,7 +128,7 @@ architecture rtl of peripheral_mpi is
       out_ready : in  std_logic;
 
       out_size : out std_logic_vector(SIZE_WIDTH-1 downto 0)
-    );
+      );
   end component;
 
   ------------------------------------------------------------------------------
@@ -144,8 +144,8 @@ architecture rtl of peripheral_mpi is
   constant INPUT_IDLE : std_logic := '0';
   constant INPUT_FLIT : std_logic := '1';
 
-  constant DATA_WIDTH : integer   := 32;
-  constant FLIT_WIDTH : integer   := 34;
+  constant DATA_WIDTH : integer := 32;
+  constant FLIT_WIDTH : integer := 34;
 
   constant READY : std_logic := '0';
   constant BUSY  : std_logic := '1';
@@ -379,7 +379,7 @@ begin
             -- packet buffer to become ready
             nxt_state_out <= OUT_FIRST;
           end if;
-        else  -- Wait for the bus
+        else                            -- Wait for the bus
           nxt_state_out <= OUT_FIRST;
         end if;
       when OUT_PAYLOAD =>
@@ -421,7 +421,7 @@ begin
             -- packet buffer to become ready
             nxt_state_out <= OUT_PAYLOAD;
           end if;
-        else  -- Wait for the bus
+        else                            -- Wait for the bus
           nxt_state_out <= OUT_PAYLOAD;
         end if;
       when others =>
@@ -517,7 +517,7 @@ begin
 
       READY => READY,
       BUSY  => BUSY
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -533,7 +533,7 @@ begin
       out_valid => egress_valid,
 
       out_size => open
-    );
+      );
 
   packet_buffer_in : peripheral_packet_buffer
     generic map (
@@ -544,7 +544,7 @@ begin
 
       READY => READY,
       BUSY  => BUSY
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -560,5 +560,5 @@ begin
       out_valid => in_valid,
 
       out_size => size_in
-    );
+      );
 end rtl;

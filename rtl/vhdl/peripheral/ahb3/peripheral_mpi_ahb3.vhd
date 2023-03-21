@@ -54,7 +54,7 @@ entity peripheral_mpi_ahb3 is
     FIFO_DEPTH     : integer := 16;
     NoC_FLIT_WIDTH : integer := 34;
     SIZE_WIDTH     : integer := 5
-  );
+    );
   port (
     clk : in std_logic;
     rst : in std_logic;
@@ -77,7 +77,7 @@ entity peripheral_mpi_ahb3 is
     HREADY    : out std_logic;
 
     irq : out std_logic
-  );
+    );
 end peripheral_mpi_ahb3;
 
 architecture rtl of peripheral_mpi_ahb3 is
@@ -88,14 +88,14 @@ architecture rtl of peripheral_mpi_ahb3 is
 
   component peripheral_mpi
     generic (
-      NoC_DATA_WIDTH       : integer := 32;
-      NoC_TYPE_WIDTH       : integer := 2;
-      FIFO_DEPTH           : integer := 16;
-      NoC_FLIT_WIDTH       : integer := 34;
-      SIZE_WIDTH           : integer := 5;
+      NoC_DATA_WIDTH : integer := 32;
+      NoC_TYPE_WIDTH : integer := 2;
+      FIFO_DEPTH     : integer := 16;
+      NoC_FLIT_WIDTH : integer := 34;
+      SIZE_WIDTH     : integer := 5;
 
       PACKET_CLASS_CONTROL : std_logic_vector(2 downto 0) := "111"
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -118,7 +118,7 @@ architecture rtl of peripheral_mpi_ahb3 is
       bus_ack      : out std_logic;
 
       irq : out std_logic
-    );
+      );
   end component;
 
   ------------------------------------------------------------------------------
@@ -150,7 +150,7 @@ begin
       NoC_DATA_WIDTH => NoC_DATA_WIDTH,
       NoC_TYPE_WIDTH => NoC_TYPE_WIDTH,
       FIFO_DEPTH     => FIFO_DEPTH
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -172,5 +172,5 @@ begin
       bus_we      => bus_we,
       bus_en      => bus_en,
       bus_data_in => bus_data_in(NoC_DATA_WIDTH-1 downto 0)
-    );
+      );
 end rtl;

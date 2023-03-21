@@ -64,7 +64,7 @@ architecture rtl of peripheral_mpi_testbench is
       FIFO_DEPTH     : integer := 16;
       NoC_FLIT_WIDTH : integer := 34;
       SIZE_WIDTH     : integer := 5
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -87,7 +87,7 @@ architecture rtl of peripheral_mpi_testbench is
       HREADY    : out std_logic;
 
       irq : out std_logic
-    );
+      );
   end component;
 
   ------------------------------------------------------------------------------
@@ -137,7 +137,7 @@ begin
       FIFO_DEPTH     => FIFO_DEPTH,
       NoC_FLIT_WIDTH => NoC_FLIT_WIDTH,
       SIZE_WIDTH     => SIZE_WIDTH
-    )
+      )
     port map (
       clk => clk,
       rst => rst,

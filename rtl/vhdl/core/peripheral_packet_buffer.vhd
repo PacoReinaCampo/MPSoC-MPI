@@ -51,14 +51,14 @@ use work.vhdl_pkg.all;
 
 entity peripheral_packet_buffer is
   generic (
-    DATA_WIDTH : integer   := 32;
-    FIFO_DEPTH : integer   := 16;
-    FLIT_WIDTH : integer   := 34;
-    SIZE_WIDTH : integer   := 5;
+    DATA_WIDTH : integer := 32;
+    FIFO_DEPTH : integer := 16;
+    FLIT_WIDTH : integer := 34;
+    SIZE_WIDTH : integer := 5;
 
     READY : std_logic := '0';
     BUSY  : std_logic := '1'
-  );
+    );
   port (
     clk : in std_logic;
     rst : in std_logic;
@@ -74,7 +74,7 @@ entity peripheral_packet_buffer is
     out_ready : in  std_logic;
 
     out_size : out std_logic_vector(SIZE_WIDTH-1 downto 0)
-  );
+    );
 end peripheral_packet_buffer;
 
 architecture rtl of peripheral_packet_buffer is
@@ -170,24 +170,24 @@ begin
         for k in 0 to FIFO_DEPTH-2 loop
           if (pop = '1') then
             if (push = '1' and fifo_write_ptr(k+1) = '1') then
-              fifo_data  (k) <= in_flit;
+              fifo_data (k)  <= in_flit;
               last_flits (k) <= in_is_last;
             else
-              fifo_data  (k) <= fifo_data  (k+1);
+              fifo_data (k)  <= fifo_data (k+1);
               last_flits (k) <= last_flits (k+1);
             end if;
           elsif (push = '1' and fifo_write_ptr(k) = '1') then
-            fifo_data  (k) <= in_flit;
+            fifo_data (k)  <= in_flit;
             last_flits (k) <= in_is_last;
           end if;
           last_k := k;
         end loop;
         -- Handle last element
         if (pop = '1' and push = '1' and fifo_write_ptr(last_k+1) = '1') then
-          fifo_data  (last_k) <= in_flit;
+          fifo_data (last_k)  <= in_flit;
           last_flits (last_k) <= in_is_last;
         elsif (push = '1' and fifo_write_ptr(last_k) = '1') then
-          fifo_data  (last_k) <= in_flit;
+          fifo_data (last_k)  <= in_flit;
           last_flits (last_k) <= in_is_last;
         end if;
       end if;
