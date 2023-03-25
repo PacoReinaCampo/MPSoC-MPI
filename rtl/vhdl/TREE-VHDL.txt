@@ -1,4 +1,4 @@
-vhdl
+code
 ├── core
 │   ├── peripheral_mpi.vhd
 │   └── peripheral_packet_buffer.vhd

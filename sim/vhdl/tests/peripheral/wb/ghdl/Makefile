@@ -45,11 +45,11 @@
 all: build simulate
 
 build:
-	ghdl -a --std=08 ../../../../../../rtl/vhdl/pkg/core/vhdl_pkg.vhd
-	ghdl -a --std=08 ../../../../../../rtl/vhdl/peripheral/wb/peripheral_mpi_wb.vhd
-	ghdl -a --std=08 ../../../../../../rtl/vhdl/core/peripheral_mpi.vhd
-	ghdl -a --std=08 ../../../../../../rtl/vhdl/core/peripheral_packet_buffer.vhd
-	ghdl -a --std=08 ../../../../../../bench/vhdl/tests/peripheral/wb/peripheral_mpi_testbench.vhd
+	ghdl -a --std=08 ../../../../../../rtl/vhdl/code/pkg/core/vhdl_pkg.vhd
+	ghdl -a --std=08 ../../../../../../rtl/vhdl/code/peripheral/wb/peripheral_mpi_wb.vhd
+	ghdl -a --std=08 ../../../../../../rtl/vhdl/code/core/peripheral_mpi.vhd
+	ghdl -a --std=08 ../../../../../../rtl/vhdl/code/core/peripheral_packet_buffer.vhd
+	ghdl -a --std=08 ../../../../../../bench/vhdl/code/tests/peripheral/wb/peripheral_mpi_testbench.vhd
 
 simulate:
 	ghdl -m --std=08 peripheral_mpi_testbench

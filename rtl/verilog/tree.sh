@@ -42,11 +42,4 @@
 ##                                                                               ##
 ###################################################################################
 
-../../../../../../rtl/vhdl/code/pkg/core/vhdl_pkg.vhd
-
-../../../../../../rtl/vhdl/code/peripheral/wb/peripheral_mpi_wb.vhd
-
-../../../../../../rtl/vhdl/code/core/peripheral_mpi.vhd
-../../../../../../rtl/vhdl/code/core/peripheral_packet_buffer.vhd
-
-../../../../../../bench/vhdl/code/tests/peripheral/wb/peripheral_mpi_testbench.vhd
+tree -P '*.sv' code > TREE-VERILOG.txt

@@ -1,4 +1,4 @@
-verilog
+code
 ├── core
 │   ├── peripheral_mpi_buffer_endpoint.sv
 │   ├── peripheral_mpi_buffer.sv
