@@ -42,7 +42,7 @@
 //                                                                               //
 ///////////////////////////////////////////////////////////////////////////////////
 
-../../../../../../../rtl/verilog/code/pkg/peripheral/wb/peripheral_wb_pkg.sv
+../../../../../../../rtl/verilog/code/pkg/peripheral/ahb3/peripheral_ahb3_pkg.sv
 
 ../../../../../../../rtl/verilog/code/peripheral/ahb3/peripheral_mpi_ahb3.sv
 
