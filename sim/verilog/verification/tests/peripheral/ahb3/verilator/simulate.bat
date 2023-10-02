@@ -46,4 +46,6 @@
 call ../../../../../../../settings64_verilator.bat
 
 verilator -Wno-lint -Wno-UNOPTFLAT -Wno-COMBDLY --cc -f system.vc --top-module peripheral_mpi_testbench
+make -C obj_dir -j -f Vperipheral_mpi_testbench.mk Vperipheral_mpi_testbench
+obj_dir/Vperipheral_mpi_testbench
 pause
