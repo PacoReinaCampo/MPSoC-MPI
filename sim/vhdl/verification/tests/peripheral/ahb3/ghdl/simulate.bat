@@ -44,15 +44,8 @@
 
 @echo off
 call ../../../../../../../settings64_ghdl.bat
+sh system.s
 
-ghdl -a --std=08 ../../../../../../../rtl/vhdl/code/pkg/core/vhdl_pkg.vhd
-
-ghdl -a --std=08 ../../../../../../../rtl/vhdl/code/peripheral/ahb3/peripheral_mpi_ahb3.vhd
-
-ghdl -a --std=08 ../../../../../../../rtl/vhdl/code/core/peripheral_mpi.vhd
-ghdl -a --std=08 ../../../../../../../rtl/vhdl/code/core/peripheral_packet_buffer.vhd
-
-ghdl -a --std=08 ../../../../../../../bench/vhdl/code/tests/peripheral/ahb3/peripheral_mpi_testbench.vhd
 	
 ghdl -e --std=08 peripheral_mpi_testbench
 ghdl -r --std=08 peripheral_mpi_testbench --ieee-asserts=disable-at-0 --vcd=peripheral_mpi_testbench.vcd --wave=system.ghw --stop-time=1ms
