@@ -45,11 +45,14 @@
 all: build simulate
 
 build:
-	sh system.s
+	sh system.g
 
 simulate:
 	ghdl -e --std=08 peripheral_mpi_testbench
 	ghdl -r --std=08 peripheral_mpi_testbench --ieee-asserts=disable-at-0 --vcd=peripheral_mpi_testbench.vcd --wave=system.ghw --stop-time=1ms
+
+test:
+	gtkwave system.ghw
 
 clean:
 	rm -f *.cf *.vcd *.ghw
