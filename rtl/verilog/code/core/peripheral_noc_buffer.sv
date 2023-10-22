@@ -92,7 +92,9 @@ module peripheral_noc_buffer #(
   //
 
   function logic [AW:0] find_first_one(input logic [DEPTH:0] data);
-    for (int i = DEPTH; i >= 0; i--) if (data[i]) return i;
+    for (int i = DEPTH; i >= 0; i--) if (data[i]) begin
+      return i;
+    end
     return DEPTH + 1;
   endfunction
 
@@ -123,10 +125,17 @@ module peripheral_noc_buffer #(
       rd_addr  <= 'b0;
       rd_count <= 'b0;
     end else begin
-      if (fifo_write & ~fifo_read) rd_count <= rd_count + 1'b1;
-      else if (fifo_read & ~fifo_write) rd_count <= rd_count - 1'b1;
-      if (write_ram) wr_addr <= wr_addr + 1'b1;
-      if (read_ram) rd_addr <= rd_addr + 1'b1;
+      if (fifo_write & ~fifo_read) begin
+        rd_count <= rd_count + 1'b1;
+      end else if (fifo_read & ~fifo_write) begin
+        rd_count <= rd_count - 1'b1;
+      end
+      if (write_ram) begin
+        wr_addr <= wr_addr + 1'b1;
+      end  
+      if (read_ram) begin
+        rd_addr <= rd_addr + 1'b1;
+      end
     end
   end
 
@@ -151,8 +160,11 @@ module peripheral_noc_buffer #(
   generate
     if (FULLPACKET != 0) begin
       always @(posedge clk) begin
-        if (rst) data_last_buf <= 0;
-        else if (fifo_write) data_last_buf <= {data_last_buf, in_last};
+        if (rst) begin
+          data_last_buf <= 0;
+        end else if (fifo_write) begin
+          data_last_buf <= {data_last_buf, in_last};
+        end
       end
 
       // Extra logic to get the packet size in a stable manner

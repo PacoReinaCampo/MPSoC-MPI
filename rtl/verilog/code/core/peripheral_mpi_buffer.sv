@@ -98,7 +98,9 @@ module peripheral_mpi_buffer #(
   always @(*) begin
     bus_data_out = 32'hx;
     for (int i = 0; i <= N; i++) begin
-      if (bus_sel_mod[i]) bus_data_out = bus_data_mod[i];
+      if (bus_sel_mod[i]) begin
+        bus_data_out = bus_data_mod[i];
+      end
     end
   end
 
