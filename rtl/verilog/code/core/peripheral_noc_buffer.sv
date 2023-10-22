@@ -57,7 +57,7 @@ module peripheral_noc_buffer #(
   input                   in_valid,
   output                  in_ready,
 
-  //FIFO output side
+  // FIFO output side
   output reg [FLIT_WIDTH-1:0] out_flit,
   output reg                  out_last,
   output                      out_valid,
@@ -92,8 +92,10 @@ module peripheral_noc_buffer #(
   //
 
   function logic [AW:0] find_first_one(input logic [DEPTH:0] data);
-    for (int i = DEPTH; i >= 0; i--) if (data[i]) begin
-      return i;
+    for (int i = DEPTH; i >= 0; i--) begin
+      if (data[i]) begin
+        return i;
+      end
     end
     return DEPTH + 1;
   endfunction
@@ -130,9 +132,11 @@ module peripheral_noc_buffer #(
       end else if (fifo_read & ~fifo_write) begin
         rd_count <= rd_count - 1'b1;
       end
+
       if (write_ram) begin
         wr_addr <= wr_addr + 1'b1;
-      end  
+      end
+
       if (read_ram) begin
         rd_addr <= rd_addr + 1'b1;
       end
