@@ -89,7 +89,7 @@ module peripheral_mpi_testbench;
   // Module Body
   //
 
-  //DUT AHB3
+  // DUT AHB3
   peripheral_mpi_ahb3 #(
     .NOC_FLIT_WIDTH(NOC_FLIT_WIDTH),
     .SIZE          (SIZE),

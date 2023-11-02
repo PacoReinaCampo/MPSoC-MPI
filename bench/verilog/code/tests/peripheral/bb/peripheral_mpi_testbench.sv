@@ -83,7 +83,7 @@ module peripheral_mpi_testbench;
   // Module Body
   //
 
-  //DUT BB
+  // DUT BB
   peripheral_mpi_bb #(
     .NOC_FLIT_WIDTH(NOC_FLIT_WIDTH),
     .SIZE          (SIZE),

@@ -63,7 +63,7 @@ module peripheral_mpi_synthesis (
   // Module Body
   //
 
-  //DUT BB
+  // DUT BB
   bb_mpi mpi (
     .mclk   (mclk),    // Main system clock
     .puc_rst(puc_rst), // Main system reset

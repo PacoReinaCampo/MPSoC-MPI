@@ -77,7 +77,7 @@ module peripheral_mpi_synthesis #(
   // Module Body
   //
 
-  //DUT WB
+  // DUT WB
   peripheral_wb_mpi #(
     .SIM  (SIM),
     .DEBUG(DEBUG)
