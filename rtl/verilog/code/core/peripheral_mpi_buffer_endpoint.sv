@@ -14,32 +14,30 @@
 //              AMBA3 AHB-Lite Bus Interface                                  //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
-
-/* Copyright (c) 2018-2019 by the author(s)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * =============================================================================
- * Author(s):
- *   Stefan Wallentowitz <stefan.wallentowitz@tum.de>
- *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
- */
+// Copyright (c) 2018-2019 by the author(s)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+////////////////////////////////////////////////////////////////////////////////
+// Author(s):
+//   Stefan Wallentowitz <stefan.wallentowitz@tum.de>
+//   Paco Reina Campo <pacoreinacampo@queenfield.tech>
 
 module peripheral_mpi_buffer_endpoint #(
   parameter NOC_FLIT_WIDTH = 32,
@@ -70,22 +68,20 @@ module peripheral_mpi_buffer_endpoint #(
   output irq
 );
 
-  /*
-   *
-   *                   +-> Input path <- packet buffer <-- Ingress
-   *                   |    * raise interrupt (!empty)
-   * Bus interface --> +    * read size flits from packet buffer
-   *                   |
-   *                   +-> Output path -> packet buffer --> Egress
-   *                        * set size
-   *                        * write flits to packet buffer
-   *
-   * Ingress <---+----- NoC
-   *             |
-   *       Handle control message
-   *             |
-   *  Egress ----+----> NoC
-   */
+  //
+  //                   +-> Input path <- packet buffer <-- Ingress
+  //                   |    * raise interrupt (!empty)
+  // Bus interface --> +    * read size flits from packet buffer
+  //                   |
+  //                   +-> Output path -> packet buffer --> Egress
+  //                        * set size
+  //                        * write flits to packet buffer
+  //
+  // Ingress <---+----- NoC
+  //             |
+  //       Handle control message
+  //             |
+  //  Egress ----+----> NoC
 
   //////////////////////////////////////////////////////////////////////////////
   // Functions
@@ -180,18 +176,16 @@ module peripheral_mpi_buffer_endpoint #(
   reg                       control_pending;
   reg                       nxt_control_pending;
 
-  /*
-   * +------+---+------------------------+
-   * | 0x0  | R | Read from Ingress FIFO |
-   * +------+---+------------------------+
-   * |      | W | Write to Egress FIFO   |
-   * +------+---+------------------------+
-   * | 0x4  | W | Enable interface       |
-   * +------+---+------------------------+
-   * |      | R | Status                 |
-   * +------+---+------------------------+
-   *
-   */
+  // +------+---+------------------------+
+  // | 0x0  | R | Read from Ingress FIFO |
+  // +------+---+------------------------+
+  // |      | W | Write to Egress FIFO   |
+  // +------+---+------------------------+
+  // | 0x4  | W | Enable interface       |
+  // +------+---+------------------------+
+  // |      | R | Status                 |
+  // +------+---+------------------------+
+  //
 
   //////////////////////////////////////////////////////////////////////////////
   // Module Body
@@ -241,11 +235,9 @@ module peripheral_mpi_buffer_endpoint #(
     end
   end
 
-  /*
-   * Simple writes to 0x0
-   *  * Start transfer and set size S
-   *  * For S flits: Write flit
-   */
+  // Simple writes to 0x0
+  //  * Start transfer and set size S
+  //  * For S flits: Write flit
 
   // Combinational part of input state machine
   always @(*) begin
