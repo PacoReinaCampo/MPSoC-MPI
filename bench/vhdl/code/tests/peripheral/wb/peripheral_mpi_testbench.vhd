@@ -1,6 +1,3 @@
--- Converted from bench/verilog/regression/peripheral_mpi_testbench.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -128,7 +125,7 @@ begin
   -- Module Body
   ------------------------------------------------------------------------------
 
-  --DUT WB
+  -- DUT WB
   mpi_wb : peripheral_mpi_wb
     generic map (
       NoC_DATA_WIDTH => NoC_DATA_WIDTH,

@@ -1,6 +1,3 @@
--- Converted from peripheral_mpi.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -117,12 +114,12 @@ architecture rtl of peripheral_mpi is
       clk : in std_logic;
       rst : in std_logic;
 
-      --inputs
+      -- inputs
       in_flit  : in  std_logic_vector(FLIT_WIDTH-1 downto 0);
       in_valid : in  std_logic;
       in_ready : out std_logic;
 
-      --outputs
+      -- outputs
       out_flit  : out std_logic_vector(FLIT_WIDTH-1 downto 0);
       out_valid : out std_logic;
       out_ready : in  std_logic;

@@ -1,6 +1,3 @@
--- Converted from bench/verilog/regression/peripheral_mpi_testbench.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -40,8 +37,7 @@
 --
 --------------------------------------------------------------------------------
 -- Author(s):
---   Francisco Javier Reina Campo <pacoreinacampo@queenfield.tech>
---/
+--   Francisco Javier Reina Campo <pacoreinacampo@queenfield.tech>/
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -129,7 +125,7 @@ begin
   -- Module Body
   ------------------------------------------------------------------------------
 
-  --DUT AHB3
+  -- DUT AHB3
   mpi_ahb3 : peripheral_mpi_ahb3
     generic map (
       NoC_DATA_WIDTH => NoC_DATA_WIDTH,

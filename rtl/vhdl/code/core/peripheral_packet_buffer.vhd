@@ -1,6 +1,3 @@
--- Converted from peripheral_packet_buffer.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -63,12 +60,12 @@ entity peripheral_packet_buffer is
     clk : in std_logic;
     rst : in std_logic;
 
-    --inputs
+    -- inputs
     in_flit  : in  std_logic_vector(FLIT_WIDTH-1 downto 0);
     in_valid : in  std_logic;
     in_ready : out std_logic;
 
-    --outputs
+    -- outputs
     out_flit  : out std_logic_vector(FLIT_WIDTH-1 downto 0);
     out_valid : out std_logic;
     out_ready : in  std_logic;
@@ -90,7 +87,7 @@ architecture rtl of peripheral_packet_buffer is
   ------------------------------------------------------------------------------
 
   -- Signals for fifo
-  signal fifo_data      : std_logic_matrix(FIFO_DEPTH downto 0)(FLIT_WIDTH-1 downto 0);  --actual fifo
+  signal fifo_data      : std_logic_matrix(FIFO_DEPTH downto 0)(FLIT_WIDTH-1 downto 0);  -- actual fifo
   signal fifo_write_ptr : std_logic_vector(FIFO_DEPTH downto 0);
 
   signal last_flits : std_logic_vector(FIFO_DEPTH downto 0);
