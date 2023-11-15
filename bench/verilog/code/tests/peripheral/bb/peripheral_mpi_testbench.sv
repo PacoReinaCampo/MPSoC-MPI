@@ -64,7 +64,6 @@ module peripheral_mpi_testbench;
   logic [N               -1:0] bb_noc_in_valid;
   logic [N               -1:0] bb_noc_in_ready;
 
-
   logic [                31:0] bb_addr_i;
   logic [                31:0] bb_din_i;
   logic                        bb_en_i;
