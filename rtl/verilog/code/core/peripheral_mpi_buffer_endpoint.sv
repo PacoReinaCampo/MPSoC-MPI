@@ -68,7 +68,6 @@ module peripheral_mpi_buffer_endpoint #(
   output irq
 );
 
-  //
   //                   +-> Input path <- packet buffer <-- Ingress
   //                   |    * raise interrupt (!empty)
   // Bus interface --> +    * read size flits from packet buffer
