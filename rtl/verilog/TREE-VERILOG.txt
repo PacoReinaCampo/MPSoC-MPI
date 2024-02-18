@@ -1,4 +1,8 @@
 code
+├── bfm
+│   └── axi4
+│       ├── peripheral_bfm_master_axi4.sv
+│       └── peripheral_bfm_slave_axi4.sv
 ├── core
 │   ├── peripheral_mpi_buffer_endpoint.sv
 │   ├── peripheral_mpi_buffer.sv
@@ -16,9 +20,13 @@ code
     └── peripheral
         ├── ahb3
         │   └── peripheral_ahb3_pkg.sv
+        ├── apb4
+        │   └── peripheral_apb4_pkg.sv
         ├── axi4
         │   └── peripheral_axi4_pkg.sv
+        ├── bb
+        │   └── peripheral_bb_pkg.sv
         └── wb
             └── peripheral_wb_pkg.sv
 
-11 directories, 10 files
+15 directories, 14 files
