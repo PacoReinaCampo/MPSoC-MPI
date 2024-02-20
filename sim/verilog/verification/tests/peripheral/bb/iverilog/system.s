@@ -50,4 +50,4 @@
 ../../../../../../../rtl/verilog/code/core/peripheral_mpi_buffer_endpoint.sv
 ../../../../../../../rtl/verilog/code/core/peripheral_noc_buffer.sv
 
-../../../../../../../bench/verilog/code/tests/peripheral/bb/peripheral_mpi_testbench.sv
+../../../../../../../verification/tasks/library/peripheral/bb/peripheral_mpi_testbench.sv
