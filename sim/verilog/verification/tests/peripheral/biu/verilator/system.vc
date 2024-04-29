@@ -44,10 +44,10 @@
 
 +incdir+../../../../../../../rtl/verilog/code/pkg/peripheral/bb
 
-../../../../../../../rtl/verilog/code/peripheral/bb/peripheral_mpi_bb.sv
+../../../../../../../rtl/verilog/code/peripheral/biu/peripheral_mpi_bb.sv
 
 ../../../../../../../rtl/verilog/code/core/peripheral_mpi_buffer.sv
 ../../../../../../../rtl/verilog/code/core/peripheral_mpi_buffer_endpoint.sv
 ../../../../../../../rtl/verilog/code/core/peripheral_noc_buffer.sv
 
-../../../../../../../verification/tasks/library/peripheral/bb/peripheral_mpi_testbench.sv
+../../../../../../../verification/tasks/library/peripheral/biu/peripheral_mpi_testbench.sv
