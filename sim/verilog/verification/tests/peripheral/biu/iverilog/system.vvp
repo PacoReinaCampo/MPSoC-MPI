@@ -31,7 +31,7 @@ v0x558bd1cb7000_0 .net "bb_noc_out_valid", 0 0, v0x558bd1cb17f0_0;  1 drivers
 v0x558bd1cb70c0_0 .var "bb_we_i", 0 0;
 v0x558bd1cb7160_0 .var "clk", 0 0;
 v0x558bd1cb7200_0 .var "rst", 0 0;
-S_0x558bd1c696b0 .scope module, "mpi_bb" "peripheral_mpi_bb" 3 92, 4 44 0, S_0x558bd1c5e5d0;
+S_0x558bd1c696b0 .scope module, "mpi_biu" "peripheral_mpi_biu" 3 92, 4 44 0, S_0x558bd1c5e5d0;
  .timescale 0 0;
     .port_info 0 /INPUT 1 "clk";
     .port_info 1 /INPUT 1 "rst";
@@ -313,7 +313,7 @@ S_0x558bd1ca73a0 .scope autofunction.vec4.u32, "clog2" "clog2" 6 96, 6 96 0, S_0
  .timescale 0 0;
 ; Variable clog2 is vec4 return value of scope S_0x558bd1ca73a0
 v0x558bd1ca7680_0 .var/i "value", 31 0;
-TD_peripheral_mpi_testbench.mpi_bb.mpi_buffer.genblk2\x5B0\x5D.mpi_buffer_endpoint.clog2 ;
+TD_peripheral_mpi_testbench.mpi_biu.mpi_buffer.genblk2\x5B0\x5D.mpi_buffer_endpoint.clog2 ;
     %load/vec4 v0x558bd1ca7680_0;
     %subi 1, 0, 32;
     %store/vec4 v0x558bd1ca7680_0, 0, 32;
@@ -340,7 +340,7 @@ S_0x558bd1ca7760 .scope autofunction.vec4.u32, "clog2_width" "clog2_width" 6 106
  .timescale 0 0;
 ; Variable clog2_width is vec4 return value of scope S_0x558bd1ca7760
 v0x558bd1ca7a40_0 .var/i "value", 31 0;
-TD_peripheral_mpi_testbench.mpi_bb.mpi_buffer.genblk2\x5B0\x5D.mpi_buffer_endpoint.clog2_width ;
+TD_peripheral_mpi_testbench.mpi_biu.mpi_buffer.genblk2\x5B0\x5D.mpi_buffer_endpoint.clog2_width ;
     %load/vec4 v0x558bd1ca7a40_0;
     %cmpi/e 1, 0, 32;
     %jmp/0xz  T_1.2, 4;
@@ -351,7 +351,7 @@ T_1.2 ;
     %alloc S_0x558bd1ca73a0;
     %load/vec4 v0x558bd1ca7a40_0;
     %store/vec4 v0x558bd1ca7680_0, 0, 32;
-    %callf/vec4 TD_peripheral_mpi_testbench.mpi_bb.mpi_buffer.genblk2\x5B0\x5D.mpi_buffer_endpoint.clog2, S_0x558bd1ca73a0;
+    %callf/vec4 TD_peripheral_mpi_testbench.mpi_biu.mpi_buffer.genblk2\x5B0\x5D.mpi_buffer_endpoint.clog2, S_0x558bd1ca73a0;
     %free S_0x558bd1ca73a0;
     %ret/vec4 0, 0, 32;  Assign to clog2_width (store_vec4_to_lval)
 T_1.3 ;
@@ -439,7 +439,7 @@ S_0x558bd1ca8150 .scope function.vec4.s5, "find_first_one" "find_first_one" 7 95
  .timescale 0 0;
 v0x558bd1ca8630_0 .var "data", 16 0;
 ; Variable find_first_one is vec4 return value of scope S_0x558bd1ca8150
-TD_peripheral_mpi_testbench.mpi_bb.mpi_buffer.genblk2\x5B0\x5D.mpi_buffer_endpoint.noc_buffer_in.find_first_one ;
+TD_peripheral_mpi_testbench.mpi_biu.mpi_buffer.genblk2\x5B0\x5D.mpi_buffer_endpoint.noc_buffer_in.find_first_one ;
     %fork t_1, S_0x558bd1ca8330;
     %jmp t_0;
     .scope S_0x558bd1ca8330;
@@ -509,7 +509,7 @@ L_0x558bd1cca110 .shift/l 17, v0x558bd1caa700_0, L_0x558bd1cc9f60;
 L_0x558bd1cca200 .concat [ 5 27 0 0], v0x558bd1cab510_0, L_0x7f08c8a4f5b8;
 L_0x558bd1cca340 .cmp/gt 32, L_0x558bd1cca200, L_0x7f08c8a4f600;
 L_0x558bd1cca480 .reduce/or L_0x558bd1cca110;
-L_0x558bd1cca650 .ufunc/vec4 TD_peripheral_mpi_testbench.mpi_bb.mpi_buffer.genblk2\x5B0\x5D.mpi_buffer_endpoint.noc_buffer_in.find_first_one, 5, L_0x558bd1cca110 (v0x558bd1ca8630_0) S_0x558bd1ca8150;
+L_0x558bd1cca650 .ufunc/vec4 TD_peripheral_mpi_testbench.mpi_biu.mpi_buffer.genblk2\x5B0\x5D.mpi_buffer_endpoint.noc_buffer_in.find_first_one, 5, L_0x558bd1cca110 (v0x558bd1ca8630_0) S_0x558bd1ca8150;
 L_0x558bd1cca6f0 .concat [ 5 27 0 0], L_0x558bd1cca650, L_0x7f08c8a4f690;
 L_0x558bd1cca880 .arith/sub 32, L_0x7f08c8a4f648, L_0x558bd1cca6f0;
 L_0x558bd1ccaa30 .part L_0x558bd1cca880, 0, 5;
@@ -596,7 +596,7 @@ S_0x558bd1cac000 .scope function.vec4.s5, "find_first_one" "find_first_one" 7 95
  .timescale 0 0;
 v0x558bd1cac500_0 .var "data", 16 0;
 ; Variable find_first_one is vec4 return value of scope S_0x558bd1cac000
-TD_peripheral_mpi_testbench.mpi_bb.mpi_buffer.genblk2\x5B0\x5D.mpi_buffer_endpoint.noc_buffer_out.find_first_one ;
+TD_peripheral_mpi_testbench.mpi_biu.mpi_buffer.genblk2\x5B0\x5D.mpi_buffer_endpoint.noc_buffer_out.find_first_one ;
     %fork t_3, S_0x558bd1cac200;
     %jmp t_2;
     .scope S_0x558bd1cac200;
@@ -665,7 +665,7 @@ L_0x558bd1cc82d0 .shift/l 17, v0x558bd1cae600_0, L_0x558bd1cc8120;
 L_0x558bd1cc83c0 .concat [ 5 27 0 0], v0x558bd1caf3f0_0, L_0x7f08c8a4f1c8;
 L_0x558bd1cc8500 .cmp/gt 32, L_0x558bd1cc83c0, L_0x7f08c8a4f210;
 L_0x558bd1cc8640 .reduce/or L_0x558bd1cc82d0;
-L_0x558bd1cc88f0 .ufunc/vec4 TD_peripheral_mpi_testbench.mpi_bb.mpi_buffer.genblk2\x5B0\x5D.mpi_buffer_endpoint.noc_buffer_out.find_first_one, 5, L_0x558bd1cc82d0 (v0x558bd1cac500_0) S_0x558bd1cac000;
+L_0x558bd1cc88f0 .ufunc/vec4 TD_peripheral_mpi_testbench.mpi_biu.mpi_buffer.genblk2\x5B0\x5D.mpi_buffer_endpoint.noc_buffer_out.find_first_one, 5, L_0x558bd1cc82d0 (v0x558bd1cac500_0) S_0x558bd1cac000;
 L_0x558bd1cc8990 .concat [ 5 27 0 0], L_0x558bd1cc88f0, L_0x7f08c8a4f2a0;
 L_0x558bd1cc8ad0 .arith/sub 32, L_0x7f08c8a4f258, L_0x558bd1cc8990;
 L_0x558bd1cc8c80 .part L_0x558bd1cc8ad0, 0, 5;
@@ -1439,7 +1439,7 @@ t_4 %join;
     "<interactive>";
     "-";
     "../../../../../../bench/verilog/tests/peripheral/biu/peripheral_mpi_testbench.sv";
-    "../../../../../../rtl/verilog/peripheral/biu/peripheral_mpi_bb.sv";
+    "../../../../../../rtl/verilog/peripheral/biu/peripheral_mpi_biu.sv";
     "../../../../../../rtl/verilog/core/peripheral_mpi_buffer.sv";
     "../../../../../../rtl/verilog/core/peripheral_mpi_buffer_endpoint.sv";
     "../../../../../../rtl/verilog/core/peripheral_noc_buffer.sv";

@@ -44,7 +44,7 @@
 
 +incdir+../../../../../../../rtl/verilog/code/pkg/peripheral/bb
 
-../../../../../../../rtl/verilog/code/peripheral/biu/peripheral_mpi_bb.sv
+../../../../../../../rtl/verilog/code/peripheral/biu/peripheral_mpi_biu.sv
 
 ../../../../../../../rtl/verilog/code/core/peripheral_mpi_buffer.sv
 ../../../../../../../rtl/verilog/code/core/peripheral_mpi_buffer_endpoint.sv
