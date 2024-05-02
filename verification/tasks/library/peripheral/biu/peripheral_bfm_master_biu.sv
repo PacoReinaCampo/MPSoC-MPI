@@ -38,9 +38,9 @@
 // Author(s):
 //   Paco Reina Campo <pacoreinacampo@queenfield.tech>
 
-import peripheral_ahb3_pkg::*;
+import peripheral_biu_pkg::*;
 
-module peripheral_bfm_master_ahb3 #(
+module peripheral_bfm_master_biu #(
   parameter HADDR_SIZE = 16,
   parameter HDATA_SIZE = 32
 ) (
@@ -286,4 +286,4 @@ module peripheral_bfm_master_ahb3 #(
       end
     endcase
   endfunction : next_address
-endmodule : peripheral_bfm_master_ahb3
+endmodule : peripheral_bfm_master_biu

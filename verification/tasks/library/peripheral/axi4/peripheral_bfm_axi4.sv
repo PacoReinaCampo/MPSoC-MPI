@@ -38,9 +38,9 @@
 // Author(s):
 //   Paco Reina Campo <pacoreinacampo@queenfield.tech>
 
-import peripheral_ahb3_pkg::*;
+import peripheral_axi4_pkg::*;
 
-module peripheral_bfm_ahb3 #(
+module peripheral_bfm_axi4 #(
   parameter TIMERS = 2,  // Number of timers
 
   parameter HADDR_SIZE = 16,
@@ -92,10 +92,10 @@ module peripheral_bfm_ahb3 #(
   //////////////////////////////////////////////////////////////////////////////
   // Instantiate the AHB-Master
   //////////////////////////////////////////////////////////////////////////////
-  peripheral_bfm_master_ahb3 #(
+  peripheral_bfm_master_axi4 #(
     .HADDR_SIZE(HADDR_SIZE),
     .HDATA_SIZE(HDATA_SIZE)
-  ) bfm_master_ahb3 (
+  ) bfm_master_axi4 (
     .*
   );
 
@@ -123,19 +123,11 @@ module peripheral_bfm_ahb3 #(
     // check initial values
     test_reset_register_values();
 
-    // Test number of timers
-    test_ienable_timers();
-
     // Test registers
     test_registers_rw32();
 
     // Program prescale register
     // program_prescaler(PRESCALE_VALUE -1); // counts N+1
-
-    // Test Timer0
-    test_timer0();
-
-    // Test all timers
 
     // Finish simulation
     repeat (100) @(posedge HCLK);
@@ -190,38 +182,6 @@ module peripheral_bfm_ahb3 #(
     // all zeros ... why bother
   endtask : test_reset_register_values
 
-  task test_ienable_timers;
-    // enable interrupts for all 32 possible timers
-    // only the LSBs for the available timers should be '1'
-
-    // create buffer
-    logic [HDATA_SIZE-1:0] wbuffer[], rbuffer[];
-    wbuffer = new[1];
-    rbuffer = new[1];
-
-    $write("Testing amount of timers ... ");
-    wbuffer[0] = {HDATA_SIZE{1'b1}};
-    bfm_master_ahb3.write(IENABLE, wbuffer, HSIZE_WORD, HBURST_SINGLE);  // write all '1's
-    bfm_master_ahb3.idle();  // wait for HWDATA
-    bfm_master_ahb3.read(IENABLE, rbuffer, HSIZE_WORD, HBURST_SINGLE);  // read actual value
-    wbuffer[0] = {HDATA_SIZE{1'b0}};
-    bfm_master_ahb3.write(IENABLE, wbuffer, HSIZE_WORD, HBURST_SINGLE);  // restore all '0's
-    bfm_master_ahb3.idle();  // Idle bus
-    wait fork;  // wait for all threads to complete
-
-    if (rbuffer[0] !== {TIMERS{1'b1}}) begin
-      errors++;
-      $display("FAILED");
-      $error("Wrong number of timers. Expected %0d, got %0d", TIMERS, $clog2(rbuffer[0]));
-    end else begin
-      $display("OK");
-    end
-
-    // discard buffers
-    rbuffer.delete();
-    wbuffer.delete();
-  endtask : test_ienable_timers
-
   task test_registers_rw32;
     int error;
     int hsize;
@@ -230,7 +190,7 @@ module peripheral_bfm_ahb3 #(
     localparam int reg_cnt = 4 + 2 * TIMERS;
 
     logic [HADDR_SIZE-1:0] registers[reg_cnt];
-    logic [HDATA_SIZE-1:0] wbuffer[][], rbuffer[][];
+    logic [HDATA_SIZE-1:0] axi4uffer[][], rbuffer[][];
 
     // create list of registers
     for (n = 0; n < reg_cnt; n++) begin
@@ -244,7 +204,7 @@ module peripheral_bfm_ahb3 #(
     end
 
     // create buffers
-    wbuffer = new[reg_cnt];
+    axi4uffer = new[reg_cnt];
     rbuffer = new[reg_cnt];
 
     $display("Testing registers ... ");
@@ -260,27 +220,27 @@ module peripheral_bfm_ahb3 #(
 
       for (n = 0; n < reg_cnt; n++) begin
         if (hsize == HSIZE_WORD) begin
-          wbuffer[n]    = new[1];
+          axi4uffer[n]    = new[1];
           rbuffer[n]    = new[1];
-          wbuffer[n][0] = $random;
+          axi4uffer[n][0] = $random;
         end else begin
-          wbuffer[n] = new[4];
+          axi4uffer[n] = new[4];
           rbuffer[n] = new[4];
-          for (int i = 0; i < 4; i++) wbuffer[n][i] = $random & 'hff;
+          for (int i = 0; i < 4; i++) axi4uffer[n][i] = $random & 'hff;
         end
       end
 
       for (n = 0; n < reg_cnt; n++) begin
-        bfm_master_ahb3.write(registers[n], wbuffer[n], hsize, hburst);  // write register
+        bfm_master_axi4.write(registers[n], axi4uffer[n], hsize, hburst);  // write register
       end
 
-      bfm_master_ahb3.idle();  // wait for HWDATA
+      bfm_master_axi4.idle();  // wait for HWDATA
 
       for (n = 0; n < reg_cnt; n++) begin
-        bfm_master_ahb3.read(registers[n], rbuffer[n], hsize, hburst);  // read register
+        bfm_master_axi4.read(registers[n], rbuffer[n], hsize, hburst);  // read register
       end
 
-      bfm_master_ahb3.idle();  // Idle bus
+      bfm_master_axi4.idle();  // Idle bus
       wait fork;  // wait for all threads to complete
 
       for (n = 0; n < reg_cnt; n++) begin
@@ -291,12 +251,12 @@ module peripheral_bfm_ahb3 #(
           end
 
           if (n == 1) begin  // IENABLE
-            wbuffer[n][beat] &= {{32 - TIMERS{1'b0}}, {TIMERS{1'b1}}};
-            wbuffer[n][beat] >>= 8 * beat;
+            axi4uffer[n][beat] &= {{32 - TIMERS{1'b0}}, {TIMERS{1'b1}}};
+            axi4uffer[n][beat] >>= 8 * beat;
           end
 
-          if (rbuffer[n][beat] != wbuffer[n][beat]) begin
-            $display("%0d,%0d: got %x, expected %x", n, beat, rbuffer[n][beat], wbuffer[n][beat]);
+          if (rbuffer[n][beat] != axi4uffer[n][beat]) begin
+            $display("%0d,%0d: got %x, expected %x", n, beat, rbuffer[n][beat], axi4uffer[n][beat]);
             error = 1;
             errors++;
           end
@@ -311,14 +271,14 @@ module peripheral_bfm_ahb3 #(
     end
 
     // reset registers to all '0'
-    wbuffer[0][0] = 0;
+    axi4uffer[0][0] = 0;
     for (n = 0; n < reg_cnt; n++) begin
-      bfm_master_ahb3.write(registers[n], wbuffer[0], HSIZE_WORD, HBURST_SINGLE);  // write register
+      bfm_master_axi4.write(registers[n], axi4uffer[0], HSIZE_WORD, HBURST_SINGLE);  // write register
     end
 
     // discard buffers
     rbuffer.delete();
-    wbuffer.delete();
+    axi4uffer.delete();
   endtask : test_registers_rw32
 
   task program_prescaler(input [31:0] value);
@@ -330,10 +290,10 @@ module peripheral_bfm_ahb3 #(
     buffer[0] = value;
 
     $write("Programming prescaler ... ");
-    bfm_master_ahb3.write(PRESCALE, buffer, HSIZE_WORD, HBURST_SINGLE);  // write value
-    bfm_master_ahb3.idle();  // wait for HWDATA
-    bfm_master_ahb3.read(PRESCALE, buffer, HSIZE_WORD, HBURST_SINGLE);  // read back value
-    bfm_master_ahb3.idle();  // IDLE bus
+    bfm_master_axi4.write(PRESCALE, buffer, HSIZE_WORD, HBURST_SINGLE);  // write value
+    bfm_master_axi4.idle();  // wait for HWDATA
+    bfm_master_axi4.read(PRESCALE, buffer, HSIZE_WORD, HBURST_SINGLE);  // read back value
+    bfm_master_axi4.idle();  // IDLE bus
     wait fork;
 
     if (buffer[0] !== value) begin
@@ -347,82 +307,4 @@ module peripheral_bfm_ahb3 #(
     // discard buffer
     buffer.delete();
   endtask : program_prescaler
-
-  task test_timer0();
-    int cnt;
-    localparam timecmp_value = 12;
-
-    // create buffer
-    logic [HDATA_SIZE-1:0] buffer[];
-    buffer = new[1];
-
-    $display("Testing timer0 ... ");
-    $display("  Programming registers ... ");
-    buffer[0] = timecmp_value;
-    bfm_master_ahb3.write(TIMECMP, buffer, HSIZE_WORD, HBURST_SINGLE);  // write TIMECMP
-    buffer[0] = 1;
-    bfm_master_ahb3.write(IENABLE, buffer, HSIZE_BYTE, HBURST_SINGLE);  // Enable Timer0-interrupt
-    buffer[0] = PRESCALE_VALUE - 1;
-    bfm_master_ahb3.write(PRESCALE, buffer, HSIZE_WORD, HBURST_SINGLE);  // Enable core
-    buffer[0] = 0;
-    bfm_master_ahb3.write(TIME, buffer, HSIZE_WORD, HBURST_SINGLE);  // write TIME_LSB
-    bfm_master_ahb3.write(TIME_MSB, buffer, HSIZE_WORD, HBURST_SINGLE);
-    bfm_master_ahb3.idle();  // wait for HWDATA
-    wait fork;
-
-    // now wait for interrupt to rise
-    $write("  Waiting for timer interrupt ... ");
-    cnt = 0;
-    while (!tint) begin
-      @(posedge HCLK);
-
-      cnt++;  // cnt should start increasing as soon as enable[0]='1'
-
-      if (cnt > 1000) begin  // some watchdog value
-        $display("FAILED");
-        $error("Timer interrupt failed");
-        break;
-      end
-    end
-
-    if (tint) begin
-      $display("OK");
-
-      // check 'cnt' should be PRESCALE_VALUE * TIMECMP -1
-      $write("  Checking time delay ... ");
-      if (cnt !== PRESCALE_VALUE * timecmp_value - 1) begin
-        errors++;
-        $display("FAILED");
-        $error("Wrong time delay. Expected %0d, got %0d", PRESCALE_VALUE * timecmp_value - 1, cnt);
-      end else begin
-        $display("OK");
-      end
-    end
-
-    // A write to TIMECMP should clear the interrupt
-    $write("  Clearing timer interrupt ... ");
-    buffer[0] = 1000;  // some high number to prevent new interrupts
-    bfm_master_ahb3.write(TIMECMP, buffer, HSIZE_WORD, HBURST_SINGLE);  // write TIMECMP
-    bfm_master_ahb3.idle();
-
-    cnt = 0;
-    while (tint) begin
-      @(posedge HCLK);
-
-      cnt++;  // cnt should start increasing as soon as enable[0]='1'
-
-      if (cnt > 1000) begin  // some watchdog value
-        $display("FAILED");
-        $error("Clearing interrupt failed");
-        break;
-      end
-    end
-
-    if (!tint) begin
-      $display("OK");
-    end
-
-    // discard buffer
-    buffer.delete();
-  endtask : test_timer0
-endmodule : peripheral_bfm_ahb3
+endmodule : peripheral_bfm_axi4

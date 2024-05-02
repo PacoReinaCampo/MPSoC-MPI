@@ -38,9 +38,9 @@
 // Author(s):
 //   Paco Reina Campo <pacoreinacampo@queenfield.tech>
 
-import peripheral_ahb3_pkg::*;
+import peripheral_biu_pkg::*;
 
-module peripheral_bfm_ahb3 #(
+module peripheral_bfm_biu #(
   parameter TIMERS = 2,  // Number of timers
 
   parameter HADDR_SIZE = 16,
@@ -92,10 +92,10 @@ module peripheral_bfm_ahb3 #(
   //////////////////////////////////////////////////////////////////////////////
   // Instantiate the AHB-Master
   //////////////////////////////////////////////////////////////////////////////
-  peripheral_bfm_master_ahb3 #(
+  peripheral_bfm_master_biu #(
     .HADDR_SIZE(HADDR_SIZE),
     .HDATA_SIZE(HDATA_SIZE)
-  ) bfm_master_ahb3 (
+  ) bfm_master_biu (
     .*
   );
 
@@ -231,16 +231,16 @@ module peripheral_bfm_ahb3 #(
       end
 
       for (n = 0; n < reg_cnt; n++) begin
-        bfm_master_ahb3.write(registers[n], wbuffer[n], hsize, hburst);  // write register
+        bfm_master_biu.write(registers[n], wbuffer[n], hsize, hburst);  // write register
       end
 
-      bfm_master_ahb3.idle();  // wait for HWDATA
+      bfm_master_biu.idle();  // wait for HWDATA
 
       for (n = 0; n < reg_cnt; n++) begin
-        bfm_master_ahb3.read(registers[n], rbuffer[n], hsize, hburst);  // read register
+        bfm_master_biu.read(registers[n], rbuffer[n], hsize, hburst);  // read register
       end
 
-      bfm_master_ahb3.idle();  // Idle bus
+      bfm_master_biu.idle();  // Idle bus
       wait fork;  // wait for all threads to complete
 
       for (n = 0; n < reg_cnt; n++) begin
@@ -273,7 +273,7 @@ module peripheral_bfm_ahb3 #(
     // reset registers to all '0'
     wbuffer[0][0] = 0;
     for (n = 0; n < reg_cnt; n++) begin
-      bfm_master_ahb3.write(registers[n], wbuffer[0], HSIZE_WORD, HBURST_SINGLE);  // write register
+      bfm_master_biu.write(registers[n], wbuffer[0], HSIZE_WORD, HBURST_SINGLE);  // write register
     end
 
     // discard buffers
@@ -290,10 +290,10 @@ module peripheral_bfm_ahb3 #(
     buffer[0] = value;
 
     $write("Programming prescaler ... ");
-    bfm_master_ahb3.write(PRESCALE, buffer, HSIZE_WORD, HBURST_SINGLE);  // write value
-    bfm_master_ahb3.idle();  // wait for HWDATA
-    bfm_master_ahb3.read(PRESCALE, buffer, HSIZE_WORD, HBURST_SINGLE);  // read back value
-    bfm_master_ahb3.idle();  // IDLE bus
+    bfm_master_biu.write(PRESCALE, buffer, HSIZE_WORD, HBURST_SINGLE);  // write value
+    bfm_master_biu.idle();  // wait for HWDATA
+    bfm_master_biu.read(PRESCALE, buffer, HSIZE_WORD, HBURST_SINGLE);  // read back value
+    bfm_master_biu.idle();  // IDLE bus
     wait fork;
 
     if (buffer[0] !== value) begin
@@ -307,4 +307,4 @@ module peripheral_bfm_ahb3 #(
     // discard buffer
     buffer.delete();
   endtask : program_prescaler
-endmodule : peripheral_bfm_ahb3
+endmodule : peripheral_bfm_biu

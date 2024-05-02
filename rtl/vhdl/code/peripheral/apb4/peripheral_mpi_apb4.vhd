@@ -44,7 +44,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity peripheral_mpi_ahb3 is
+entity peripheral_mpi_apb4 is
   generic (
     NoC_DATA_WIDTH : integer := 32;
     NoC_TYPE_WIDTH : integer := 2;
@@ -75,9 +75,9 @@ entity peripheral_mpi_ahb3 is
 
     irq : out std_logic
     );
-end peripheral_mpi_ahb3;
+end peripheral_mpi_apb4;
 
-architecture rtl of peripheral_mpi_ahb3 is
+architecture rtl of peripheral_mpi_apb4 is
 
   ------------------------------------------------------------------------------
   -- Components

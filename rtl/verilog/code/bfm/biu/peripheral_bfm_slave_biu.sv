@@ -38,7 +38,7 @@
 // Author(s):
 //   Paco Reina Campo <pacoreinacampo@queenfield.tech>
 
-module peripheral_bfm_slave_axi4 (
+module peripheral_bfm_slave_biu (
 
   // Global Signals
   input wire aclk,
@@ -87,4 +87,4 @@ module peripheral_bfm_slave_axi4 (
   output reg         rvalid,   // Read Valid
   input  wire        rready    // Read Ready
 );
-endmodule  // peripheral_bfm_slave_axi4
+endmodule  // peripheral_bfm_slave_biu

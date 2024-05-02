@@ -39,7 +39,7 @@
 //   Stefan Wallentowitz <stefan.wallentowitz@tum.de>
 //   Paco Reina Campo <pacoreinacampo@queenfield.tech>
 
-module peripheral_mpi_ahb3 #(
+module peripheral_mpi_biu #(
   parameter PLEN = 32,
   parameter XLEN = 32,
 
@@ -60,19 +60,19 @@ module peripheral_mpi_ahb3 #(
   input  [N               -1:0] noc_in_valid,
   output [N               -1:0] noc_in_ready,
 
-  input                        ahb3_hsel_i,
-  input [PLEN            -1:0] ahb3_haddr_i,
-  input [XLEN            -1:0] ahb3_hwdata_i,
-  input                        ahb3_hwrite_i,
-  input [                 2:0] ahb3_hsize_i,
-  input [                 2:0] ahb3_hburst_i,
-  input [                 3:0] ahb3_hprot_i,
-  input [                 1:0] ahb3_htrans_i,
-  input                        ahb3_hmastlock_i,
+  input                        biu_hsel_i,
+  input [PLEN            -1:0] biu_haddr_i,
+  input [XLEN            -1:0] biu_hwdata_i,
+  input                        biu_hwrite_i,
+  input [                 2:0] biu_hsize_i,
+  input [                 2:0] biu_hburst_i,
+  input [                 3:0] biu_hprot_i,
+  input [                 1:0] biu_htrans_i,
+  input                        biu_hmastlock_i,
 
-  output [XLEN            -1:0] ahb3_hrdata_o,
-  output                        ahb3_hready_o,
-  output                        ahb3_hresp_o,
+  output [XLEN            -1:0] biu_hrdata_o,
+  output                        biu_hready_o,
+  output                        biu_hresp_o,
 
   output irq
 );
@@ -94,12 +94,12 @@ module peripheral_mpi_ahb3 #(
   // Body
   //////////////////////////////////////////////////////////////////////////////
 
-  assign bus_addr      = ahb3_haddr_i;
-  assign bus_we        = ahb3_hwrite_i;
-  assign bus_en        = ahb3_hmastlock_i & ahb3_hsel_i;
-  assign bus_data_in   = ahb3_hwdata_i;
-  assign ahb3_hrdata_o = bus_data_out;
-  assign ahb3_hready_o = bus_ack;
+  assign bus_addr      = biu_haddr_i;
+  assign bus_we        = biu_hwrite_i;
+  assign bus_en        = biu_hmastlock_i & biu_hsel_i;
+  assign bus_data_in   = biu_hwdata_i;
+  assign biu_hrdata_o = bus_data_out;
+  assign biu_hready_o = bus_ack;
 
   peripheral_mpi_buffer #(
     .NOC_FLIT_WIDTH(NOC_FLIT_WIDTH),

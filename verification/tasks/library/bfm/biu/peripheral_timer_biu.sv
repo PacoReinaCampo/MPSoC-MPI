@@ -38,9 +38,9 @@
 // Author(s):
 //   Paco Reina Campo <pacoreinacampo@queenfield.tech>
 
-import peripheral_ahb3_pkg::*;
+import peripheral_biu_pkg::*;
 
-module peripheral_timer_ahb3 #(
+module peripheral_timer_biu #(
   // AHB Parameters
   parameter HADDR_SIZE = 32,
   parameter HDATA_SIZE = 32,
@@ -437,4 +437,4 @@ module peripheral_timer_ahb3 #(
       tint <= 1'b0;
     end
   end
-endmodule : peripheral_timer_ahb3
+endmodule : peripheral_timer_biu

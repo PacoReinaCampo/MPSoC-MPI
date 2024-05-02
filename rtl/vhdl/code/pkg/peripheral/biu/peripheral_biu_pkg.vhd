@@ -44,7 +44,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-package peripheral_ahb3_pkg is
+package peripheral_biu_pkg is
 
   constant HADDR_SIZE : integer := 64;
   constant HDATA_SIZE : integer := 64;
@@ -93,4 +93,4 @@ package peripheral_ahb3_pkg is
   constant HRESP_OKAY  : std_logic := '0';
   constant HRESP_ERROR : std_logic := '1';
 
-end peripheral_ahb3_pkg;
+end peripheral_biu_pkg;

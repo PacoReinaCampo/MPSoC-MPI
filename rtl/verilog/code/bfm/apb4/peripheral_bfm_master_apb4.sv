@@ -38,7 +38,7 @@
 // Author(s):
 //   Paco Reina Campo <pacoreinacampo@queenfield.tech>
 
-module peripheral_bfm_master_axi4 (
+module peripheral_bfm_master_apb4 (
 
   // Global Signals
   input wire aclk,
@@ -87,4 +87,4 @@ module peripheral_bfm_master_axi4 (
   input  wire        rvalid,   // Read Valid
   output reg         rready    // Read Ready
 );
-endmodule  // peripheral_bfm_master_generic_axi4
+endmodule  // peripheral_bfm_master_generic_apb4
