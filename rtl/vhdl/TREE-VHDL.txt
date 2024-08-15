@@ -6,13 +6,13 @@ code
 │   ├── ahb3
 │   │   └── peripheral_mpi_ahb3.vhd
 │   ├── apb4
-│   │   └── peripheral_mpi_ahb3.vhd
+│   │   └── peripheral_mpi_apb4.vhd
 │   ├── axi4
 │   │   └── peripheral_mpi_axi4.vhd
 │   ├── bb
 │   │   └── peripheral_mpi_bb.vhd
 │   ├── biu
-│   │   └── peripheral_mpi_ahb3.vhd
+│   │   └── peripheral_mpi_biu.vhd
 │   └── wb
 │       └── peripheral_mpi_wb.vhd
 └── pkg
@@ -22,13 +22,13 @@ code
         ├── ahb3
         │   └── peripheral_ahb3_pkg.vhd
         ├── apb4
-        │   └── peripheral_ahb3_pkg.vhd
+        │   └── peripheral_apb4_pkg.vhd
         ├── axi4
         │   └── peripheral_axi4_pkg.vhd
         ├── bb
-        │   └── peripheral_ahb3_pkg.vhd
+        │   └── peripheral_bb_pkg.vhd
         ├── biu
-        │   └── peripheral_ahb3_pkg.vhd
+        │   └── peripheral_biu_pkg.vhd
         └── wb
             └── peripheral_wb_pkg.vhd
 
