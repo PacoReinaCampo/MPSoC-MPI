@@ -71,7 +71,7 @@ module peripheral_mpi_testbench;
   // Body
   //////////////////////////////////////////////////////////////////////////////
 
-  peripheral_testbench_utils testbench_utils ();
+  peripheral_utils_testbench utils_testbench ();
 
   initial #1800 wbm_rst <= 1'b0;
 
