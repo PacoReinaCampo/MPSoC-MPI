@@ -46,9 +46,9 @@
 
 ../../../../../../../rtl/verilog/code/peripheral/apb4/peripheral_mpi_apb4.sv
 
-../../../../../../../rtl/verilog/code/core/peripheral_mpi_buffer.sv
-../../../../../../../rtl/verilog/code/core/peripheral_mpi_buffer_endpoint.sv
-../../../../../../../rtl/verilog/code/core/peripheral_noc_buffer.sv
+../../../../../../../rtl/verilog/code/peripheral/peripheral_mpi_buffer.sv
+../../../../../../../rtl/verilog/code/peripheral/peripheral_mpi_buffer_endpoint.sv
+../../../../../../../rtl/verilog/code/peripheral/peripheral_noc_buffer.sv
 
 ../../../../../../../verification/tasks/library/peripheral/apb4/peripheral_bfm_apb4.sv
 ../../../../../../../verification/tasks/library/peripheral/apb4/peripheral_bfm_master_apb4.sv

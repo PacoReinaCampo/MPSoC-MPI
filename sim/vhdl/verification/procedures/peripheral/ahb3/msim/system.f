@@ -46,7 +46,7 @@
 
 ../../../../../../../rtl/vhdl/code/peripheral/ahb3/peripheral_mpi_ahb3.vhd
 
-../../../../../../../rtl/vhdl/code/core/peripheral_mpi.vhd
-../../../../../../../rtl/vhdl/code/core/peripheral_packet_buffer.vhd
+../../../../../../../rtl/vhdl/code/peripheral/peripheral_mpi.vhd
+../../../../../../../rtl/vhdl/code/peripheral/peripheral_packet_buffer.vhd
 
 ../../../../../../../verification/procedures/library/peripheral/ahb3/peripheral_mpi_testbench.vhd
