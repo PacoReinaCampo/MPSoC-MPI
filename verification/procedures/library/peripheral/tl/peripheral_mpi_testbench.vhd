@@ -53,7 +53,7 @@ architecture rtl of peripheral_mpi_testbench is
   -- Components
   ------------------------------------------------------------------------------
 
-  component peripheral_mpi_ahb4
+  component peripheral_mpi_tl
     generic (
       NoC_DATA_WIDTH : integer := 32;
       NoC_TYPE_WIDTH : integer := 2;
@@ -126,7 +126,7 @@ begin
   ------------------------------------------------------------------------------
 
   -- DUT AHB4
-  mpi_ahb4 : peripheral_mpi_ahb4
+  mpi_tl : peripheral_mpi_tl
     generic map (
       NoC_DATA_WIDTH => NoC_DATA_WIDTH,
       NoC_TYPE_WIDTH => NoC_TYPE_WIDTH,

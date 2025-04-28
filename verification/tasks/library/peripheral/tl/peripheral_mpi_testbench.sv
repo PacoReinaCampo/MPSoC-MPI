@@ -66,32 +66,32 @@ module peripheral_mpi_testbench;
   logic [N               -1:0] ahb_noc_in_valid;
   logic [N               -1:0] ahb_noc_in_ready;
 
-  logic                        ahb4_hsel_i;
-  logic [                31:0] ahb4_haddr_i;
-  logic [                31:0] ahb4_hwdata_i;
-  logic                        ahb4_hwrite_i;
-  logic [                 2:0] ahb4_hsize_i;
-  logic [                 2:0] ahb4_hburst_i;
-  logic [                 3:0] ahb4_hprot_i;
-  logic [                 1:0] ahb4_htrans_i;
-  logic                        ahb4_hmastlock_i;
+  logic                        tl_hsel_i;
+  logic [                31:0] tl_haddr_i;
+  logic [                31:0] tl_hwdata_i;
+  logic                        tl_hwrite_i;
+  logic [                 2:0] tl_hsize_i;
+  logic [                 2:0] tl_hburst_i;
+  logic [                 3:0] tl_hprot_i;
+  logic [                 1:0] tl_htrans_i;
+  logic                        tl_hmastlock_i;
 
-  logic [                31:0] ahb4_hrdata_o;
-  logic                        ahb4_hready_o;
-  logic                        ahb4_hresp_o;
+  logic [                31:0] tl_hrdata_o;
+  logic                        tl_hready_o;
+  logic                        tl_hresp_o;
 
-  logic                        ahb4_irq;
+  logic                        tl_irq;
 
   //////////////////////////////////////////////////////////////////////////////
   // Body
   //////////////////////////////////////////////////////////////////////////////
 
   // DUT AHB4
-  peripheral_mpi_ahb4 #(
+  peripheral_mpi_tl #(
     .NOC_FLIT_WIDTH(NOC_FLIT_WIDTH),
     .SIZE          (SIZE),
     .N             (N)
-  ) mpi_ahb4 (
+  ) mpi_tl (
     .clk(clk),
     .rst(rst),
 
@@ -106,20 +106,20 @@ module peripheral_mpi_testbench;
     .noc_in_valid(ahb_noc_in_valid),
     .noc_in_ready(ahb_noc_in_ready),
 
-    .ahb4_hsel_i     (ahb4_hsel_i),
-    .ahb4_haddr_i    (ahb4_haddr_i),
-    .ahb4_hwdata_i   (ahb4_hwdata_i),
-    .ahb4_hwrite_i   (ahb4_hwrite_i),
-    .ahb4_hsize_i    (ahb4_hsize_i),
-    .ahb4_hburst_i   (ahb4_hburst_i),
-    .ahb4_hprot_i    (ahb4_hprot_i),
-    .ahb4_htrans_i   (ahb4_htrans_i),
-    .ahb4_hmastlock_i(ahb4_hmastlock_i),
+    .tl_hsel_i     (tl_hsel_i),
+    .tl_haddr_i    (tl_haddr_i),
+    .tl_hwdata_i   (tl_hwdata_i),
+    .tl_hwrite_i   (tl_hwrite_i),
+    .tl_hsize_i    (tl_hsize_i),
+    .tl_hburst_i   (tl_hburst_i),
+    .tl_hprot_i    (tl_hprot_i),
+    .tl_htrans_i   (tl_htrans_i),
+    .tl_hmastlock_i(tl_hmastlock_i),
 
-    .ahb4_hrdata_o(ahb4_hrdata_o),
-    .ahb4_hready_o(ahb4_hready_o),
-    .ahb4_hresp_o (ahb4_hresp_o),
+    .tl_hrdata_o(tl_hrdata_o),
+    .tl_hready_o(tl_hready_o),
+    .tl_hresp_o (tl_hresp_o),
 
-    .irq(ahb4_irq)
+    .irq(tl_irq)
   );
 endmodule
