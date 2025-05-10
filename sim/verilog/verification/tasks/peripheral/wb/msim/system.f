@@ -52,7 +52,7 @@
 ../../../../../../../verification/tasks/library/peripheral/wb/main/peripheral_utils_testbench.sv
 ../../../../../../../verification/tasks/library/peripheral/wb/main/peripheral_mpi_testbench.sv
 
-../../../../../../../rtl/verilog/code/peripheral/peripheral_mpi_buffer.sv
-../../../../../../../rtl/verilog/code/peripheral/peripheral_mpi_buffer_endpoint.sv
-../../../../../../../rtl/verilog/code/peripheral/peripheral_noc_buffer.sv
+../../../../../../../rtl/verilog/code/core/peripheral_mpi_buffer.sv
+../../../../../../../rtl/verilog/code/core/peripheral_mpi_buffer_endpoint.sv
+../../../../../../../rtl/verilog/code/core/peripheral_noc_buffer.sv
 ../../../../../../../rtl/verilog/code/peripheral/wb/peripheral_mpi_wb.sv
