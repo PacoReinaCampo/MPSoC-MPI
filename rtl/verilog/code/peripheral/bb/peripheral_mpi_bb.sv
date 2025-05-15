@@ -57,10 +57,10 @@ module peripheral_mpi_bb #(
   input  [N               -1:0] noc_in_valid,
   output [N               -1:0] noc_in_ready,
 
-  input [31:0] bb_addr_i,
-  input [31:0] bb_din_i,
-  input        bb_en_i,
-  input        bb_we_i,
+  input  [31:0] bb_addr_i,
+  input  [31:0] bb_din_i,
+  input         bb_en_i,
+  input         bb_we_i,
 
   output [31:0] bb_dout_o,
 
