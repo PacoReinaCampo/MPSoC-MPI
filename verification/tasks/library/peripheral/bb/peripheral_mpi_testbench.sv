@@ -11,7 +11,7 @@
 //                                                                            //
 //              Peripheral-MPI for MPSoC                                      //
 //              Message Passing Interface for MPSoC                           //
-//              BlackBone Bus Interface                                       //
+//              BackBone Bus Interface                                       //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 // Copyright (c) 2018-2019 by the author(s)
